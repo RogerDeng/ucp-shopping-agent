@@ -161,10 +161,14 @@ $api_keys = $api_key_model->get_all();
                         <p>
                             <?php esc_html_e('Copy this key now. The secret will not be shown again.', 'ucp-shopping-agent'); ?>
                         </p>
-                        <code id="new-api-key-value"></code>
-                        <button type="button" class="button copy-to-clipboard" data-target="#new-api-key-value">
-                            <?php esc_html_e('Copy', 'ucp-shopping-agent'); ?>
-                        </button>
+                        <div class="api-key-display-wrapper"
+                            style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+                            <code id="new-api-key-value"
+                                style="flex: 1; padding: 10px 15px; background: #f0f0f1; border: 1px solid #c3c4c7; font-size: 14px; word-break: break-all;"></code>
+                            <button type="button" class="button copy-to-clipboard" data-target="#new-api-key-value">
+                                <?php esc_html_e('Copy', 'ucp-shopping-agent'); ?>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -274,7 +278,7 @@ $api_keys = $api_key_model->get_all();
                             <?php esc_html_e('Authenticate Requests', 'ucp-shopping-agent'); ?>
                         </strong>
                         <pre>curl -H "X-UCP-API-Key: YOUR_KEY_ID:YOUR_SECRET" \
-      <?php echo esc_url(get_rest_url(null, 'ucp/v1/products')); ?></pre>
+          <?php echo esc_url(get_rest_url(null, 'ucp/v1/products')); ?></pre>
                     </li>
                 </ol>
 
