@@ -1,0 +1,454 @@
+# WooCommerce UCP Agent POT File
+# Copyright (C) 2026 Roger Deng
+# This file is distributed under the GPL2 license.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce UCP Agent 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-14 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: woocommerce-ucp-agent.php
+msgid "WooCommerce UCP Agent requires WooCommerce to be installed and activated."
+msgstr ""
+
+#: includes/api/class-ucp-auth.php
+msgid "API key is required for this request."
+msgstr ""
+
+msgid "Invalid API key format. Expected format: key_id:secret"
+msgstr ""
+
+msgid "Invalid API key."
+msgstr ""
+
+msgid "This API key does not have %s permissions."
+msgstr ""
+
+msgid "Description for this API key"
+msgstr ""
+
+msgid "Permission level"
+msgstr ""
+
+msgid "Save this API key securely. The secret will not be shown again."
+msgstr ""
+
+msgid "API key not found."
+msgstr ""
+
+msgid "Failed to create API key."
+msgstr ""
+
+#: includes/api/class-ucp-discovery.php
+msgid "Store discovery and capabilities"
+msgstr ""
+
+msgid "Browse, search, and filter products"
+msgstr ""
+
+msgid "Navigate product categories"
+msgstr ""
+
+msgid "Persistent cart management"
+msgstr ""
+
+msgid "Create and manage checkout sessions"
+msgstr ""
+
+msgid "Retrieve order details and status"
+msgstr ""
+
+msgid "Customer profile management"
+msgstr ""
+
+msgid "Calculate shipping rates"
+msgstr ""
+
+msgid "Product reviews and ratings"
+msgstr ""
+
+msgid "Discover and validate promotional codes"
+msgstr ""
+
+msgid "Real-time order event notifications"
+msgstr ""
+
+msgid "Browse products, categories, reviews"
+msgstr ""
+
+msgid "Create carts, checkout sessions, orders"
+msgstr ""
+
+msgid "Manage API keys, access all endpoints"
+msgstr ""
+
+#: includes/api/class-ucp-products.php
+msgid "Filter by category ID"
+msgstr ""
+
+msgid "Filter to only in-stock products"
+msgstr ""
+
+msgid "Filter to only featured products"
+msgstr ""
+
+msgid "Filter to only products on sale"
+msgstr ""
+
+msgid "Search query"
+msgstr ""
+
+msgid "Minimum price filter"
+msgstr ""
+
+msgid "Maximum price filter"
+msgstr ""
+
+msgid "Product not found."
+msgstr ""
+
+msgid "Product with this SKU not found."
+msgstr ""
+
+#: includes/api/class-ucp-categories.php
+msgid "Filter by parent category ID (0 for top-level)"
+msgstr ""
+
+msgid "Include child categories in response"
+msgstr ""
+
+msgid "Include products from subcategories"
+msgstr ""
+
+msgid "Category not found."
+msgstr ""
+
+#: includes/api/class-ucp-cart.php
+msgid "Product ID"
+msgstr ""
+
+msgid "Product SKU"
+msgstr ""
+
+msgid "Variation ID for variable products"
+msgstr ""
+
+msgid "Failed to create cart."
+msgstr ""
+
+msgid "Cart not found."
+msgstr ""
+
+msgid "Cart has expired."
+msgstr ""
+
+msgid "Cart is no longer available."
+msgstr ""
+
+msgid "Product ID or SKU is required."
+msgstr ""
+
+msgid "Product is out of stock."
+msgstr ""
+
+msgid "Only %d items available."
+msgstr ""
+
+msgid "Cart item not found."
+msgstr ""
+
+msgid "Cart is empty."
+msgstr ""
+
+msgid "Shipping address field \"%s\" is required."
+msgstr ""
+
+#: includes/api/class-ucp-checkout.php
+msgid "Failed to create checkout session."
+msgstr ""
+
+msgid "No valid items provided."
+msgstr ""
+
+msgid "Checkout session not found."
+msgstr ""
+
+msgid "Checkout session has expired."
+msgstr ""
+
+msgid "This checkout session has already been confirmed."
+msgstr ""
+
+msgid "Failed to create order."
+msgstr ""
+
+#: includes/api/class-ucp-orders.php
+msgid "Order not found."
+msgstr ""
+
+msgid "Order created"
+msgstr ""
+
+msgid "Payment received"
+msgstr ""
+
+msgid "Order completed"
+msgstr ""
+
+#: includes/api/class-ucp-customers.php
+msgid "A customer with this email already exists."
+msgstr ""
+
+msgid "Customer not found."
+msgstr ""
+
+#: includes/api/class-ucp-reviews.php
+msgid "Filter by product ID"
+msgstr ""
+
+msgid "Filter by rating"
+msgstr ""
+
+msgid "Review not found."
+msgstr ""
+
+msgid "Failed to create review."
+msgstr ""
+
+#: includes/api/class-ucp-coupons.php
+msgid "Cart total for validation"
+msgstr ""
+
+msgid "Product IDs in cart for validation"
+msgstr ""
+
+msgid "Coupon not found."
+msgstr ""
+
+msgid "This coupon has expired."
+msgstr ""
+
+msgid "This coupon has reached its usage limit."
+msgstr ""
+
+msgid "Minimum order amount of %s is required."
+msgstr ""
+
+msgid "Maximum order amount of %s is exceeded."
+msgstr ""
+
+msgid "This coupon is not valid for the products in cart."
+msgstr ""
+
+msgid "This coupon cannot be used with some products in cart."
+msgstr ""
+
+#: admin/class-ucp-admin.php
+msgid "UCP Settings"
+msgstr ""
+
+msgid "UCP"
+msgstr ""
+
+msgid "Are you sure you want to delete this API key?"
+msgstr ""
+
+msgid "Copied to clipboard!"
+msgstr ""
+
+msgid "An error occurred. Please try again."
+msgstr ""
+
+msgid "Permission denied."
+msgstr ""
+
+msgid "Invalid key ID."
+msgstr ""
+
+msgid "Failed to delete API key."
+msgstr ""
+
+#: admin/views/settings-page.php
+msgid "WooCommerce UCP Settings"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "API Keys"
+msgstr ""
+
+msgid "Discovery"
+msgstr ""
+
+msgid "Enable UCP"
+msgstr ""
+
+msgid "Enable the UCP API endpoints"
+msgstr ""
+
+msgid "Rate Limit"
+msgstr ""
+
+msgid "Maximum requests per minute per API key."
+msgstr ""
+
+msgid "Cart Expiry"
+msgstr ""
+
+msgid "hours"
+msgstr ""
+
+msgid "Hours until an inactive cart expires."
+msgstr ""
+
+msgid "Checkout Expiry"
+msgstr ""
+
+msgid "minutes"
+msgstr ""
+
+msgid "Minutes until a checkout session expires."
+msgstr ""
+
+msgid "Enable Logging"
+msgstr ""
+
+msgid "Log API requests and webhook deliveries for debugging"
+msgstr ""
+
+msgid "API keys allow AI agents to authenticate with your store. Create keys with appropriate permissions."
+msgstr ""
+
+msgid "Create New API Key"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "e.g., My AI Assistant"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Read - Browse products, categories, reviews"
+msgstr ""
+
+msgid "Write - Create carts, checkout sessions, orders"
+msgstr ""
+
+msgid "Admin - Full access including API key management"
+msgstr ""
+
+msgid "Generate API Key"
+msgstr ""
+
+msgid "API Key Generated Successfully!"
+msgstr ""
+
+msgid "Copy this key now. The secret will not be shown again."
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Existing API Keys"
+msgstr ""
+
+msgid "Key ID"
+msgstr ""
+
+msgid "Last Used"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "No API keys found. Create one above."
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Discovery Endpoint"
+msgstr ""
+
+msgid "AI agents can discover your store capabilities at the following URL:"
+msgstr ""
+
+msgid "Test"
+msgstr ""
+
+msgid "Quick Start Guide"
+msgstr ""
+
+msgid "Generate an API Key"
+msgstr ""
+
+msgid "Go to the API Keys tab and create a new key with appropriate permissions."
+msgstr ""
+
+msgid "Verify Discovery"
+msgstr ""
+
+msgid "Authenticate Requests"
+msgstr ""
+
+msgid "Available Endpoints"
+msgstr ""
+
+msgid "Endpoint"
+msgstr ""
+
+msgid "Auth Required"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Store capabilities and info"
+msgstr ""
+
+msgid "Browse and search products"
+msgstr ""
+
+msgid "Product categories"
+msgstr ""
+
+msgid "Cart management"
+msgstr ""
+
+msgid "Write"
+msgstr ""
+
+msgid "Checkout sessions"
+msgstr ""
+
+msgid "Order details"
+msgstr ""
+
+msgid "Customer management"
+msgstr ""
+
+msgid "Shipping calculation"
+msgstr ""
+
+msgid "Product reviews"
+msgstr ""
+
+msgid "No/Write"
+msgstr ""
+
+msgid "Coupon validation"
+msgstr ""
