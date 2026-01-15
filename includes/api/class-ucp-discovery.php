@@ -51,11 +51,11 @@ class WC_UCP_Discovery extends WC_UCP_REST_Controller
         return rest_ensure_response(array(
             'ucp' => array(
                 'version' => '2026-01-11',
-                'merchant' => $this->get_merchant_info(),
-                'capabilities' => $this->get_capabilities($base_url),
-                'authentication' => $this->get_authentication_info(),
-                'rate_limits' => $this->get_rate_limits(),
+                'services' => $this->get_services($base_url),
+                'capabilities' => $this->get_capabilities(),
             ),
+            'merchant' => $this->get_merchant_info(),
+            'signing_keys' => $this->get_signing_keys(),
         ));
     }
 
@@ -103,96 +103,80 @@ class WC_UCP_Discovery extends WC_UCP_REST_Controller
     }
 
     /**
-     * Get capabilities
+     * Get services definition per UCP spec
      */
-    private function get_capabilities($base_url)
+    private function get_services($base_url)
     {
         return array(
-            array(
-                'name' => 'dev.ucp.shopping.discovery',
+            'dev.ucp.shopping' => array(
                 'version' => '2026-01-11',
-                'endpoint' => $base_url . '/discovery',
-                'description' => __('Store discovery and capabilities', 'ucp-shopping-agent'),
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.products',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/products',
-                'description' => __('Browse, search, and filter products', 'ucp-shopping-agent'),
-                'operations' => array('list', 'get', 'search'),
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.categories',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/categories',
-                'description' => __('Navigate product categories', 'ucp-shopping-agent'),
-                'operations' => array('list', 'get'),
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.cart',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/carts',
-                'description' => __('Persistent cart management', 'ucp-shopping-agent'),
-                'operations' => array('create', 'get', 'update', 'delete'),
-                'requires_auth' => true,
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.checkout',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/checkout/sessions',
-                'description' => __('Create and manage checkout sessions', 'ucp-shopping-agent'),
-                'operations' => array('create', 'get', 'update', 'confirm'),
-                'requires_auth' => true,
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.orders',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/orders',
-                'description' => __('Retrieve order details and status', 'ucp-shopping-agent'),
-                'operations' => array('list', 'get'),
-                'requires_auth' => true,
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.customers',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/customers',
-                'description' => __('Customer profile management', 'ucp-shopping-agent'),
-                'operations' => array('create', 'get', 'update'),
-                'requires_auth' => true,
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.shipping',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/shipping/rates',
-                'description' => __('Calculate shipping rates', 'ucp-shopping-agent'),
-                'operations' => array('calculate'),
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.reviews',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/reviews',
-                'description' => __('Product reviews and ratings', 'ucp-shopping-agent'),
-                'operations' => array('list', 'get', 'create'),
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.coupons',
-                'version' => '2026-01-11',
-                'endpoint' => $base_url . '/coupons',
-                'description' => __('Discover and validate promotional codes', 'ucp-shopping-agent'),
-                'operations' => array('list', 'validate'),
-            ),
-            array(
-                'name' => 'dev.ucp.shopping.webhooks',
-                'version' => '2026-01-11',
-                'description' => __('Real-time order event notifications', 'ucp-shopping-agent'),
-                'events' => array(
-                    'order.created',
-                    'order.status_changed',
-                    'order.paid',
-                    'order.refunded',
+                'spec' => 'https://ucp.dev/specification/overview',
+                'rest' => array(
+                    'schema' => 'https://ucp.dev/services/shopping/rest.openapi.json',
+                    'endpoint' => rtrim($base_url, '/'),
                 ),
             ),
         );
+    }
+
+    /**
+     * Get capabilities per UCP spec
+     * Each capability has: name, version, spec, schema
+     */
+    private function get_capabilities()
+    {
+        $spec_base = 'https://ucp.dev/specification';
+        $schema_base = 'https://ucp.dev/schemas/shopping';
+
+        return array(
+            array(
+                'name' => 'dev.ucp.shopping.checkout',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/checkout',
+                'schema' => $schema_base . '/checkout.json',
+            ),
+            array(
+                'name' => 'dev.ucp.shopping.order',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/order',
+                'schema' => $schema_base . '/order.json',
+            ),
+            // Cart extends checkout
+            array(
+                'name' => 'dev.ucp.shopping.cart',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/cart',
+                'schema' => $schema_base . '/cart.json',
+                'extends' => 'dev.ucp.shopping.checkout',
+            ),
+            // Fulfillment extends checkout (optional)
+            array(
+                'name' => 'dev.ucp.shopping.fulfillment',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/fulfillment',
+                'schema' => $schema_base . '/fulfillment.json',
+                'extends' => 'dev.ucp.shopping.checkout',
+            ),
+            // Discount extends checkout (optional)
+            array(
+                'name' => 'dev.ucp.shopping.discount',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/discount',
+                'schema' => $schema_base . '/discount.json',
+                'extends' => 'dev.ucp.shopping.checkout',
+            ),
+        );
+    }
+
+    /**
+     * Get signing keys for webhook verification (JWK format)
+     * Currently returns empty array - can be populated with actual keys
+     */
+    private function get_signing_keys()
+    {
+        // Placeholder for JWK signing keys
+        // In production, this would return the business's public keys for webhook verification
+        return array();
     }
 
     /**

@@ -133,15 +133,61 @@ abstract class WC_UCP_REST_Controller
     }
 
     /**
-     * Format success response with metadata
+     * Format success response with UCP wrapper per spec
      */
     protected function success_response($data, $meta = array())
     {
-        $response = array('data' => $data);
-        if (!empty($meta)) {
-            $response['meta'] = $meta;
+        $response_data = array(
+            'ucp' => array(
+                'version' => '2026-01-11',
+                'capabilities' => $this->get_active_capabilities(),
+            ),
+        );
+
+        // Merge data into response
+        if (is_array($data)) {
+            $response_data = array_merge($response_data, $data);
+        } else {
+            $response_data['data'] = $data;
         }
-        return rest_ensure_response($response);
+
+        // Add meta if present
+        if (!empty($meta)) {
+            $response_data['meta'] = $meta;
+        }
+
+        return rest_ensure_response($response_data);
+    }
+
+    /**
+     * Get active capabilities for current response
+     * Returns simplified capability list per UCP spec
+     */
+    protected function get_active_capabilities()
+    {
+        return array(
+            array('name' => 'dev.ucp.shopping.checkout', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.order', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.cart', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.fulfillment', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.discount', 'version' => '2026-01-11'),
+        );
+    }
+
+    /**
+     * Parse UCP-Agent header to get platform profile URI
+     * Header format: profile="https://agent.example/profiles/shopping-agent.json"
+     *
+     * @param WP_REST_Request $request The REST request.
+     * @return string|null Platform profile URI or null if not present.
+     */
+    protected function get_platform_profile($request)
+    {
+        $header = $request->get_header('UCP-Agent');
+        if ($header && preg_match('/profile="([^"]+)"/', $header, $matches)) {
+            return $matches[1];
+        }
+        return null;
     }
 
     /**

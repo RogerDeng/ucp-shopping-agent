@@ -94,18 +94,40 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
             ),
         ));
 
-        // Confirm checkout
+        // Confirm checkout (legacy)
         register_rest_route($this->namespace, '/' . $this->rest_base . '/sessions/(?P<id>[a-f0-9\-]+)/confirm', array(
             'methods' => WP_REST_Server::CREATABLE,
-            'callback' => array($this, 'confirm_checkout'),
+            'callback' => array($this, 'complete_checkout'),
             'permission_callback' => array($this, 'write_permissions_check'),
             'args' => array(
                 'id' => array(
                     'type' => 'string',
                     'required' => true,
                 ),
-                'payment_method' => array(
+                'payment_data' => array(
+                    'type' => 'object',
+                    'description' => 'Payment data including handler_id and credential',
+                ),
+            ),
+        ));
+
+        // Complete checkout (UCP spec compliant)
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/sessions/(?P<id>[a-f0-9\-]+)/complete', array(
+            'methods' => WP_REST_Server::CREATABLE,
+            'callback' => array($this, 'complete_checkout'),
+            'permission_callback' => array($this, 'write_permissions_check'),
+            'args' => array(
+                'id' => array(
                     'type' => 'string',
+                    'required' => true,
+                ),
+                'payment_data' => array(
+                    'type' => 'object',
+                    'description' => 'Payment data including handler_id and credential',
+                ),
+                'risk_signals' => array(
+                    'type' => 'object',
+                    'description' => 'Risk assessment signals',
                 ),
             ),
         ));
@@ -346,9 +368,10 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
     }
 
     /**
-     * Confirm checkout and create order
+     * Complete checkout and create order (UCP spec compliant)
+     * Handles both /confirm (legacy) and /complete (spec) endpoints
      */
-    public function confirm_checkout($request)
+    public function complete_checkout($request)
     {
         $wc_check = $this->check_woocommerce();
         if (is_wp_error($wc_check)) {
@@ -364,11 +387,11 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
             return $session;
         }
 
-        // Validate session is ready
-        if ($session->status === 'confirmed') {
+        // Validate session is not already complete
+        if ($session->status === 'complete') {
             return $this->error_response(
-                'already_confirmed',
-                __('This checkout session has already been confirmed.', 'ucp-shopping-agent'),
+                'already_complete',
+                __('This checkout session has already been completed.', 'ucp-shopping-agent'),
                 400
             );
         }
@@ -400,25 +423,31 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         $order->set_address($this->format_address_for_order($shipping_address), 'shipping');
         $order->set_address($this->format_address_for_order($billing_address), 'billing');
 
-        // Set payment method
+        // Handle payment data per UCP spec
+        $payment_data = $request->get_param('payment_data');
+        if ($payment_data && isset($payment_data['handler_id'])) {
+            $order->update_meta_data('_ucp_payment_handler_id', sanitize_text_field($payment_data['handler_id']));
+        }
+
+        // Fallback to legacy payment_method param
         $payment_method = $request->get_param('payment_method') ?: $session->payment_method;
         if ($payment_method) {
             $order->set_payment_method($payment_method);
         }
 
         // Add meta for UCP tracking
-        $order->add_meta_data('_ucp_checkout_session_id', $session_id);
-        $order->add_meta_data('_ucp_created', true);
+        $order->update_meta_data('_ucp_checkout_session_id', $session_id);
+        $order->update_meta_data('_ucp_created', true);
 
         // Calculate totals and save
         $order->calculate_totals();
         $order->save();
 
-        // Update session
+        // Update session status to 'complete'
         $wpdb->update(
             $this->table_name,
             array(
-                'status' => 'confirmed',
+                'status' => 'complete',
                 'order_id' => $order->get_id(),
                 'updated_at' => current_time('mysql'),
             ),
@@ -431,9 +460,10 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         do_action('wc_ucp_order_created', $order);
 
         return $this->success_response(array(
-            'checkout_session_id' => $session_id,
+            'id' => $session_id,
+            'status' => 'complete',
             'order' => array(
-                'id' => $order->get_id(),
+                'id' => (string) $order->get_id(),
                 'number' => $order->get_order_number(),
                 'status' => $order->get_status(),
                 'total' => array(
@@ -521,7 +551,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
     }
 
     /**
-     * Format session for response
+     * Format session for response per UCP spec
      */
     private function format_session($session)
     {
@@ -531,21 +561,63 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
             $formatted_items[] = array_merge(array('key' => $key), $item);
         }
 
+        // Map internal status to UCP spec status
+        $status_map = array(
+            'pending' => 'incomplete',
+            'ready' => 'incomplete',
+            'complete' => 'complete',
+            'confirmed' => 'complete', // Legacy
+        );
+        $status = $status_map[$session->status] ?? 'incomplete';
+
         return array(
             'id' => $session->id,
-            'cart_id' => $session->cart_id,
-            'status' => $session->status,
-            'items' => $formatted_items,
+            'status' => $status,
+            'line_items' => $formatted_items, // UCP spec uses line_items
             'shipping_address' => $session->shipping_address ? json_decode($session->shipping_address, true) : null,
             'billing_address' => $session->billing_address ? json_decode($session->billing_address, true) : null,
+            'totals' => $session->totals ? json_decode($session->totals, true) : null,
+            'payment' => array(
+                'handlers' => $this->get_available_payment_handlers(),
+            ),
+            'cart_id' => $session->cart_id,
             'shipping_method' => $session->shipping_method,
             'payment_method' => $session->payment_method,
-            'totals' => $session->totals ? json_decode($session->totals, true) : null,
-            'order_id' => $session->order_id ? (int) $session->order_id : null,
+            'order_id' => $session->order_id ? (string) $session->order_id : null,
             'expires_at' => $session->expires_at,
             'created_at' => $session->created_at,
             'updated_at' => $session->updated_at,
         );
+    }
+
+    /**
+     * Get available payment handlers per UCP spec
+     * Returns placeholder handlers - can be extended with actual payment provider integrations
+     */
+    private function get_available_payment_handlers()
+    {
+        $handlers = array();
+
+        // Get available WooCommerce payment gateways
+        if (function_exists('WC') && WC()->payment_gateways()) {
+            $gateways = WC()->payment_gateways()->get_available_payment_gateways();
+
+            foreach ($gateways as $gateway_id => $gateway) {
+                $handlers[] = array(
+                    'id' => 'wc_' . $gateway_id,
+                    'name' => 'com.woocommerce.' . $gateway_id,
+                    'version' => '2026-01-11',
+                    'spec' => 'https://woocommerce.com/document/payment-gateway-api/',
+                    'config' => array(
+                        'title' => $gateway->get_title(),
+                        'description' => $gateway->get_description(),
+                        'supports' => $gateway->supports,
+                    ),
+                );
+            }
+        }
+
+        return $handlers;
     }
 
     /**
