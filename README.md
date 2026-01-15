@@ -1,4 +1,4 @@
-# WooCommerce UCP Agent
+# UCP Shopping Agent
 
 [![WordPress](https://img.shields.io/badge/WordPress-5.8+-blue.svg)](https://wordpress.org/)
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-5.0+-purple.svg)](https://woocommerce.com/)
@@ -358,8 +358,8 @@ The plugin supports translations. Translation files are located in the `/languag
 ## 📁 File Structure
 
 ```
-woocommerce-ucp-agent/
-├── woocommerce-ucp-agent.php    # Main plugin file
+ucp-shopping-agent/
+├── ucp-shopping-agent.php       # Main plugin file
 ├── admin/
 │   ├── class-ucp-admin.php      # Admin functionality
 │   ├── class-ucp-settings.php   # Settings management
