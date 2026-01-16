@@ -380,7 +380,8 @@
                 <ul>
                     <li>Real-time notifications</li>
                     <li>HMAC-SHA256 signatures</li>
-                    <li>Order events</li>
+                    <li>Retry with exponential backoff</li>
+                    <li>Auto-recovery via WP-Cron</li>
                 </ul>
             </div>
             <div class="feature-card">
@@ -389,6 +390,7 @@
                     <li>Secure API keys</li>
                     <li>Permission levels</li>
                     <li>Rate limiting</li>
+                    <li>API key caching</li>
                 </ul>
             </div>
         </div>
@@ -910,10 +912,20 @@ curl -X POST \
 
         <h2><span class="section-icon">🔔</span>Webhooks</h2>
 
+        <h3>Webhook Features (v1.0.2)</h3>
+        <ul>
+            <li><strong>Retry Logic</strong>: Failed webhooks retry 3 times with exponential backoff (5s, 10s, 20s)</li>
+            <li><strong>Auto-Recovery</strong>: Undelivered webhooks stored and retried via WP-Cron every 15 minutes
+            </li>
+            <li><strong>Signing Keys</strong>: Discovery endpoint exposes <code>signing_keys</code> for verification
+            </li>
+        </ul>
+
         <p>All webhook requests include signature headers:</p>
-        <pre><code>X-UCP-Signature: sha256=&lt;hmac_signature&gt;
+        <pre><code>X-UCP-Signature: t=1705234567,v1=&lt;hmac_signature&gt;
 X-UCP-Event: order.created
-X-UCP-Timestamp: 1705234567</code></pre>
+X-UCP-Timestamp: 1705234567
+X-UCP-Delivery-ID: &lt;uuid&gt;</code></pre>
 
         <h3>Verify Signature (PHP)</h3>
         <pre><code>&lt;?php
@@ -921,9 +933,21 @@ $payload = file_get_contents('php://input');
 $signature = $_SERVER['HTTP_X_UCP_SIGNATURE'];
 $secret = 'your_webhook_secret';
 
-$expected = 'sha256=' . hash_hmac('sha256', $payload, $secret);
+// Parse signature: t=timestamp,v1=hash
+preg_match('/t=(\d+),v1=([a-f0-9]+)/', $signature, $matches);
+$timestamp = $matches[1];
+$received_hash = $matches[2];
 
-if (hash_equals($expected, $signature)) {
+// Verify timestamp is within 5 minutes
+if (abs(time() - $timestamp) > 300) {
+    die('Signature expired');
+}
+
+// Verify signature
+$message = $timestamp . '.' . $payload;
+$expected_hash = hash_hmac('sha256', $message, $secret);
+
+if (hash_equals($expected_hash, $received_hash)) {
     // Valid webhook
     $data = json_decode($payload, true);
 }</code></pre>

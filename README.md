@@ -71,6 +71,9 @@
 ### 🔔 Webhooks
 - Real-time order event notifications
 - HMAC-SHA256 signature verification
+- **Retry with exponential backoff** (3 attempts)
+- **Automatic failed webhook recovery** via WP-Cron
+- **Signing keys exposed in discovery endpoint**
 - Events: `order.created`, `order.status_changed`, `order.paid`, `order.refunded`
 
 ### 🔐 Authentication
@@ -78,6 +81,7 @@
 - Three permission levels: `read`, `write`, `admin`
 - Key management via admin interface
 - Rate limiting support
+- **API key caching** for improved performance
 
 ---
 
@@ -307,14 +311,21 @@ curl -X POST \
 
 ## 🔔 Webhooks
 
+### Webhook Features (v1.0.2+)
+
+- **Retry Logic**: Failed webhooks automatically retry 3 times with exponential backoff (5s, 10s, 20s)
+- **Failed Webhook Recovery**: Undelivered webhooks stored and retried via WP-Cron every 15 minutes
+- **Signing Keys**: Discovery endpoint now exposes `signing_keys` for webhook verification
+
 ### Webhook Signature Verification
 
-All webhook requests include a signature header for verification:
+All webhook requests include signature headers:
 
 ```
-X-UCP-Signature: sha256=<hmac_signature>
+X-UCP-Signature: t=1705234567,v1=<hmac_signature>
 X-UCP-Event: order.created
 X-UCP-Timestamp: 1705234567
+X-UCP-Delivery-ID: <uuid>
 ```
 
 ### Verify Signature (PHP Example)
@@ -323,9 +334,21 @@ $payload = file_get_contents('php://input');
 $signature = $_SERVER['HTTP_X_UCP_SIGNATURE'];
 $secret = 'your_webhook_secret';
 
-$expected = 'sha256=' . hash_hmac('sha256', $payload, $secret);
+// Parse signature: t=timestamp,v1=hash
+preg_match('/t=(\d+),v1=([a-f0-9]+)/', $signature, $matches);
+$timestamp = $matches[1];
+$received_hash = $matches[2];
 
-if (hash_equals($expected, $signature)) {
+// Verify timestamp is within 5 minutes
+if (abs(time() - $timestamp) > 300) {
+    die('Signature expired');
+}
+
+// Verify signature
+$message = $timestamp . '.' . $payload;
+$expected_hash = hash_hmac('sha256', $message, $secret);
+
+if (hash_equals($expected_hash, $received_hash)) {
     // Valid webhook
     $data = json_decode($payload, true);
 }

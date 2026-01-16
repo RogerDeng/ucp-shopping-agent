@@ -29,7 +29,7 @@ This plugin requires WooCommerce to be installed and activated.
 * **Shipping Rates** - Real-time shipping rate calculation
 * **Product Reviews** - Access and create product reviews
 * **Coupon Validation** - Discover and validate promotional codes
-* **Webhooks** - Real-time order event notifications with HMAC-SHA256 signature verification
+* **Webhooks** - Real-time order event notifications with HMAC-SHA256 signatures, retry logic, and automatic failed webhook recovery
 * **Secure Authentication** - API key authentication with granular permission levels
 
 = Why Use UCP Shopping Agent? =
@@ -137,6 +137,14 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 
 == Changelog ==
 
+= 1.0.2 =
+* Webhook retry with exponential backoff (3 attempts)
+* Failed webhook storage and automatic recovery via WP-Cron
+* Signing keys generation and discovery endpoint exposure
+* API key caching for improved performance
+* Enhanced webhook signature format (t=timestamp,v1=hash)
+* Backward compatible signature verification
+
 = 1.0.0 =
 * Initial release
 * Store discovery endpoint (/.well-known/ucp)
@@ -156,6 +164,9 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 * Internationalization ready
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+Improved webhook reliability with retry logic and signing keys in discovery. Reactivate plugin after upgrade to generate signing key.
 
 = 1.0.0 =
 Initial release of UCP Shopping Agent. Install to enable AI agents to interact with your online store.
