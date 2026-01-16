@@ -187,7 +187,7 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
         }
 
         return $this->success_response(
-            $formatted_products,
+            array('products' => $formatted_products),
             $this->format_pagination_meta($pagination['page'], $pagination['per_page'], $total)
         );
     }
@@ -213,7 +213,7 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
             );
         }
 
-        return $this->success_response($this->format_product($product, true));
+        return $this->success_response(array('product' => $this->format_product($product, true)));
     }
 
     /**
@@ -280,7 +280,7 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
         }
 
         return $this->success_response(
-            $formatted_products,
+            array('products' => $formatted_products),
             array_merge(
                 $this->format_pagination_meta($pagination['page'], $pagination['per_page'], $total),
                 array('query' => $query)
@@ -319,7 +319,7 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
             );
         }
 
-        return $this->success_response($this->format_product($product, true));
+        return $this->success_response(array('product' => $this->format_product($product, true)));
     }
 
     /**
