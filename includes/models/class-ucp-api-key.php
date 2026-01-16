@@ -71,18 +71,34 @@ class WC_UCP_API_Key
     }
 
     /**
-     * Get API key by key_id
+     * Get API key by key_id with caching
+     *
+     * @param string $key_id The key ID to look up.
+     * @return object|null The API key data or null if not found.
      */
     public function get_by_key_id($key_id)
     {
         global $wpdb;
 
-        return $wpdb->get_row(
+        // Check cache first
+        $cache_key = 'ucp_api_key_' . md5($key_id);
+        $key_data = wp_cache_get($cache_key, 'ucp_api_keys');
+
+        if ($key_data !== false) {
+            return $key_data === 'not_found' ? null : $key_data;
+        }
+
+        $key_data = $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM {$this->table_name} WHERE key_id = %s",
                 $key_id
             )
         );
+
+        // Cache for 5 minutes (300 seconds)
+        wp_cache_set($cache_key, $key_data ? $key_data : 'not_found', 'ucp_api_keys', 300);
+
+        return $key_data;
     }
 
     /**

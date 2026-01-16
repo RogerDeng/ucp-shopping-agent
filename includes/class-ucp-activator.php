@@ -15,14 +15,31 @@ class WC_UCP_Activator
 {
 
     /**
+     * Cron hook name for webhook retry
+     *
+     * @var string
+     */
+    const CRON_HOOK = 'wc_ucp_retry_failed_webhooks';
+
+    /**
      * Activate the plugin
      */
     public static function activate()
     {
         self::create_tables();
         self::create_options();
+        self::generate_signing_key();
+        self::schedule_cron_jobs();
         self::add_rewrite_rules();
         flush_rewrite_rules();
+    }
+
+    /**
+     * Deactivate the plugin - clear scheduled events
+     */
+    public static function deactivate()
+    {
+        wp_clear_scheduled_hook(self::CRON_HOOK);
     }
 
     /**
@@ -81,7 +98,7 @@ class WC_UCP_Activator
             payment_method VARCHAR(100) DEFAULT NULL,
             coupon_codes LONGTEXT DEFAULT NULL,
             totals LONGTEXT DEFAULT NULL,
-            status ENUM('pending','ready','confirmed','failed','expired') DEFAULT 'pending',
+            status ENUM('pending','ready','confirmed','complete','failed','expired') DEFAULT 'pending',
             order_id BIGINT UNSIGNED DEFAULT NULL,
             expires_at DATETIME NOT NULL,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -136,6 +153,94 @@ class WC_UCP_Activator
     }
 
     /**
+     * Generate and store signing key for webhooks
+     */
+    private static function generate_signing_key()
+    {
+        // Only generate if not already set
+        if (get_option('wc_ucp_signing_key') !== false) {
+            return;
+        }
+
+        // Generate a secure random key
+        $signing_key = bin2hex(random_bytes(32));
+        add_option('wc_ucp_signing_key', $signing_key);
+        add_option('wc_ucp_signing_key_created_at', current_time('c'));
+    }
+
+    /**
+     * Get the signing key
+     *
+     * @return string|null The signing key or null if not set.
+     */
+    public static function get_signing_key()
+    {
+        return get_option('wc_ucp_signing_key', null);
+    }
+
+    /**
+     * Get signing key info for discovery
+     *
+     * @return array Signing key metadata for JWK-style response.
+     */
+    public static function get_signing_key_info()
+    {
+        $signing_key = self::get_signing_key();
+
+        if (!$signing_key) {
+            return array();
+        }
+
+        // Generate a key ID from the key (partial hash)
+        $key_id = substr(hash('sha256', $signing_key), 0, 16);
+
+        return array(
+            array(
+                'key_id' => 'ucp_' . $key_id,
+                'algorithm' => 'HS256',
+                'use' => 'sig',
+                'status' => 'active',
+                'created_at' => get_option('wc_ucp_signing_key_created_at', current_time('c')),
+            ),
+        );
+    }
+
+    /**
+     * Schedule cron jobs
+     */
+    private static function schedule_cron_jobs()
+    {
+        // Schedule webhook retry every 15 minutes
+        if (!wp_next_scheduled(self::CRON_HOOK)) {
+            wp_schedule_event(time(), 'fifteen_minutes', self::CRON_HOOK);
+        }
+    }
+
+    /**
+     * Add custom cron schedule
+     *
+     * @param array $schedules Existing schedules.
+     * @return array Modified schedules.
+     */
+    public static function add_cron_schedules($schedules)
+    {
+        $schedules['fifteen_minutes'] = array(
+            'interval' => 900, // 15 minutes in seconds
+            'display' => __('Every 15 Minutes', 'ucp-shopping-agent'),
+        );
+        return $schedules;
+    }
+
+    /**
+     * Retry failed webhooks (called by WP-Cron)
+     */
+    public static function run_webhook_retry()
+    {
+        $sender = new WC_UCP_Webhook_Sender();
+        $sender->retry_failed_webhooks();
+    }
+
+    /**
      * Add rewrite rules
      */
     private static function add_rewrite_rules()
@@ -147,3 +252,4 @@ class WC_UCP_Activator
         );
     }
 }
+

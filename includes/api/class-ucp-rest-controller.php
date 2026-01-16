@@ -166,11 +166,18 @@ abstract class WC_UCP_REST_Controller
     protected function get_active_capabilities()
     {
         return array(
+            array('name' => 'dev.ucp.shopping.discovery', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.products', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.categories', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.cart', 'version' => '2026-01-11'),
             array('name' => 'dev.ucp.shopping.checkout', 'version' => '2026-01-11'),
             array('name' => 'dev.ucp.shopping.order', 'version' => '2026-01-11'),
-            array('name' => 'dev.ucp.shopping.cart', 'version' => '2026-01-11'),
-            array('name' => 'dev.ucp.shopping.fulfillment', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.customers', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.shipping', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.reviews', 'version' => '2026-01-11'),
             array('name' => 'dev.ucp.shopping.discount', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.fulfillment', 'version' => '2026-01-11'),
+            array('name' => 'dev.ucp.shopping.webhooks', 'version' => '2026-01-11'),
         );
     }
 

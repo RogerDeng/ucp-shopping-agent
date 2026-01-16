@@ -3,7 +3,7 @@
  * Plugin Name: UCP Shopping Agent
  * Plugin URI:  https://wordpress.org/plugins/ucp-shopping-agent
  * Description: Google Universal Commerce Protocol (UCP) implementation for WooCommerce. Enables AI agents to discover, browse, and transact with your store.
- * Version:     1.0.1
+ * Version:     1.0.2
  * Author:      Roger Deng
  * Author URI:  https://sites.google.com/view/ucp-shopping-agent
  * License:     GPL2
@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
 /**
  * Plugin Constants
  */
-define('WC_UCP_VERSION', '1.0.1');
+define('WC_UCP_VERSION', '1.0.2');
 define('WC_UCP_PLUGIN_FILE', __FILE__);
 define('WC_UCP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WC_UCP_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -249,7 +249,17 @@ register_activation_hook(__FILE__, array('WC_UCP_Activator', 'activate'));
 /**
  * Plugin deactivation hook
  */
-register_deactivation_hook(__FILE__, array('WC_UCP_Deactivator', 'deactivate'));
+register_deactivation_hook(__FILE__, array('WC_UCP_Activator', 'deactivate'));
+
+/**
+ * Add custom cron schedules
+ */
+add_filter('cron_schedules', array('WC_UCP_Activator', 'add_cron_schedules'));
+
+/**
+ * Register webhook retry cron handler
+ */
+add_action('wc_ucp_retry_failed_webhooks', array('WC_UCP_Activator', 'run_webhook_retry'));
 
 /**
  * Initialize plugin

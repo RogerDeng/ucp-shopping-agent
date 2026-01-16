@@ -129,19 +129,28 @@ class WC_UCP_Discovery extends WC_UCP_REST_Controller
         $schema_base = 'https://ucp.dev/schemas/shopping';
 
         return array(
+            // Discovery capability
             array(
-                'name' => 'dev.ucp.shopping.checkout',
+                'name' => 'dev.ucp.shopping.discovery',
                 'version' => '2026-01-11',
-                'spec' => $spec_base . '/checkout',
-                'schema' => $schema_base . '/checkout.json',
+                'spec' => $spec_base . '/discovery',
+                'schema' => $schema_base . '/discovery.json',
             ),
+            // Products capability
             array(
-                'name' => 'dev.ucp.shopping.order',
+                'name' => 'dev.ucp.shopping.products',
                 'version' => '2026-01-11',
-                'spec' => $spec_base . '/order',
-                'schema' => $schema_base . '/order.json',
+                'spec' => $spec_base . '/products',
+                'schema' => $schema_base . '/products.json',
             ),
-            // Cart extends checkout
+            // Categories capability
+            array(
+                'name' => 'dev.ucp.shopping.categories',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/categories',
+                'schema' => $schema_base . '/categories.json',
+            ),
+            // Cart capability (extends checkout)
             array(
                 'name' => 'dev.ucp.shopping.cart',
                 'version' => '2026-01-11',
@@ -149,15 +158,42 @@ class WC_UCP_Discovery extends WC_UCP_REST_Controller
                 'schema' => $schema_base . '/cart.json',
                 'extends' => 'dev.ucp.shopping.checkout',
             ),
-            // Fulfillment extends checkout (optional)
+            // Checkout capability
             array(
-                'name' => 'dev.ucp.shopping.fulfillment',
+                'name' => 'dev.ucp.shopping.checkout',
                 'version' => '2026-01-11',
-                'spec' => $spec_base . '/fulfillment',
-                'schema' => $schema_base . '/fulfillment.json',
-                'extends' => 'dev.ucp.shopping.checkout',
+                'spec' => $spec_base . '/checkout',
+                'schema' => $schema_base . '/checkout.json',
             ),
-            // Discount extends checkout (optional)
+            // Order capability
+            array(
+                'name' => 'dev.ucp.shopping.order',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/order',
+                'schema' => $schema_base . '/order.json',
+            ),
+            // Customers capability
+            array(
+                'name' => 'dev.ucp.shopping.customers',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/customers',
+                'schema' => $schema_base . '/customers.json',
+            ),
+            // Shipping capability
+            array(
+                'name' => 'dev.ucp.shopping.shipping',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/shipping',
+                'schema' => $schema_base . '/shipping.json',
+            ),
+            // Reviews capability
+            array(
+                'name' => 'dev.ucp.shopping.reviews',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/reviews',
+                'schema' => $schema_base . '/reviews.json',
+            ),
+            // Coupons/Discount capability
             array(
                 'name' => 'dev.ucp.shopping.discount',
                 'version' => '2026-01-11',
@@ -165,18 +201,31 @@ class WC_UCP_Discovery extends WC_UCP_REST_Controller
                 'schema' => $schema_base . '/discount.json',
                 'extends' => 'dev.ucp.shopping.checkout',
             ),
+            // Fulfillment capability (extends checkout)
+            array(
+                'name' => 'dev.ucp.shopping.fulfillment',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/fulfillment',
+                'schema' => $schema_base . '/fulfillment.json',
+                'extends' => 'dev.ucp.shopping.checkout',
+            ),
+            // Webhooks capability
+            array(
+                'name' => 'dev.ucp.shopping.webhooks',
+                'version' => '2026-01-11',
+                'spec' => $spec_base . '/webhooks',
+                'schema' => $schema_base . '/webhooks.json',
+            ),
         );
     }
 
     /**
      * Get signing keys for webhook verification (JWK format)
-     * Currently returns empty array - can be populated with actual keys
+     * Uses keys generated during plugin activation
      */
     private function get_signing_keys()
     {
-        // Placeholder for JWK signing keys
-        // In production, this would return the business's public keys for webhook verification
-        return array();
+        return WC_UCP_Activator::get_signing_key_info();
     }
 
     /**
