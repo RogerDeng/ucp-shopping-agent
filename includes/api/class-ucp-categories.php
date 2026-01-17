@@ -219,11 +219,20 @@ class WC_UCP_Categories extends WC_UCP_REST_Controller
             $category_ids = array_merge($category_ids, $this->get_subcategory_ids($category_id));
         }
 
+        // Convert term IDs to slugs (wc_get_products expects slugs for 'category' param)
+        $category_slugs = array();
+        foreach ($category_ids as $cat_id) {
+            $cat_term = get_term($cat_id, 'product_cat');
+            if ($cat_term && !is_wp_error($cat_term)) {
+                $category_slugs[] = $cat_term->slug;
+            }
+        }
+
         $args = array(
             'status' => 'publish',
             'limit' => $pagination['per_page'],
             'page' => $pagination['page'],
-            'category' => $category_ids,
+            'category' => $category_slugs,
         );
 
         $products = wc_get_products($args);

@@ -160,18 +160,52 @@ class WC_UCP_Webhook_Sender
     }
 
     /**
-     * Generate HMAC signature with timestamp
+     * Generate signature with Ed25519 (preferred) or HMAC-SHA256 fallback
      *
      * @param string $body   Request body.
-     * @param string $secret Webhook secret.
-     * @return string Signature in format t=timestamp,v1=hash.
+     * @param string $secret Webhook secret (for HMAC fallback).
+     * @return string Signature in UCP/Beckn format.
      */
     private function generate_signature($body, $secret)
     {
         $timestamp = time();
         $message = $timestamp . '.' . $body;
+
+        // Try Ed25519 signing first
+        $private_key = WC_UCP_Activator::get_signing_private_key();
+        $kid = WC_UCP_Activator::get_signing_key_kid();
+
+        if ($private_key && $kid && function_exists('sodium_crypto_sign_detached')) {
+            // Ed25519 signature
+            $signature = sodium_crypto_sign_detached($message, $private_key);
+            $signature_b64 = $this->base64url_encode($signature);
+
+            // Clear sensitive data from memory
+            sodium_memzero($private_key);
+
+            // Return UCP/Beckn compliant format
+            return sprintf(
+                'keyId="%s",algorithm="ed25519",created="%d",signature="%s"',
+                $kid,
+                $timestamp,
+                $signature_b64
+            );
+        }
+
+        // Fallback to HMAC-SHA256 with webhook secret
         $hash = hash_hmac('sha256', $message, $secret);
         return sprintf('t=%d,v1=%s', $timestamp, $hash);
+    }
+
+    /**
+     * Base64URL encode
+     *
+     * @param string $data Data to encode.
+     * @return string Base64URL encoded string.
+     */
+    private function base64url_encode($data)
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 
     /**

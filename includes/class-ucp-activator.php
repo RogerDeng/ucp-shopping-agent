@@ -153,56 +153,174 @@ class WC_UCP_Activator
     }
 
     /**
-     * Generate and store signing key for webhooks
+     * Generate and store Ed25519 signing keypair for webhooks
+     * Uses libsodium for cryptographic operations
      */
     private static function generate_signing_key()
     {
         // Only generate if not already set
-        if (get_option('wc_ucp_signing_key') !== false) {
+        if (get_option('wc_ucp_signing_public_key') !== false) {
             return;
         }
 
-        // Generate a secure random key
-        $signing_key = bin2hex(random_bytes(32));
-        add_option('wc_ucp_signing_key', $signing_key);
+        // Check for libsodium support
+        if (!function_exists('sodium_crypto_sign_keypair')) {
+            // Fallback: store a flag indicating keys need manual generation
+            add_option('wc_ucp_signing_key_error', 'libsodium_not_available');
+            return;
+        }
+
+        // Generate Ed25519 keypair
+        $keypair = sodium_crypto_sign_keypair();
+        $secret_key = sodium_crypto_sign_secretkey($keypair);
+        $public_key = sodium_crypto_sign_publickey($keypair);
+
+        // Generate a unique Key ID with timestamp
+        $kid = 'ed25519-' . date('Y-m') . '-' . substr(bin2hex(random_bytes(4)), 0, 8);
+
+        // Store keys securely
+        add_option('wc_ucp_signing_private_key', base64_encode($secret_key));
+        add_option('wc_ucp_signing_public_key', base64_encode($public_key));
+        add_option('wc_ucp_signing_key_kid', $kid);
         add_option('wc_ucp_signing_key_created_at', current_time('c'));
+
+        // Clean up memory
+        sodium_memzero($keypair);
+        sodium_memzero($secret_key);
     }
 
     /**
-     * Get the signing key
+     * Get the Ed25519 private key for signing
+     *
+     * @return string|null The private key (base64 encoded) or null if not set.
+     */
+    public static function get_signing_private_key()
+    {
+        $key = get_option('wc_ucp_signing_private_key', null);
+        return $key ? base64_decode($key) : null;
+    }
+
+    /**
+     * Get the Ed25519 public key
+     *
+     * @return string|null The public key (raw bytes) or null if not set.
+     */
+    public static function get_signing_public_key()
+    {
+        $key = get_option('wc_ucp_signing_public_key', null);
+        return $key ? base64_decode($key) : null;
+    }
+
+    /**
+     * Get the Key ID (kid)
+     *
+     * @return string|null The key ID or null if not set.
+     */
+    public static function get_signing_key_kid()
+    {
+        return get_option('wc_ucp_signing_key_kid', null);
+    }
+
+    /**
+     * Base64URL encode (for JWK format)
+     *
+     * @param string $data Data to encode.
+     * @return string Base64URL encoded string.
+     */
+    private static function base64url_encode($data)
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    /**
+     * Get signing key info for discovery endpoint (JWK format)
+     * Compliant with UCP/Beckn Ed25519 specification
+     *
+     * @return array Signing keys in JWK format.
+     */
+    public static function get_signing_key_info()
+    {
+        $public_key = self::get_signing_public_key();
+        $kid = self::get_signing_key_kid();
+
+        if (!$public_key || !$kid) {
+            // Check for error
+            $error = get_option('wc_ucp_signing_key_error');
+            if ($error === 'libsodium_not_available') {
+                return array(
+                    array(
+                        'error' => 'libsodium_not_available',
+                        'message' => 'PHP libsodium extension is required for Ed25519 signing',
+                    ),
+                );
+            }
+            return array();
+        }
+
+        // Return JWK format per RFC 8037 (CFRG Elliptic Curve)
+        return array(
+            array(
+                'kid' => $kid,
+                'kty' => 'OKP',              // Octet Key Pair
+                'crv' => 'Ed25519',          // Edwards-curve signature algorithm
+                'x' => self::base64url_encode($public_key), // Public key (base64url)
+                'use' => 'sig',              // Signature use
+                'alg' => 'EdDSA',            // Edwards-curve Digital Signature Algorithm
+                'status' => 'active',
+                'created_at' => get_option('wc_ucp_signing_key_created_at', current_time('c')),
+            ),
+        );
+    }
+
+    /**
+     * Rotate signing key (generate new keypair, keep old for transition)
+     *
+     * @return bool True if rotation successful.
+     */
+    public static function rotate_signing_key()
+    {
+        if (!function_exists('sodium_crypto_sign_keypair')) {
+            return false;
+        }
+
+        // Backup current key
+        $old_public = get_option('wc_ucp_signing_public_key');
+        $old_kid = get_option('wc_ucp_signing_key_kid');
+        $old_created = get_option('wc_ucp_signing_key_created_at');
+
+        if ($old_public && $old_kid) {
+            update_option('wc_ucp_signing_public_key_previous', $old_public);
+            update_option('wc_ucp_signing_key_kid_previous', $old_kid);
+            update_option('wc_ucp_signing_key_created_at_previous', $old_created);
+        }
+
+        // Generate new keypair
+        $keypair = sodium_crypto_sign_keypair();
+        $secret_key = sodium_crypto_sign_secretkey($keypair);
+        $public_key = sodium_crypto_sign_publickey($keypair);
+        $kid = 'ed25519-' . date('Y-m') . '-' . substr(bin2hex(random_bytes(4)), 0, 8);
+
+        update_option('wc_ucp_signing_private_key', base64_encode($secret_key));
+        update_option('wc_ucp_signing_public_key', base64_encode($public_key));
+        update_option('wc_ucp_signing_key_kid', $kid);
+        update_option('wc_ucp_signing_key_created_at', current_time('c'));
+
+        // Clean up memory
+        sodium_memzero($keypair);
+        sodium_memzero($secret_key);
+
+        return true;
+    }
+
+    /**
+     * Legacy: Get the old signing key (for backward compatibility)
      *
      * @return string|null The signing key or null if not set.
      */
     public static function get_signing_key()
     {
-        return get_option('wc_ucp_signing_key', null);
-    }
-
-    /**
-     * Get signing key info for discovery
-     *
-     * @return array Signing key metadata for JWK-style response.
-     */
-    public static function get_signing_key_info()
-    {
-        $signing_key = self::get_signing_key();
-
-        if (!$signing_key) {
-            return array();
-        }
-
-        // Generate a key ID from the key (partial hash)
-        $key_id = substr(hash('sha256', $signing_key), 0, 16);
-
-        return array(
-            array(
-                'key_id' => 'ucp_' . $key_id,
-                'algorithm' => 'HS256',
-                'use' => 'sig',
-                'status' => 'active',
-                'created_at' => get_option('wc_ucp_signing_key_created_at', current_time('c')),
-            ),
-        );
+        // Return the kid for identification purposes
+        return self::get_signing_key_kid();
     }
 
     /**

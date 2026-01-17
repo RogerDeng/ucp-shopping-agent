@@ -1,3 +1,5 @@
+**[ 🇺🇸 English ]** | [ 🇹🇼 繁體中文 ](./README.zh-TW.md)
+
 # UCP Shopping Agent
 
 [![WordPress](https://img.shields.io/badge/WordPress-5.8+-blue.svg)](https://wordpress.org/)
