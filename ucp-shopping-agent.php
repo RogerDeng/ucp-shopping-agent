@@ -172,6 +172,9 @@ final class WC_UCP_Agent
     {
         $admin = new WC_UCP_Admin();
 
+        // Initialize order list enhancements
+        $admin->init();
+
         $this->loader->add_action('admin_menu', $admin, 'add_menu_pages');
         $this->loader->add_action('admin_enqueue_scripts', $admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $admin, 'enqueue_scripts');

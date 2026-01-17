@@ -13,6 +13,24 @@ class WC_UCP_Admin
 {
 
     /**
+     * Initialize admin hooks
+     */
+    public function init()
+    {
+        // Order list enhancements
+        add_filter('manage_edit-shop_order_columns', array($this, 'add_order_column'));
+        add_action('manage_shop_order_posts_custom_column', array($this, 'render_order_column'), 10, 2);
+        add_filter('manage_woocommerce_page_wc-orders_columns', array($this, 'add_order_column'));
+        add_action('manage_woocommerce_page_wc-orders_custom_column', array($this, 'render_order_column_hpos'), 10, 2);
+        add_action('restrict_manage_posts', array($this, 'add_order_filter_dropdown'));
+        add_filter('request', array($this, 'filter_orders_by_ucp'));
+        add_action('woocommerce_order_list_table_restrict_manage_orders', array($this, 'add_order_filter_dropdown_hpos'));
+
+        // Order meta box
+        add_action('add_meta_boxes', array($this, 'add_order_meta_box'));
+    }
+
+    /**
      * Add menu pages
      */
     public function add_menu_pages()
@@ -32,6 +50,12 @@ class WC_UCP_Admin
      */
     public function enqueue_styles($hook)
     {
+        // Always load UCP badge styles on order pages
+        $screen = get_current_screen();
+        if ($screen && (strpos($screen->id, 'shop_order') !== false || strpos($screen->id, 'wc-orders') !== false)) {
+            $this->enqueue_order_styles();
+        }
+
         if (strpos($hook, 'wc-ucp-settings') === false) {
             return;
         }
@@ -42,6 +66,55 @@ class WC_UCP_Admin
             array(),
             WC_UCP_VERSION
         );
+    }
+
+    /**
+     * Enqueue order list styles
+     */
+    private function enqueue_order_styles()
+    {
+        $css = '
+            .ucp-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: #fff;
+                padding: 4px 10px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                white-space: nowrap;
+            }
+            .ucp-badge img {
+                width: 14px;
+                height: 14px;
+                filter: brightness(0) invert(1);
+            }
+            .ucp-source-column {
+                width: 100px;
+            }
+            .ucp-meta-box-content {
+                padding: 10px 0;
+            }
+            .ucp-meta-box-content p {
+                margin: 8px 0;
+            }
+            .ucp-meta-box-content strong {
+                color: #1e1e1e;
+            }
+            .ucp-session-id {
+                font-family: monospace;
+                background: #f0f0f1;
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-size: 12px;
+                word-break: break-all;
+            }
+        ';
+        wp_add_inline_style('woocommerce_admin_styles', $css);
     }
 
     /**
@@ -106,6 +179,213 @@ class WC_UCP_Admin
         // Handle AJAX actions
         add_action('wp_ajax_wc_ucp_create_api_key', array($this, 'ajax_create_api_key'));
         add_action('wp_ajax_wc_ucp_delete_api_key', array($this, 'ajax_delete_api_key'));
+    }
+
+    /**
+     * Add UCP source column to orders list
+     */
+    public function add_order_column($columns)
+    {
+        $new_columns = array();
+
+        foreach ($columns as $key => $value) {
+            $new_columns[$key] = $value;
+            // Add after order status column
+            if ($key === 'order_status') {
+                $new_columns['ucp_source'] = __('Source', 'ucp-shopping-agent');
+            }
+        }
+
+        return $new_columns;
+    }
+
+    /**
+     * Render UCP source column (Legacy post-based orders)
+     */
+    public function render_order_column($column, $post_id)
+    {
+        if ($column !== 'ucp_source') {
+            return;
+        }
+
+        $is_ucp = get_post_meta($post_id, '_ucp_created', true);
+
+        if ($is_ucp) {
+            echo $this->get_ucp_badge();
+        } else {
+            echo '<span style="color:#999;">—</span>';
+        }
+    }
+
+    /**
+     * Render UCP source column (HPOS - High Performance Order Storage)
+     */
+    public function render_order_column_hpos($column, $order)
+    {
+        if ($column !== 'ucp_source') {
+            return;
+        }
+
+        $is_ucp = $order->get_meta('_ucp_created');
+
+        if ($is_ucp) {
+            echo $this->get_ucp_badge();
+        } else {
+            echo '<span style="color:#999;">—</span>';
+        }
+    }
+
+    /**
+     * Get UCP badge HTML
+     */
+    private function get_ucp_badge()
+    {
+        $icon_url = WC_UCP_PLUGIN_URL . 'assets/ucp-icon.svg';
+        $badge_style = 'display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;';
+        $img_style = 'width:14px;height:14px;filter:brightness(0) invert(1);';
+        return '<span style="' . esc_attr($badge_style) . '"><img src="' . esc_url($icon_url) . '" alt="UCP" style="' . esc_attr($img_style) . '"> UCP</span>';
+    }
+
+    /**
+     * Add filter dropdown to orders list (Legacy)
+     */
+    public function add_order_filter_dropdown()
+    {
+        global $typenow;
+
+        if ($typenow !== 'shop_order') {
+            return;
+        }
+
+        $current = isset($_GET['ucp_filter']) ? sanitize_text_field($_GET['ucp_filter']) : '';
+
+        ?>
+        <select name="ucp_filter">
+            <option value=""><?php esc_html_e('All sources', 'ucp-shopping-agent'); ?></option>
+            <option value="ucp" <?php selected($current, 'ucp'); ?>><?php esc_html_e('UCP Orders', 'ucp-shopping-agent'); ?>
+            </option>
+            <option value="non_ucp" <?php selected($current, 'non_ucp'); ?>>
+                <?php esc_html_e('Non-UCP Orders', 'ucp-shopping-agent'); ?>
+            </option>
+        </select>
+        <?php
+    }
+
+    /**
+     * Add filter dropdown to orders list (HPOS)
+     */
+    public function add_order_filter_dropdown_hpos()
+    {
+        $current = isset($_GET['ucp_filter']) ? sanitize_text_field($_GET['ucp_filter']) : '';
+
+        ?>
+        <select name="ucp_filter">
+            <option value=""><?php esc_html_e('All sources', 'ucp-shopping-agent'); ?></option>
+            <option value="ucp" <?php selected($current, 'ucp'); ?>><?php esc_html_e('UCP Orders', 'ucp-shopping-agent'); ?>
+            </option>
+            <option value="non_ucp" <?php selected($current, 'non_ucp'); ?>>
+                <?php esc_html_e('Non-UCP Orders', 'ucp-shopping-agent'); ?>
+            </option>
+        </select>
+        <?php
+    }
+
+    /**
+     * Filter orders by UCP meta
+     */
+    public function filter_orders_by_ucp($vars)
+    {
+        global $typenow;
+
+        if ($typenow !== 'shop_order' || !isset($_GET['ucp_filter']) || empty($_GET['ucp_filter'])) {
+            return $vars;
+        }
+
+        $filter = sanitize_text_field($_GET['ucp_filter']);
+
+        if ($filter === 'ucp') {
+            $vars['meta_query'][] = array(
+                'key' => '_ucp_created',
+                'value' => '1',
+                'compare' => '=',
+            );
+        } elseif ($filter === 'non_ucp') {
+            $vars['meta_query'][] = array(
+                'relation' => 'OR',
+                array(
+                    'key' => '_ucp_created',
+                    'compare' => 'NOT EXISTS',
+                ),
+                array(
+                    'key' => '_ucp_created',
+                    'value' => '',
+                    'compare' => '=',
+                ),
+            );
+        }
+
+        return $vars;
+    }
+
+    /**
+     * Add UCP meta box to order details page
+     */
+    public function add_order_meta_box()
+    {
+        $screen = wc_get_container()->get(\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController::class)->custom_orders_table_usage_is_enabled()
+            ? wc_get_page_screen_id('shop-order')
+            : 'shop_order';
+
+        add_meta_box(
+            'wc_ucp_order_info',
+            __('UCP Order Info', 'ucp-shopping-agent'),
+            array($this, 'render_order_meta_box'),
+            $screen,
+            'side',
+            'default'
+        );
+    }
+
+    /**
+     * Render UCP order meta box
+     */
+    public function render_order_meta_box($post_or_order)
+    {
+        $order = ($post_or_order instanceof WP_Post) ? wc_get_order($post_or_order->ID) : $post_or_order;
+
+        if (!$order) {
+            return;
+        }
+
+        $is_ucp = $order->get_meta('_ucp_created');
+
+        if (!$is_ucp) {
+            echo '<p style="color:#999;">' . esc_html__('This order was not created via UCP.', 'ucp-shopping-agent') . '</p>';
+            return;
+        }
+
+        $session_id = $order->get_meta('_ucp_checkout_session_id');
+        $payment_handler = $order->get_meta('_ucp_payment_handler_id');
+
+        ?>
+        <div class="ucp-meta-box-content">
+            <p>
+                <?php echo $this->get_ucp_badge(); ?>
+            </p>
+            <?php if ($session_id): ?>
+                <p>
+                    <strong><?php esc_html_e('Session ID:', 'ucp-shopping-agent'); ?></strong><br>
+                    <code class="ucp-session-id"><?php echo esc_html($session_id); ?></code>
+                </p>
+            <?php endif; ?>
+            <?php if ($payment_handler): ?>
+                <p>
+                    <strong><?php esc_html_e('Payment Handler:', 'ucp-shopping-agent'); ?></strong><br>
+                    <?php echo esc_html($payment_handler); ?>
+                </p>
+            <?php endif; ?>
+        </div>
+        <?php
     }
 
     /**
@@ -174,3 +454,4 @@ class WC_UCP_Admin
         wp_send_json_success();
     }
 }
+
