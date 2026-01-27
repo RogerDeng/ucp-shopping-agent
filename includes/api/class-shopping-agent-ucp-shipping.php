@@ -2,14 +2,14 @@
 /**
  * Shipping Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Shipping extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Shipping extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'shipping';
@@ -127,7 +127,7 @@ class WC_UCP_Shipping extends WC_UCP_REST_Controller
         if (empty($package_contents)) {
             return $this->error_response(
                 'no_valid_items',
-                __('No valid items provided.', 'ucp-shopping-agent'),
+                __('No valid items provided.', 'shopping-agent-with-ucp'),
                 400
             );
         }

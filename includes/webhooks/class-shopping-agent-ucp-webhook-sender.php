@@ -4,14 +4,14 @@
  *
  * Sends webhooks with retry logic and failed webhook storage.
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Webhook_Sender
+class Shopping_Agent_UCP_Webhook_Sender
 {
 
     /**
@@ -52,8 +52,8 @@ class WC_UCP_Webhook_Sender
             'api_version' => '2026-01-11',
             'source' => array(
                 'platform' => 'WooCommerce',
-                'plugin' => 'ucp-shopping-agent',
-                'version' => WC_UCP_VERSION,
+                'plugin' => 'shopping-agent-with-ucp',
+                'version' => SHOPPING_AGENT_UCP_VERSION,
                 'site_url' => home_url(),
             ),
             'data' => $payload,
@@ -125,7 +125,7 @@ class WC_UCP_Webhook_Sender
             'X-UCP-Signature' => $signature,
             'X-UCP-Timestamp' => time(),
             'X-UCP-Delivery-ID' => wp_generate_uuid4(),
-            'User-Agent' => 'WooCommerce-UCP-Agent/' . WC_UCP_VERSION,
+            'User-Agent' => 'WooCommerce-UCP-Agent/' . SHOPPING_AGENT_UCP_VERSION,
         );
 
         $args = array(
@@ -134,7 +134,7 @@ class WC_UCP_Webhook_Sender
             'timeout' => self::TIMEOUT,
             'redirection' => 0,
             'httpversion' => '1.1',
-            'sslverify' => apply_filters('wc_ucp_webhook_ssl_verify', true),
+            'sslverify' => apply_filters('shopping_agent_shopping_agent_ucp_webhook_ssl_verify', true),
         );
 
         $response = wp_safe_remote_post($url, $args);
@@ -172,8 +172,8 @@ class WC_UCP_Webhook_Sender
         $message = $timestamp . '.' . $body;
 
         // Try Ed25519 signing first
-        $private_key = WC_UCP_Activator::get_signing_private_key();
-        $kid = WC_UCP_Activator::get_signing_key_kid();
+        $private_key = Shopping_Agent_UCP_Activator::get_signing_private_key();
+        $kid = Shopping_Agent_UCP_Activator::get_signing_key_kid();
 
         if ($private_key && $kid && function_exists('sodium_crypto_sign_detached')) {
             // Ed25519 signature
@@ -219,7 +219,7 @@ class WC_UCP_Webhook_Sender
      */
     private function store_failed_webhook($webhook, $event, $body, $signature, $error)
     {
-        $failed_webhooks = get_option('wc_ucp_failed_webhooks', array());
+        $failed_webhooks = get_option('shopping_agent_shopping_agent_ucp_failed_webhooks', array());
 
         // Limit stored failed webhooks to 100
         if (count($failed_webhooks) >= 100) {
@@ -238,7 +238,7 @@ class WC_UCP_Webhook_Sender
             'failed_at' => current_time('mysql', true),
         );
 
-        update_option('wc_ucp_failed_webhooks', $failed_webhooks);
+        update_option('shopping_agent_shopping_agent_ucp_failed_webhooks', $failed_webhooks);
     }
 
     /**
@@ -248,7 +248,7 @@ class WC_UCP_Webhook_Sender
      */
     public function retry_failed_webhooks()
     {
-        $failed_webhooks = get_option('wc_ucp_failed_webhooks', array());
+        $failed_webhooks = get_option('shopping_agent_shopping_agent_ucp_failed_webhooks', array());
 
         if (empty($failed_webhooks)) {
             return array();
@@ -298,7 +298,7 @@ class WC_UCP_Webhook_Sender
             }
         }
 
-        update_option('wc_ucp_failed_webhooks', $remaining);
+        update_option('shopping_agent_shopping_agent_ucp_failed_webhooks', $remaining);
 
         return $results;
     }
@@ -310,7 +310,7 @@ class WC_UCP_Webhook_Sender
      */
     public function get_failed_count()
     {
-        $failed_webhooks = get_option('wc_ucp_failed_webhooks', array());
+        $failed_webhooks = get_option('shopping_agent_shopping_agent_ucp_failed_webhooks', array());
         return count($failed_webhooks);
     }
 
@@ -321,7 +321,7 @@ class WC_UCP_Webhook_Sender
      */
     public function clear_failed_webhooks()
     {
-        return delete_option('wc_ucp_failed_webhooks');
+        return delete_option('shopping_agent_shopping_agent_ucp_failed_webhooks');
     }
 
     /**
@@ -335,7 +335,7 @@ class WC_UCP_Webhook_Sender
      */
     private function log_delivery($webhook, $event, $success, $attempts = 1, $error = null)
     {
-        if (get_option('wc_ucp_log_enabled', 'no') !== 'yes') {
+        if (get_option('shopping_agent_shopping_agent_ucp_log_enabled', 'no') !== 'yes') {
             return;
         }
 
@@ -352,7 +352,7 @@ class WC_UCP_Webhook_Sender
             $log_entry['error'] = $error;
         }
 
-        $logs = get_option('wc_ucp_webhook_logs', array());
+        $logs = get_option('shopping_agent_shopping_agent_ucp_webhook_logs', array());
         $logs[] = $log_entry;
 
         // Keep only last 100 entries
@@ -360,7 +360,7 @@ class WC_UCP_Webhook_Sender
             $logs = array_slice($logs, -100);
         }
 
-        update_option('wc_ucp_webhook_logs', $logs);
+        update_option('shopping_agent_shopping_agent_ucp_webhook_logs', $logs);
     }
 
     /**
@@ -373,7 +373,7 @@ class WC_UCP_Webhook_Sender
      */
     private function log_retry($webhook, $event, $attempt, $error)
     {
-        if (get_option('wc_ucp_log_enabled', 'no') !== 'yes') {
+        if (get_option('shopping_agent_shopping_agent_ucp_log_enabled', 'no') !== 'yes') {
             return;
         }
 
@@ -399,7 +399,7 @@ class WC_UCP_Webhook_Sender
      */
     private function handle_failure($webhook, $error)
     {
-        do_action('wc_ucp_webhook_delivery_failed', $webhook, $error);
+        do_action('shopping_agent_shopping_agent_ucp_webhook_delivery_failed', $webhook, $error);
     }
 
     /**

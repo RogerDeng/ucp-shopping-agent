@@ -2,14 +2,14 @@
 /**
  * Internationalization
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_I18n
+class Shopping_Agent_UCP_I18n
 {
 
     /**

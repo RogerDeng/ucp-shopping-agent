@@ -2,14 +2,14 @@
 /**
  * Coupons Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Coupons extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Coupons extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'coupons';
@@ -51,11 +51,11 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
                 ),
                 'cart_total' => array(
                     'type' => 'number',
-                    'description' => __('Cart total for validation', 'ucp-shopping-agent'),
+                    'description' => __('Cart total for validation', 'shopping-agent-with-ucp'),
                 ),
                 'product_ids' => array(
                     'type' => 'array',
-                    'description' => __('Product IDs in cart for validation', 'ucp-shopping-agent'),
+                    'description' => __('Product IDs in cart for validation', 'shopping-agent-with-ucp'),
                 ),
             ),
         ));
@@ -98,13 +98,13 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
                 array(
                     'relation' => 'OR',
                     array(
-                        'key' => '_ucp_public',
+                        'key' => '_shopping_agent_shopping_agent_ucp_public',
                         'value' => 'yes',
                         'compare' => '=',
                     ),
                     // Fallback: include coupons without the meta (for backward compatibility)
                     array(
-                        'key' => '_ucp_public',
+                        'key' => '_shopping_agent_shopping_agent_ucp_public',
                         'compare' => 'NOT EXISTS',
                     ),
                 ),
@@ -155,7 +155,7 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
         if (!$coupon->get_id()) {
             return $this->error_response(
                 'coupon_not_found',
-                __('Coupon not found.', 'ucp-shopping-agent'),
+                __('Coupon not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -198,7 +198,7 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
         if (!$coupon->get_id()) {
             return $this->error_response(
                 'coupon_not_found',
-                __('Coupon not found.', 'ucp-shopping-agent'),
+                __('Coupon not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -216,7 +216,7 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
             return array(
                 'valid' => false,
                 'reason' => 'expired',
-                'message' => __('This coupon has expired.', 'ucp-shopping-agent'),
+                'message' => __('This coupon has expired.', 'shopping-agent-with-ucp'),
             );
         }
 
@@ -225,7 +225,7 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
             return array(
                 'valid' => false,
                 'reason' => 'usage_limit_reached',
-                'message' => __('This coupon has reached its usage limit.', 'ucp-shopping-agent'),
+                'message' => __('This coupon has reached its usage limit.', 'shopping-agent-with-ucp'),
             );
         }
 
@@ -238,7 +238,7 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
                     'reason' => 'minimum_not_met',
                     'message' => sprintf(
                         /* translators: %s: minimum amount */
-                        __('Minimum order amount of %s is required.', 'ucp-shopping-agent'),
+                        __('Minimum order amount of %s is required.', 'shopping-agent-with-ucp'),
                         wc_price($min_amount)
                     ),
                 );
@@ -252,7 +252,7 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
                     'reason' => 'maximum_exceeded',
                     'message' => sprintf(
                         /* translators: %s: maximum amount */
-                        __('Maximum order amount of %s is exceeded.', 'ucp-shopping-agent'),
+                        __('Maximum order amount of %s is exceeded.', 'shopping-agent-with-ucp'),
                         wc_price($max_amount)
                     ),
                 );
@@ -270,7 +270,7 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
                     return array(
                         'valid' => false,
                         'reason' => 'product_not_eligible',
-                        'message' => __('This coupon is not valid for the products in cart.', 'ucp-shopping-agent'),
+                        'message' => __('This coupon is not valid for the products in cart.', 'shopping-agent-with-ucp'),
                     );
                 }
             }
@@ -281,7 +281,7 @@ class WC_UCP_Coupons extends WC_UCP_REST_Controller
                     return array(
                         'valid' => false,
                         'reason' => 'product_excluded',
-                        'message' => __('This coupon cannot be used with some products in cart.', 'ucp-shopping-agent'),
+                        'message' => __('This coupon cannot be used with some products in cart.', 'shopping-agent-with-ucp'),
                     );
                 }
             }

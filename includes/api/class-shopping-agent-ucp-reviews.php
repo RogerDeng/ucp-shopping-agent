@@ -2,14 +2,14 @@
 /**
  * Reviews Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Reviews extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Reviews extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'reviews';
@@ -38,13 +38,13 @@ class WC_UCP_Reviews extends WC_UCP_REST_Controller
                 ),
                 'product_id' => array(
                     'type' => 'integer',
-                    'description' => __('Filter by product ID', 'ucp-shopping-agent'),
+                    'description' => __('Filter by product ID', 'shopping-agent-with-ucp'),
                 ),
                 'rating' => array(
                     'type' => 'integer',
                     'minimum' => 1,
                     'maximum' => 5,
-                    'description' => __('Filter by rating', 'ucp-shopping-agent'),
+                    'description' => __('Filter by rating', 'shopping-agent-with-ucp'),
                 ),
             ),
         ));
@@ -181,7 +181,7 @@ class WC_UCP_Reviews extends WC_UCP_REST_Controller
         if (!$review || $review->comment_type !== 'review') {
             return $this->error_response(
                 'review_not_found',
-                __('Review not found.', 'ucp-shopping-agent'),
+                __('Review not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -205,7 +205,7 @@ class WC_UCP_Reviews extends WC_UCP_REST_Controller
         if (!$product || $product->get_status() !== 'publish') {
             return $this->error_response(
                 'product_not_found',
-                __('Product not found.', 'ucp-shopping-agent'),
+                __('Product not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -235,7 +235,7 @@ class WC_UCP_Reviews extends WC_UCP_REST_Controller
         if (!$comment_id) {
             return $this->error_response(
                 'review_creation_failed',
-                __('Failed to create review.', 'ucp-shopping-agent'),
+                __('Failed to create review.', 'shopping-agent-with-ucp'),
                 500
             );
         }
@@ -267,7 +267,7 @@ class WC_UCP_Reviews extends WC_UCP_REST_Controller
         if (!$product) {
             return $this->error_response(
                 'product_not_found',
-                __('Product not found.', 'ucp-shopping-agent'),
+                __('Product not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }

@@ -2,14 +2,14 @@
 /**
  * Customers Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Customers extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Customers extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'customers';
@@ -120,7 +120,7 @@ class WC_UCP_Customers extends WC_UCP_REST_Controller
         if ($existing) {
             return $this->error_response(
                 'customer_exists',
-                __('A customer with this email already exists.', 'ucp-shopping-agent'),
+                __('A customer with this email already exists.', 'shopping-agent-with-ucp'),
                 409,
                 array('customer_id' => $existing->ID)
             );
@@ -167,7 +167,7 @@ class WC_UCP_Customers extends WC_UCP_REST_Controller
         }
 
         // Mark as UCP-created
-        update_user_meta($customer_id, '_ucp_created', true);
+        update_user_meta($customer_id, '_shopping_agent_shopping_agent_ucp_created', true);
 
         return $this->success_response($this->format_customer(new WC_Customer($customer_id)));
     }
@@ -188,7 +188,7 @@ class WC_UCP_Customers extends WC_UCP_REST_Controller
         if (!$customer->get_id()) {
             return $this->error_response(
                 'customer_not_found',
-                __('Customer not found.', 'ucp-shopping-agent'),
+                __('Customer not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -212,7 +212,7 @@ class WC_UCP_Customers extends WC_UCP_REST_Controller
         if (!$customer->get_id()) {
             return $this->error_response(
                 'customer_not_found',
-                __('Customer not found.', 'ucp-shopping-agent'),
+                __('Customer not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -264,7 +264,7 @@ class WC_UCP_Customers extends WC_UCP_REST_Controller
         if (!$user) {
             return $this->error_response(
                 'customer_not_found',
-                __('Customer not found.', 'ucp-shopping-agent'),
+                __('Customer not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }

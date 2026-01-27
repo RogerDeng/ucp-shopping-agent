@@ -2,14 +2,14 @@
 /**
  * Products Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Products extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Products extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'products';
@@ -84,7 +84,7 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
             ),
             'category' => array(
                 'type' => 'integer',
-                'description' => __('Filter by category ID', 'ucp-shopping-agent'),
+                'description' => __('Filter by category ID', 'shopping-agent-with-ucp'),
             ),
             'orderby' => array(
                 'type' => 'string',
@@ -98,15 +98,15 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
             ),
             'in_stock' => array(
                 'type' => 'boolean',
-                'description' => __('Filter to only in-stock products', 'ucp-shopping-agent'),
+                'description' => __('Filter to only in-stock products', 'shopping-agent-with-ucp'),
             ),
             'featured' => array(
                 'type' => 'boolean',
-                'description' => __('Filter to only featured products', 'ucp-shopping-agent'),
+                'description' => __('Filter to only featured products', 'shopping-agent-with-ucp'),
             ),
             'on_sale' => array(
                 'type' => 'boolean',
-                'description' => __('Filter to only products on sale', 'ucp-shopping-agent'),
+                'description' => __('Filter to only products on sale', 'shopping-agent-with-ucp'),
             ),
         );
     }
@@ -120,15 +120,15 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
         $params['q'] = array(
             'type' => 'string',
             'required' => true,
-            'description' => __('Search query', 'ucp-shopping-agent'),
+            'description' => __('Search query', 'shopping-agent-with-ucp'),
         );
         $params['min_price'] = array(
             'type' => 'number',
-            'description' => __('Minimum price filter', 'ucp-shopping-agent'),
+            'description' => __('Minimum price filter', 'shopping-agent-with-ucp'),
         );
         $params['max_price'] = array(
             'type' => 'number',
-            'description' => __('Maximum price filter', 'ucp-shopping-agent'),
+            'description' => __('Maximum price filter', 'shopping-agent-with-ucp'),
         );
         return $params;
     }
@@ -208,7 +208,7 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
         if (!$product || $product->get_status() !== 'publish') {
             return $this->error_response(
                 'product_not_found',
-                __('Product not found.', 'ucp-shopping-agent'),
+                __('Product not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -304,7 +304,7 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
         if (!$product_id) {
             return $this->error_response(
                 'product_not_found',
-                __('Product with this SKU not found.', 'ucp-shopping-agent'),
+                __('Product with this SKU not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -314,7 +314,7 @@ class WC_UCP_Products extends WC_UCP_REST_Controller
         if (!$product || $product->get_status() !== 'publish') {
             return $this->error_response(
                 'product_not_found',
-                __('Product not found.', 'ucp-shopping-agent'),
+                __('Product not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }

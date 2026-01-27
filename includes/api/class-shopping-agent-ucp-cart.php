@@ -2,14 +2,14 @@
 /**
  * Cart Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Cart extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Cart extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'carts';
@@ -65,15 +65,15 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
                 ),
                 'product_id' => array(
                     'type' => 'integer',
-                    'description' => __('Product ID', 'ucp-shopping-agent'),
+                    'description' => __('Product ID', 'shopping-agent-with-ucp'),
                 ),
                 'sku' => array(
                     'type' => 'string',
-                    'description' => __('Product SKU', 'ucp-shopping-agent'),
+                    'description' => __('Product SKU', 'shopping-agent-with-ucp'),
                 ),
                 'variation_id' => array(
                     'type' => 'integer',
-                    'description' => __('Variation ID for variable products', 'ucp-shopping-agent'),
+                    'description' => __('Variation ID for variable products', 'shopping-agent-with-ucp'),
                 ),
                 'quantity' => array(
                     'type' => 'integer',
@@ -153,10 +153,10 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
             return $wc_check;
         }
 
-        $api_key = WC_UCP_Auth::get_current_api_key();
+        $api_key = Shopping_Agent_UCP_Auth::get_current_api_key();
         $api_key_id = $api_key ? $api_key->id : null;
 
-        $cart_model = new WC_UCP_Cart_Session();
+        $cart_model = new Shopping_Agent_UCP_Cart_Session();
         $cart = $cart_model->create($api_key_id);
 
         if (is_wp_error($cart)) {
@@ -198,7 +198,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
             return $cart;
         }
 
-        $cart_model = new WC_UCP_Cart_Session();
+        $cart_model = new Shopping_Agent_UCP_Cart_Session();
         $cart_model->delete($cart_id);
 
         return $this->success_response(array(
@@ -237,7 +237,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         if (!$product_id) {
             return $this->error_response(
                 'invalid_product',
-                __('Product ID or SKU is required.', 'ucp-shopping-agent'),
+                __('Product ID or SKU is required.', 'shopping-agent-with-ucp'),
                 400
             );
         }
@@ -247,7 +247,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         if (!$product || $product->get_status() !== 'publish') {
             return $this->error_response(
                 'product_not_found',
-                __('Product not found.', 'ucp-shopping-agent'),
+                __('Product not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -256,7 +256,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         if (!$product->is_in_stock()) {
             return $this->error_response(
                 'out_of_stock',
-                __('Product is out of stock.', 'ucp-shopping-agent'),
+                __('Product is out of stock.', 'shopping-agent-with-ucp'),
                 400
             );
         }
@@ -266,7 +266,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
                 'insufficient_stock',
                 sprintf(
                     /* translators: %d: available quantity */
-                    __('Only %d items available.', 'ucp-shopping-agent'),
+                    __('Only %d items available.', 'shopping-agent-with-ucp'),
                     $product->get_stock_quantity()
                 ),
                 400
@@ -289,7 +289,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
             'image' => $product->get_image_id() ? wp_get_attachment_url($product->get_image_id()) : null,
         );
 
-        $cart_model = new WC_UCP_Cart_Session();
+        $cart_model = new Shopping_Agent_UCP_Cart_Session();
         $cart_model->update_items($cart_id, $items);
 
         $cart = $cart_model->get($cart_id);
@@ -317,7 +317,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         if (!isset($items[$item_key])) {
             return $this->error_response(
                 'item_not_found',
-                __('Cart item not found.', 'ucp-shopping-agent'),
+                __('Cart item not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -332,7 +332,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
             $items[$item_key]['line_total'] = $price * $quantity;
         }
 
-        $cart_model = new WC_UCP_Cart_Session();
+        $cart_model = new Shopping_Agent_UCP_Cart_Session();
         $cart_model->update_items($cart_id, $items);
 
         $cart = $cart_model->get($cart_id);
@@ -359,14 +359,14 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         if (!isset($items[$item_key])) {
             return $this->error_response(
                 'item_not_found',
-                __('Cart item not found.', 'ucp-shopping-agent'),
+                __('Cart item not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
 
         unset($items[$item_key]);
 
-        $cart_model = new WC_UCP_Cart_Session();
+        $cart_model = new Shopping_Agent_UCP_Cart_Session();
         $cart_model->update_items($cart_id, $items);
 
         $cart = $cart_model->get($cart_id);
@@ -394,7 +394,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         if (empty($cart->items)) {
             return $this->error_response(
                 'empty_cart',
-                __('Cart is empty.', 'ucp-shopping-agent'),
+                __('Cart is empty.', 'shopping-agent-with-ucp'),
                 400
             );
         }
@@ -410,7 +410,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
                     'missing_address_field',
                     sprintf(
                         /* translators: %s: field name */
-                        __('Shipping address field "%s" is required.', 'ucp-shopping-agent'),
+                        __('Shipping address field "%s" is required.', 'shopping-agent-with-ucp'),
                         $field
                     ),
                     400
@@ -419,7 +419,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         }
 
         // Create checkout session
-        $checkout = new WC_UCP_Checkout();
+        $checkout = new Shopping_Agent_UCP_Checkout();
         $session = $checkout->create_session_from_cart($cart, $shipping_address, $billing_address);
 
         if (is_wp_error($session)) {
@@ -427,7 +427,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         }
 
         // Update cart status
-        $cart_model = new WC_UCP_Cart_Session();
+        $cart_model = new Shopping_Agent_UCP_Cart_Session();
         $cart_model->update_status($cart_id, 'checkout');
 
         return $this->success_response($session);
@@ -438,13 +438,13 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
      */
     private function get_cart_or_error($cart_id)
     {
-        $cart_model = new WC_UCP_Cart_Session();
+        $cart_model = new Shopping_Agent_UCP_Cart_Session();
         $cart = $cart_model->get($cart_id);
 
         if (!$cart) {
             return $this->error_response(
                 'cart_not_found',
-                __('Cart not found.', 'ucp-shopping-agent'),
+                __('Cart not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -453,7 +453,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         if (strtotime($cart->expires_at) < time()) {
             return $this->error_response(
                 'cart_expired',
-                __('Cart has expired.', 'ucp-shopping-agent'),
+                __('Cart has expired.', 'shopping-agent-with-ucp'),
                 410
             );
         }
@@ -462,7 +462,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
         if ($cart->status !== 'active') {
             return $this->error_response(
                 'cart_unavailable',
-                __('Cart is no longer available.', 'ucp-shopping-agent'),
+                __('Cart is no longer available.', 'shopping-agent-with-ucp'),
                 410
             );
         }
@@ -475,7 +475,7 @@ class WC_UCP_Cart extends WC_UCP_REST_Controller
      */
     private function format_cart($cart)
     {
-        $cart_model = new WC_UCP_Cart_Session();
+        $cart_model = new Shopping_Agent_UCP_Cart_Session();
         $totals = $cart_model->calculate_totals($cart);
 
         $items = array();

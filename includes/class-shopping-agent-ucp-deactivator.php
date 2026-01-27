@@ -2,14 +2,14 @@
 /**
  * Plugin Deactivator
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Deactivator
+class Shopping_Agent_UCP_Deactivator
 {
 
     /**
@@ -21,6 +21,6 @@ class WC_UCP_Deactivator
         flush_rewrite_rules();
 
         // Clear any scheduled events
-        wp_clear_scheduled_hook('wc_ucp_cleanup_expired_sessions');
+        wp_clear_scheduled_hook('shopping_agent_shopping_agent_ucp_cleanup_expired_sessions');
     }
 }

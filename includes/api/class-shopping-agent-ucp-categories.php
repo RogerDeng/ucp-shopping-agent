@@ -2,14 +2,14 @@
 /**
  * Categories Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Categories extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Categories extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'categories';
@@ -28,7 +28,7 @@ class WC_UCP_Categories extends WC_UCP_REST_Controller
                 'parent' => array(
                     'type' => 'integer',
                     'default' => 0,
-                    'description' => __('Filter by parent category ID (0 for top-level)', 'ucp-shopping-agent'),
+                    'description' => __('Filter by parent category ID (0 for top-level)', 'shopping-agent-with-ucp'),
                 ),
                 'hide_empty' => array(
                     'type' => 'boolean',
@@ -37,7 +37,7 @@ class WC_UCP_Categories extends WC_UCP_REST_Controller
                 'include_children' => array(
                     'type' => 'boolean',
                     'default' => false,
-                    'description' => __('Include child categories in response', 'ucp-shopping-agent'),
+                    'description' => __('Include child categories in response', 'shopping-agent-with-ucp'),
                 ),
             ),
         ));
@@ -85,7 +85,7 @@ class WC_UCP_Categories extends WC_UCP_REST_Controller
                 'include_subcategories' => array(
                     'type' => 'boolean',
                     'default' => true,
-                    'description' => __('Include products from subcategories', 'ucp-shopping-agent'),
+                    'description' => __('Include products from subcategories', 'shopping-agent-with-ucp'),
                 ),
             ),
         ));
@@ -178,7 +178,7 @@ class WC_UCP_Categories extends WC_UCP_REST_Controller
         if (!$term || is_wp_error($term)) {
             return $this->error_response(
                 'category_not_found',
-                __('Category not found.', 'ucp-shopping-agent'),
+                __('Category not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -205,7 +205,7 @@ class WC_UCP_Categories extends WC_UCP_REST_Controller
         if (!$term || is_wp_error($term)) {
             return $this->error_response(
                 'category_not_found',
-                __('Category not found.', 'ucp-shopping-agent'),
+                __('Category not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -244,7 +244,7 @@ class WC_UCP_Categories extends WC_UCP_REST_Controller
         $total = count(wc_get_products($count_args));
 
         $formatted_products = array();
-        $products_controller = new WC_UCP_Products();
+        $products_controller = new Shopping_Agent_UCP_Products();
 
         foreach ($products as $product) {
             $formatted_products[] = $this->format_product_summary($product);

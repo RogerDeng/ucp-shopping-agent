@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define files
-PLUGIN_FILE="ucp-shopping-agent.php"
+PLUGIN_FILE="shopping-agent-with-ucp.php"
 README_FILE="readme.txt"
 
 # Check if files exist
@@ -39,8 +39,8 @@ echo "Bumping to: $NEW_VERSION"
 sed -i '' "s/Version:     $CURRENT_VERSION/Version:     $NEW_VERSION/" "$PLUGIN_FILE"
 
 # 2. Update Constant Define
-# Matches define('WC_UCP_VERSION', 'x.x.x');
-sed -i '' "s/define('WC_UCP_VERSION', '$CURRENT_VERSION');/define('WC_UCP_VERSION', '$NEW_VERSION');/" "$PLUGIN_FILE"
+# Matches define('SHOPPING_AGENT_UCP_VERSION', 'x.x.x');
+sed -i '' "s/define('SHOPPING_AGENT_UCP_VERSION', '$CURRENT_VERSION');/define('SHOPPING_AGENT_UCP_VERSION', '$NEW_VERSION');/" "$PLUGIN_FILE"
 
 # Update readme.txt
 # Update Stable tag

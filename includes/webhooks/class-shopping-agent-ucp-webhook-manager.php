@@ -2,14 +2,14 @@
 /**
  * Webhook Manager
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Webhook_Manager
+class Shopping_Agent_UCP_Webhook_Manager
 {
 
     /**
@@ -23,7 +23,7 @@ class WC_UCP_Webhook_Manager
     public function __construct()
     {
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'ucp_webhooks';
+        $this->table_name = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_webhooks';
     }
 
     /**
@@ -95,7 +95,7 @@ class WC_UCP_Webhook_Manager
             return;
         }
 
-        $sender = new WC_UCP_Webhook_Sender();
+        $sender = new Shopping_Agent_UCP_Webhook_Sender();
 
         foreach ($webhooks as $webhook) {
             $sender->send($webhook, $event, $payload);
@@ -155,7 +155,7 @@ class WC_UCP_Webhook_Manager
         if ($result === false) {
             return new WP_Error(
                 'webhook_creation_failed',
-                __('Failed to create webhook.', 'ucp-shopping-agent'),
+                __('Failed to create webhook.', 'shopping-agent-ucp-agent'),
                 array('status' => 500)
             );
         }

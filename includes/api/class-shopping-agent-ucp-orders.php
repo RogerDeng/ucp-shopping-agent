@@ -2,14 +2,14 @@
 /**
  * Orders Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Orders extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Orders extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'orders';
@@ -109,9 +109,9 @@ class WC_UCP_Orders extends WC_UCP_REST_Controller
         }
 
         // Only show UCP-created orders if using API key
-        $api_key = WC_UCP_Auth::get_current_api_key();
+        $api_key = Shopping_Agent_UCP_Auth::get_current_api_key();
         if ($api_key) {
-            $args['meta_key'] = '_ucp_created';
+            $args['meta_key'] = '_shopping_agent_shopping_agent_ucp_created';
             $args['meta_value'] = true;
         }
 
@@ -150,7 +150,7 @@ class WC_UCP_Orders extends WC_UCP_REST_Controller
         if (!$order) {
             return $this->error_response(
                 'order_not_found',
-                __('Order not found.', 'ucp-shopping-agent'),
+                __('Order not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -174,7 +174,7 @@ class WC_UCP_Orders extends WC_UCP_REST_Controller
         if (!$order) {
             return $this->error_response(
                 'order_not_found',
-                __('Order not found.', 'ucp-shopping-agent'),
+                __('Order not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -192,7 +192,7 @@ class WC_UCP_Orders extends WC_UCP_REST_Controller
         $events[] = array(
             'type' => 'order.created',
             'timestamp' => $order->get_date_created() ? $order->get_date_created()->format('c') : null,
-            'message' => __('Order created', 'ucp-shopping-agent'),
+            'message' => __('Order created', 'shopping-agent-with-ucp'),
         );
 
         // Add note events
@@ -217,7 +217,7 @@ class WC_UCP_Orders extends WC_UCP_REST_Controller
             $events[] = array(
                 'type' => 'order.paid',
                 'timestamp' => $order->get_date_paid()->format('c'),
-                'message' => __('Payment received', 'ucp-shopping-agent'),
+                'message' => __('Payment received', 'shopping-agent-with-ucp'),
             );
         }
 
@@ -226,7 +226,7 @@ class WC_UCP_Orders extends WC_UCP_REST_Controller
             $events[] = array(
                 'type' => 'order.completed',
                 'timestamp' => $order->get_date_completed()->format('c'),
-                'message' => __('Order completed', 'ucp-shopping-agent'),
+                'message' => __('Order completed', 'shopping-agent-with-ucp'),
             );
         }
 

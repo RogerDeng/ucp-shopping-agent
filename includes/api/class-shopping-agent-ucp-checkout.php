@@ -2,14 +2,14 @@
 /**
  * Checkout Endpoint
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Checkout extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'checkout';
@@ -25,7 +25,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
     public function __construct()
     {
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'ucp_checkout_sessions';
+        $this->table_name = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_checkout_sessions';
     }
 
     /**
@@ -141,10 +141,10 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         global $wpdb;
 
         $session_id = wp_generate_uuid4();
-        $expiry_minutes = (int) get_option('wc_ucp_checkout_expiry', 30);
+        $expiry_minutes = (int) get_option('shopping_agent_shopping_agent_ucp_checkout_expiry', 30);
         $expires_at = date('Y-m-d H:i:s', strtotime("+{$expiry_minutes} minutes"));
 
-        $api_key = WC_UCP_Auth::get_current_api_key();
+        $api_key = Shopping_Agent_UCP_Auth::get_current_api_key();
 
         // Calculate totals
         $totals = $this->calculate_totals($cart->items, $shipping_address);
@@ -169,7 +169,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         if ($result === false) {
             return $this->error_response(
                 'checkout_creation_failed',
-                __('Failed to create checkout session.', 'ucp-shopping-agent'),
+                __('Failed to create checkout session.', 'shopping-agent-with-ucp'),
                 500
             );
         }
@@ -230,16 +230,16 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         if (empty($formatted_items)) {
             return $this->error_response(
                 'no_valid_items',
-                __('No valid items provided.', 'ucp-shopping-agent'),
+                __('No valid items provided.', 'shopping-agent-with-ucp'),
                 400
             );
         }
 
         $session_id = wp_generate_uuid4();
-        $expiry_minutes = (int) get_option('wc_ucp_checkout_expiry', 30);
+        $expiry_minutes = (int) get_option('shopping_agent_shopping_agent_ucp_checkout_expiry', 30);
         $expires_at = date('Y-m-d H:i:s', strtotime("+{$expiry_minutes} minutes"));
 
-        $api_key = WC_UCP_Auth::get_current_api_key();
+        $api_key = Shopping_Agent_UCP_Auth::get_current_api_key();
         $totals = $this->calculate_totals($formatted_items, $shipping_address);
 
         $result = $wpdb->insert(
@@ -261,7 +261,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         if ($result === false) {
             return $this->error_response(
                 'checkout_creation_failed',
-                __('Failed to create checkout session.', 'ucp-shopping-agent'),
+                __('Failed to create checkout session.', 'shopping-agent-with-ucp'),
                 500
             );
         }
@@ -391,7 +391,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         if ($session->status === 'complete') {
             return $this->error_response(
                 'already_complete',
-                __('This checkout session has already been completed.', 'ucp-shopping-agent'),
+                __('This checkout session has already been completed.', 'shopping-agent-with-ucp'),
                 400
             );
         }
@@ -406,7 +406,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         if (is_wp_error($order)) {
             return $this->error_response(
                 'order_creation_failed',
-                __('Failed to create order.', 'ucp-shopping-agent'),
+                __('Failed to create order.', 'shopping-agent-with-ucp'),
                 500
             );
         }
@@ -426,7 +426,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         // Handle payment data per UCP spec
         $payment_data = $request->get_param('payment_data');
         if ($payment_data && isset($payment_data['handler_id'])) {
-            $order->update_meta_data('_ucp_payment_handler_id', sanitize_text_field($payment_data['handler_id']));
+            $order->update_meta_data('_shopping_agent_shopping_agent_ucp_payment_handler_id', sanitize_text_field($payment_data['handler_id']));
         }
 
         // Fallback to legacy payment_method param
@@ -436,8 +436,8 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         }
 
         // Add meta for UCP tracking
-        $order->update_meta_data('_ucp_checkout_session_id', $session_id);
-        $order->update_meta_data('_ucp_created', true);
+        $order->update_meta_data('_shopping_agent_shopping_agent_ucp_checkout_session_id', $session_id);
+        $order->update_meta_data('_shopping_agent_shopping_agent_ucp_created', true);
 
         // Calculate totals and save
         $order->calculate_totals();
@@ -457,7 +457,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         );
 
         // Trigger webhook
-        do_action('wc_ucp_order_created', $order);
+        do_action('shopping_agent_shopping_agent_ucp_order_created', $order);
 
         return $this->success_response(array(
             'id' => $session_id,
@@ -501,7 +501,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         if (!$session) {
             return $this->error_response(
                 'session_not_found',
-                __('Checkout session not found.', 'ucp-shopping-agent'),
+                __('Checkout session not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }
@@ -510,7 +510,7 @@ class WC_UCP_Checkout extends WC_UCP_REST_Controller
         if (strtotime($session->expires_at) < time() && $session->status !== 'confirmed') {
             return $this->error_response(
                 'session_expired',
-                __('Checkout session has expired.', 'ucp-shopping-agent'),
+                __('Checkout session has expired.', 'shopping-agent-with-ucp'),
                 410
             );
         }

@@ -1,16 +1,14 @@
-/**
- * WooCommerce UCP Agent - Admin Styles
- */
+/* UCP Shopping Agent - Admin Styles */
 
-.wc-ucp-settings {
+.shopping-agent-ucp-settings {
     max-width: 1200px;
 }
 
-.wc-ucp-settings .nav-tab-wrapper {
+.shopping-agent-ucp-settings .nav-tab-wrapper {
     margin-bottom: 20px;
 }
 
-.wc-ucp-settings .tab-content {
+.shopping-agent-ucp-settings .tab-content {
     background: #fff;
     padding: 20px;
     border: 1px solid #ccd0d4;

@@ -2,101 +2,105 @@
 /**
  * Settings Page Template
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-$settings = WC_UCP_Settings::get_all();
-$api_key_model = new WC_UCP_API_Key();
+$settings = Shopping_Agent_UCP_Settings::get_all();
+$api_key_model = new Shopping_Agent_UCP_API_Key();
 $api_keys = $api_key_model->get_all();
 ?>
 
-<div class="wrap wc-ucp-settings">
+<div class="wrap shopping-agent-ucp-settings">
     <h1>
-        <?php esc_html_e('WooCommerce UCP Settings', 'ucp-shopping-agent'); ?>
+        <?php esc_html_e('Shopping Agent UCP Setting', 'shopping-agent-with-ucp'); ?>
     </h1>
 
     <nav class="nav-tab-wrapper">
-        <a href="?page=wc-ucp-settings&tab=general"
+        <a href="?page=shopping-agent-ucp-settings&tab=general"
             class="nav-tab <?php echo $active_tab === 'general' ? 'nav-tab-active' : ''; ?>">
-            <?php esc_html_e('General', 'ucp-shopping-agent'); ?>
+            <?php esc_html_e('General', 'shopping-agent-with-ucp'); ?>
         </a>
-        <a href="?page=wc-ucp-settings&tab=api-keys"
+        <a href="?page=shopping-agent-ucp-settings&tab=api-keys"
             class="nav-tab <?php echo $active_tab === 'api-keys' ? 'nav-tab-active' : ''; ?>">
-            <?php esc_html_e('API Keys', 'ucp-shopping-agent'); ?>
+            <?php esc_html_e('API Keys', 'shopping-agent-with-ucp'); ?>
         </a>
-        <a href="?page=wc-ucp-settings&tab=discovery"
+        <a href="?page=shopping-agent-ucp-settings&tab=discovery"
             class="nav-tab <?php echo $active_tab === 'discovery' ? 'nav-tab-active' : ''; ?>">
-            <?php esc_html_e('Discovery', 'ucp-shopping-agent'); ?>
+            <?php esc_html_e('Discovery', 'shopping-agent-with-ucp'); ?>
         </a>
     </nav>
 
     <div class="tab-content">
         <?php if ($active_tab === 'general'): ?>
             <form method="post" action="options.php">
-                <?php settings_fields('wc_ucp_settings'); ?>
+                <?php settings_fields('shopping_agent_shopping_agent_ucp_settings'); ?>
 
                 <table class="form-table">
                     <tr>
                         <th scope="row">
-                            <?php esc_html_e('Enable UCP', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Enable UCP', 'shopping-agent-with-ucp'); ?>
                         </th>
                         <td>
                             <label>
-                                <input type="checkbox" name="wc_ucp_enabled" value="yes" <?php checked($settings['wc_ucp_enabled'], 'yes'); ?>>
-                                <?php esc_html_e('Enable the UCP API endpoints', 'ucp-shopping-agent'); ?>
+                                <input type="checkbox" name="shopping_agent_shopping_agent_ucp_enabled" value="yes" <?php checked($settings['shopping_agent_shopping_agent_ucp_enabled'], 'yes'); ?>>
+                                <?php esc_html_e('Enable the UCP API endpoints', 'shopping-agent-with-ucp'); ?>
                             </label>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">
-                            <?php esc_html_e('Rate Limit', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Rate Limit', 'shopping-agent-with-ucp'); ?>
                         </th>
                         <td>
-                            <input type="number" name="wc_ucp_rate_limit"
-                                value="<?php echo esc_attr($settings['wc_ucp_rate_limit']); ?>" min="10" max="1000">
+                            <input type="number" name="shopping_agent_shopping_agent_ucp_rate_limit"
+                                value="<?php echo esc_attr($settings['shopping_agent_shopping_agent_ucp_rate_limit']); ?>"
+                                min="10" max="1000">
                             <p class="description">
-                                <?php esc_html_e('Maximum requests per minute per API key.', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Maximum requests per minute per API key.', 'shopping-agent-with-ucp'); ?>
                             </p>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">
-                            <?php esc_html_e('Cart Expiry', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Cart Expiry', 'shopping-agent-with-ucp'); ?>
                         </th>
                         <td>
-                            <input type="number" name="wc_ucp_cart_expiry_hours"
-                                value="<?php echo esc_attr($settings['wc_ucp_cart_expiry_hours']); ?>" min="1" max="168">
-                            <?php esc_html_e('hours', 'ucp-shopping-agent'); ?>
+                            <input type="number" name="shopping_agent_shopping_agent_ucp_cart_expiry_hours"
+                                value="<?php echo esc_attr($settings['shopping_agent_shopping_agent_ucp_cart_expiry_hours']); ?>"
+                                min="1" max="168">
+                            <?php esc_html_e('hours', 'shopping-agent-with-ucp'); ?>
                             <p class="description">
-                                <?php esc_html_e('Hours until an inactive cart expires.', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Hours until an inactive cart expires.', 'shopping-agent-with-ucp'); ?>
                             </p>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">
-                            <?php esc_html_e('Checkout Expiry', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Checkout Expiry', 'shopping-agent-with-ucp'); ?>
                         </th>
                         <td>
-                            <input type="number" name="wc_ucp_checkout_expiry"
-                                value="<?php echo esc_attr($settings['wc_ucp_checkout_expiry']); ?>" min="5" max="120">
-                            <?php esc_html_e('minutes', 'ucp-shopping-agent'); ?>
+                            <input type="number" name="shopping_agent_shopping_agent_ucp_checkout_expiry"
+                                value="<?php echo esc_attr($settings['shopping_agent_shopping_agent_ucp_checkout_expiry']); ?>"
+                                min="5" max="120">
+                            <?php esc_html_e('minutes', 'shopping-agent-with-ucp'); ?>
                             <p class="description">
-                                <?php esc_html_e('Minutes until a checkout session expires.', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Minutes until a checkout session expires.', 'shopping-agent-with-ucp'); ?>
                             </p>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">
-                            <?php esc_html_e('Enable Logging', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Enable Logging', 'shopping-agent-with-ucp'); ?>
                         </th>
                         <td>
                             <label>
-                                <input type="checkbox" name="wc_ucp_log_enabled" value="yes" <?php checked($settings['wc_ucp_log_enabled'], 'yes'); ?>>
-                                <?php esc_html_e('Log API requests and webhook deliveries for debugging', 'ucp-shopping-agent'); ?>
+                                <input type="checkbox" name="shopping_agent_shopping_agent_ucp_log_enabled" value="yes"
+                                    <?php checked($settings['shopping_agent_shopping_agent_ucp_log_enabled'], 'yes'); ?>>
+                                <?php esc_html_e('Log API requests and webhook deliveries for debugging', 'shopping-agent-with-ucp'); ?>
                             </label>
                         </td>
                     </tr>
@@ -108,93 +112,93 @@ $api_keys = $api_key_model->get_all();
         <?php elseif ($active_tab === 'api-keys'): ?>
             <div class="api-keys-section">
                 <h2>
-                    <?php esc_html_e('API Keys', 'ucp-shopping-agent'); ?>
+                    <?php esc_html_e('API Keys', 'shopping-agent-with-ucp'); ?>
                 </h2>
                 <p class="description">
-                    <?php esc_html_e('API keys allow AI agents to authenticate with your store. Create keys with appropriate permissions.', 'ucp-shopping-agent'); ?>
+                    <?php esc_html_e('API keys allow AI agents to authenticate with your store. Create keys with appropriate permissions.', 'shopping-agent-with-ucp'); ?>
                 </p>
 
                 <div class="create-api-key-form">
                     <h3>
-                        <?php esc_html_e('Create New API Key', 'ucp-shopping-agent'); ?>
+                        <?php esc_html_e('Create New API Key', 'shopping-agent-with-ucp'); ?>
                     </h3>
                     <table class="form-table">
                         <tr>
                             <th scope="row">
-                                <?php esc_html_e('Description', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Description', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <td>
                                 <input type="text" id="api-key-description"
-                                    placeholder="<?php esc_attr_e('e.g., My AI Assistant', 'ucp-shopping-agent'); ?>"
+                                    placeholder="<?php esc_attr_e('e.g., My AI Assistant', 'shopping-agent-with-ucp'); ?>"
                                     class="regular-text">
                             </td>
                         </tr>
                         <tr>
                             <th scope="row">
-                                <?php esc_html_e('Permissions', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Permissions', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <td>
                                 <select id="api-key-permissions">
                                     <option value="read">
-                                        <?php esc_html_e('Read - Browse products, categories, reviews', 'ucp-shopping-agent'); ?>
+                                        <?php esc_html_e('Read - Browse products, categories, reviews', 'shopping-agent-with-ucp'); ?>
                                     </option>
                                     <option value="write">
-                                        <?php esc_html_e('Write - Create carts, checkout sessions, orders', 'ucp-shopping-agent'); ?>
+                                        <?php esc_html_e('Write - Create carts, checkout sessions, orders', 'shopping-agent-with-ucp'); ?>
                                     </option>
                                     <option value="admin">
-                                        <?php esc_html_e('Admin - Full access including API key management', 'ucp-shopping-agent'); ?>
+                                        <?php esc_html_e('Admin - Full access including API key management', 'shopping-agent-with-ucp'); ?>
                                     </option>
                                 </select>
                             </td>
                         </tr>
                     </table>
                     <button type="button" id="create-api-key" class="button button-primary">
-                        <?php esc_html_e('Generate API Key', 'ucp-shopping-agent'); ?>
+                        <?php esc_html_e('Generate API Key', 'shopping-agent-with-ucp'); ?>
                     </button>
                 </div>
 
                 <div id="new-api-key-display" style="display: none;">
                     <div class="notice notice-success">
                         <h4>
-                            <?php esc_html_e('API Key Generated Successfully!', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('API Key Generated Successfully!', 'shopping-agent-with-ucp'); ?>
                         </h4>
                         <p>
-                            <?php esc_html_e('Copy this key now. The secret will not be shown again.', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Copy this key now. The secret will not be shown again.', 'shopping-agent-with-ucp'); ?>
                         </p>
                         <div class="api-key-display-wrapper"
                             style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
                             <code id="new-api-key-value"
                                 style="flex: 1; padding: 10px 15px; background: #f0f0f1; border: 1px solid #c3c4c7; font-size: 14px; word-break: break-all;"></code>
                             <button type="button" class="button copy-to-clipboard" data-target="#new-api-key-value">
-                                <?php esc_html_e('Copy', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Copy', 'shopping-agent-with-ucp'); ?>
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <h3>
-                    <?php esc_html_e('Existing API Keys', 'ucp-shopping-agent'); ?>
+                    <?php esc_html_e('Existing API Keys', 'shopping-agent-with-ucp'); ?>
                 </h3>
                 <table class="wp-list-table widefat fixed striped">
                     <thead>
                         <tr>
                             <th>
-                                <?php esc_html_e('Key ID', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Key ID', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <th>
-                                <?php esc_html_e('Description', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Description', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <th>
-                                <?php esc_html_e('Permissions', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Permissions', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <th>
-                                <?php esc_html_e('Last Used', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Last Used', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <th>
-                                <?php esc_html_e('Created', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Created', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <th>
-                                <?php esc_html_e('Actions', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Actions', 'shopping-agent-with-ucp'); ?>
                             </th>
                         </tr>
                     </thead>
@@ -202,7 +206,7 @@ $api_keys = $api_key_model->get_all();
                         <?php if (empty($api_keys)): ?>
                             <tr>
                                 <td colspan="6">
-                                    <?php esc_html_e('No API keys found. Create one above.', 'ucp-shopping-agent'); ?>
+                                    <?php esc_html_e('No API keys found. Create one above.', 'shopping-agent-with-ucp'); ?>
                                 </td>
                             </tr>
                         <?php else: ?>
@@ -226,7 +230,7 @@ $api_keys = $api_key_model->get_all();
                                     <td>
                                         <button type="button" class="button button-small delete-api-key"
                                             data-key-id="<?php echo esc_attr($key->id); ?>">
-                                            <?php esc_html_e('Delete', 'ucp-shopping-agent'); ?>
+                                            <?php esc_html_e('Delete', 'shopping-agent-with-ucp'); ?>
                                         </button>
                                     </td>
                                 </tr>
@@ -239,63 +243,63 @@ $api_keys = $api_key_model->get_all();
         <?php elseif ($active_tab === 'discovery'): ?>
             <div class="discovery-section">
                 <h2>
-                    <?php esc_html_e('Discovery Endpoint', 'ucp-shopping-agent'); ?>
+                    <?php esc_html_e('Discovery Endpoint', 'shopping-agent-with-ucp'); ?>
                 </h2>
                 <p class="description">
-                    <?php esc_html_e('AI agents can discover your store capabilities at the following URL:', 'ucp-shopping-agent'); ?>
+                    <?php esc_html_e('AI agents can discover your store capabilities at the following URL:', 'shopping-agent-with-ucp'); ?>
                 </p>
 
                 <div class="discovery-url-box">
                     <code id="discovery-url"><?php echo esc_url(home_url('/.well-known/ucp')); ?></code>
                     <button type="button" class="button copy-to-clipboard" data-target="#discovery-url">
-                        <?php esc_html_e('Copy', 'ucp-shopping-agent'); ?>
+                        <?php esc_html_e('Copy', 'shopping-agent-with-ucp'); ?>
                     </button>
                     <a href="<?php echo esc_url(home_url('/.well-known/ucp')); ?>" target="_blank" class="button">
-                        <?php esc_html_e('Test', 'ucp-shopping-agent'); ?>
+                        <?php esc_html_e('Test', 'shopping-agent-with-ucp'); ?>
                     </a>
                 </div>
 
                 <h3>
-                    <?php esc_html_e('Quick Start Guide', 'ucp-shopping-agent'); ?>
+                    <?php esc_html_e('Quick Start Guide', 'shopping-agent-with-ucp'); ?>
                 </h3>
                 <ol class="quick-start">
                     <li>
                         <strong>
-                            <?php esc_html_e('Generate an API Key', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Generate an API Key', 'shopping-agent-with-ucp'); ?>
                         </strong>
                         <p>
-                            <?php esc_html_e('Go to the API Keys tab and create a new key with appropriate permissions.', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Go to the API Keys tab and create a new key with appropriate permissions.', 'shopping-agent-with-ucp'); ?>
                         </p>
                     </li>
                     <li>
                         <strong>
-                            <?php esc_html_e('Verify Discovery', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Verify Discovery', 'shopping-agent-with-ucp'); ?>
                         </strong>
                         <pre>curl <?php echo esc_url(home_url('/.well-known/ucp')); ?></pre>
                     </li>
                     <li>
                         <strong>
-                            <?php esc_html_e('Authenticate Requests', 'ucp-shopping-agent'); ?>
+                            <?php esc_html_e('Authenticate Requests', 'shopping-agent-with-ucp'); ?>
                         </strong>
                         <pre>curl -H "X-UCP-API-Key: YOUR_KEY_ID:YOUR_SECRET" \
-          <?php echo esc_url(get_rest_url(null, 'ucp/v1/products')); ?></pre>
+                      <?php echo esc_url(get_rest_url(null, 'ucp/v1/products')); ?></pre>
                     </li>
                 </ol>
 
                 <h3>
-                    <?php esc_html_e('Available Endpoints', 'ucp-shopping-agent'); ?>
+                    <?php esc_html_e('Available Endpoints', 'shopping-agent-with-ucp'); ?>
                 </h3>
                 <table class="wp-list-table widefat fixed striped">
                     <thead>
                         <tr>
                             <th>
-                                <?php esc_html_e('Endpoint', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Endpoint', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <th>
-                                <?php esc_html_e('Description', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Description', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <th>
-                                <?php esc_html_e('Auth Required', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Auth Required', 'shopping-agent-with-ucp'); ?>
                             </th>
                         </tr>
                     </thead>
@@ -303,91 +307,91 @@ $api_keys = $api_key_model->get_all();
                         <tr>
                             <td><code>/ucp/v1/discovery</code></td>
                             <td>
-                                <?php esc_html_e('Store capabilities and info', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Store capabilities and info', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('No', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('No', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/products</code></td>
                             <td>
-                                <?php esc_html_e('Browse and search products', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Browse and search products', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('No', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('No', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/categories</code></td>
                             <td>
-                                <?php esc_html_e('Product categories', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Product categories', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('No', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('No', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/carts</code></td>
                             <td>
-                                <?php esc_html_e('Cart management', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Cart management', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('Write', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Write', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/checkout/sessions</code></td>
                             <td>
-                                <?php esc_html_e('Checkout sessions', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Checkout sessions', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('Write', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Write', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/orders</code></td>
                             <td>
-                                <?php esc_html_e('Order details', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Order details', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('Write', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Write', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/customers</code></td>
                             <td>
-                                <?php esc_html_e('Customer management', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Customer management', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('Write', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Write', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/shipping/rates</code></td>
                             <td>
-                                <?php esc_html_e('Shipping calculation', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Shipping calculation', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('No', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('No', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/reviews</code></td>
                             <td>
-                                <?php esc_html_e('Product reviews', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Product reviews', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('No/Write', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('No/Write', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                         <tr>
                             <td><code>/ucp/v1/coupons</code></td>
                             <td>
-                                <?php esc_html_e('Coupon validation', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('Coupon validation', 'shopping-agent-with-ucp'); ?>
                             </td>
                             <td>
-                                <?php esc_html_e('No', 'ucp-shopping-agent'); ?>
+                                <?php esc_html_e('No', 'shopping-agent-with-ucp'); ?>
                             </td>
                         </tr>
                     </tbody>

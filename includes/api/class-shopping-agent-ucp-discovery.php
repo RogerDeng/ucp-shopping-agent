@@ -4,14 +4,14 @@
  *
  * Handles the /.well-known/ucp discovery endpoint.
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Discovery extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Discovery extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'discovery';
@@ -225,7 +225,7 @@ class WC_UCP_Discovery extends WC_UCP_REST_Controller
      */
     private function get_signing_keys()
     {
-        return WC_UCP_Activator::get_signing_key_info();
+        return Shopping_Agent_UCP_Activator::get_signing_key_info();
     }
 
     /**
@@ -243,22 +243,22 @@ class WC_UCP_Discovery extends WC_UCP_REST_Controller
                 ),
                 array(
                     'name' => 'query',
-                    'param_name' => 'ucp_api_key',
+                    'param_name' => 'shopping_agent_shopping_agent_ucp_api_key',
                     'format' => 'key_id:secret',
                 ),
             ),
             'permissions' => array(
                 array(
                     'level' => 'read',
-                    'description' => __('Browse products, categories, reviews', 'ucp-shopping-agent'),
+                    'description' => __('Browse products, categories, reviews', 'shopping-agent-with-ucp'),
                 ),
                 array(
                     'level' => 'write',
-                    'description' => __('Create carts, checkout sessions, orders', 'ucp-shopping-agent'),
+                    'description' => __('Create carts, checkout sessions, orders', 'shopping-agent-with-ucp'),
                 ),
                 array(
                     'level' => 'admin',
-                    'description' => __('Manage API keys, access all endpoints', 'ucp-shopping-agent'),
+                    'description' => __('Manage API keys, access all endpoints', 'shopping-agent-with-ucp'),
                 ),
             ),
         );
@@ -269,7 +269,7 @@ class WC_UCP_Discovery extends WC_UCP_REST_Controller
      */
     private function get_rate_limits()
     {
-        $rate_limit = (int) get_option('wc_ucp_rate_limit', 100);
+        $rate_limit = (int) get_option('shopping_agent_shopping_agent_ucp_rate_limit', 100);
 
         return array(
             'requests_per_minute' => $rate_limit,

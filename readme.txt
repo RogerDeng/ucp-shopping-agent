@@ -1,4 +1,4 @@
-=== UCP Shopping Agent ===
+=== Shopping Agent with UCP ===
 Contributors: rogerdeng
 Donate link: https://sites.google.com/view/ucp-shopping-agent
 Tags: shopping, ecommerce, ucp, agent, woocommerce
@@ -13,7 +13,7 @@ Enable AI agents to discover, browse, and transact with your online store throug
 
 == Description ==
 
-**UCP Shopping Agent** implements the Google Universal Commerce Protocol (UCP), providing a standardized REST API that enables AI agents and automated systems to interact with your online store.
+**Shopping Agent with UCP** implements the Google Universal Commerce Protocol (UCP), providing a standardized REST API that enables AI agents and automated systems to interact with your online store.
 
 This plugin requires WooCommerce to be installed and activated.
 
@@ -32,7 +32,7 @@ This plugin requires WooCommerce to be installed and activated.
 * **Webhooks** - Real-time order event notifications with HMAC-SHA256 signatures, retry logic, and automatic failed webhook recovery
 * **Secure Authentication** - API key authentication with granular permission levels
 
-= Why Use UCP Shopping Agent? =
+= Why Use Shopping Agent with UCP? =
 
 The Universal Commerce Protocol (UCP) is designed to enable AI assistants and automated agents to help users discover products, compare options, and complete purchases. By implementing UCP, your store becomes accessible to the next generation of AI-powered shopping experiences.
 
@@ -65,6 +65,13 @@ API keys can be created with three permission levels:
 * WooCommerce 5.0 or higher
 * PHP 7.4 or higher
 
+= External Services =
+
+This plugin connects to external services to provide its functionality.
+
+* **UCP Schema Registry** (`https://ucp.dev`): Used to reference standard JSON schemas for API responses. No data is sent to this service.
+* **Agent Documentation** (`https://agent.example`): Used as an example for discovery link relations. No data is sent to this service.
+
 = Documentation =
 
 For full documentation, please visit our [GitHub repository](https://github.com/rogerdeng/ucp-shopping-agent).
@@ -75,7 +82,7 @@ For full documentation, please visit our [GitHub repository](https://github.com/
 
 1. Log in to your WordPress admin panel
 2. Go to Plugins > Add New
-3. Search for "UCP Shopping Agent"
+3. Search for "Shopping Agent with UCP"
 4. Click "Install Now" and then "Activate"
 5. Ensure WooCommerce is installed and activated
 6. Go to WooCommerce > UCP to configure settings
@@ -137,6 +144,11 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 
 == Changelog ==
 
+= 1.0.3 =
+* Renamed plugin to "Shopping Agent with UCP" to avoid trademark issues.
+* Updated prefixes to avoid conflicts.
+* Security enhancements (direct file access checks).
+
 = 1.0.2 =
 * Webhook retry with exponential backoff (3 attempts)
 * Failed webhook storage and automatic recovery via WP-Cron
@@ -165,15 +177,18 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 
 == Upgrade Notice ==
 
+= 1.0.3 =
+Renamed plugin and updated prefixes. Please deactivate and reactivate for changes to take effect.
+
 = 1.0.2 =
 Improved webhook reliability with retry logic and signing keys in discovery. Reactivate plugin after upgrade to generate signing key.
 
 = 1.0.0 =
-Initial release of UCP Shopping Agent. Install to enable AI agents to interact with your online store.
+Initial release of Shopping Agent with UCP. Install to enable AI agents to interact with your online store.
 
 == Privacy Policy ==
 
-UCP Shopping Agent stores the following data:
+Shopping Agent with UCP stores the following data:
 
 * **API Keys** - Stored in a custom database table with hashed secrets
 * **Cart Sessions** - Temporary cart data stored until expiration or checkout
@@ -190,3 +205,4 @@ All data is stored locally in your WordPress database and can be deleted by deac
 This plugin does not connect to any third-party services by default. If you configure webhooks, the plugin will send HTTP POST requests to the URLs you specify when order events occur.
 
 This plugin requires WooCommerce (https://woocommerce.com) to function, but does not send any data to WooCommerce servers.
+

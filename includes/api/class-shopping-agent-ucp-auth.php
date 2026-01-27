@@ -4,14 +4,14 @@
  *
  * Handles API key authentication for UCP requests.
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Auth extends WC_UCP_REST_Controller
+class Shopping_Agent_UCP_Auth extends Shopping_Agent_UCP_REST_Controller
 {
 
     protected $rest_base = 'auth';
@@ -37,14 +37,14 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
                         'type' => 'string',
                         'required' => false,
                         'default' => '',
-                        'description' => __('Description for this API key', 'ucp-shopping-agent'),
+                        'description' => __('Description for this API key', 'shopping-agent-with-ucp'),
                     ),
                     'permissions' => array(
                         'type' => 'string',
                         'required' => false,
                         'default' => 'read',
                         'enum' => array('read', 'write', 'admin'),
-                        'description' => __('Permission level', 'ucp-shopping-agent'),
+                        'description' => __('Permission level', 'shopping-agent-with-ucp'),
                     ),
                 ),
             ),
@@ -101,7 +101,7 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
 
         // Fallback to query parameter
         if (empty($api_key)) {
-            $api_key = $request->get_param('ucp_api_key');
+            $api_key = $request->get_param('shopping_agent_shopping_agent_ucp_api_key');
         }
 
         if (empty($api_key)) {
@@ -110,8 +110,8 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
                 return true;
             }
             return new WP_Error(
-                'ucp_auth_required',
-                __('API key is required for this request.', 'ucp-shopping-agent'),
+                'shopping_agent_shopping_agent_ucp_auth_required',
+                __('API key is required for this request.', 'shopping-agent-with-ucp'),
                 array('status' => 401)
             );
         }
@@ -120,8 +120,8 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
         $parts = explode(':', $api_key, 2);
         if (count($parts) !== 2) {
             return new WP_Error(
-                'ucp_invalid_key_format',
-                __('Invalid API key format. Expected format: key_id:secret', 'ucp-shopping-agent'),
+                'shopping_agent_shopping_agent_ucp_invalid_key_format',
+                __('Invalid API key format. Expected format: key_id:secret', 'shopping-agent-with-ucp'),
                 array('status' => 401)
             );
         }
@@ -129,13 +129,13 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
         list($key_id, $secret) = $parts;
 
         // Look up the key
-        $api_key_model = new WC_UCP_API_Key();
+        $api_key_model = new Shopping_Agent_UCP_API_Key();
         $key_data = $api_key_model->get_by_key_id($key_id);
 
         if (!$key_data) {
             return new WP_Error(
-                'ucp_invalid_api_key',
-                __('Invalid API key.', 'ucp-shopping-agent'),
+                'shopping_agent_shopping_agent_ucp_invalid_api_key',
+                __('Invalid API key.', 'shopping-agent-with-ucp'),
                 array('status' => 401)
             );
         }
@@ -143,8 +143,8 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
         // Verify secret
         if (!wp_check_password($secret, $key_data->secret_hash)) {
             return new WP_Error(
-                'ucp_invalid_api_key',
-                __('Invalid API key.', 'ucp-shopping-agent'),
+                'shopping_agent_shopping_agent_ucp_invalid_api_key',
+                __('Invalid API key.', 'shopping-agent-with-ucp'),
                 array('status' => 401)
             );
         }
@@ -156,10 +156,10 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
 
         if ($key_level < $required_level) {
             return new WP_Error(
-                'ucp_insufficient_permissions',
+                'shopping_agent_shopping_agent_ucp_insufficient_permissions',
                 sprintf(
                     /* translators: %s: required permission level */
-                    __('This API key does not have %s permissions.', 'ucp-shopping-agent'),
+                    __('This API key does not have %s permissions.', 'shopping-agent-with-ucp'),
                     $required_permission
                 ),
                 array('status' => 403)
@@ -192,7 +192,7 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
         $permissions = $request->get_param('permissions');
         $user_id = get_current_user_id();
 
-        $api_key_model = new WC_UCP_API_Key();
+        $api_key_model = new Shopping_Agent_UCP_API_Key();
         $result = $api_key_model->create($description, $permissions, $user_id);
 
         if (is_wp_error($result)) {
@@ -207,7 +207,7 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
             'description' => $description,
             'permissions' => $permissions,
             'created_at' => current_time('c'),
-            'message' => __('Save this API key securely. The secret will not be shown again.', 'ucp-shopping-agent'),
+            'message' => __('Save this API key securely. The secret will not be shown again.', 'shopping-agent-with-ucp'),
         ));
     }
 
@@ -216,7 +216,7 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
      */
     public function list_api_keys($request)
     {
-        $api_key_model = new WC_UCP_API_Key();
+        $api_key_model = new Shopping_Agent_UCP_API_Key();
         $keys = $api_key_model->get_all();
 
         $formatted_keys = array();
@@ -242,13 +242,13 @@ class WC_UCP_Auth extends WC_UCP_REST_Controller
     {
         $id = (int) $request->get_param('id');
 
-        $api_key_model = new WC_UCP_API_Key();
+        $api_key_model = new Shopping_Agent_UCP_API_Key();
         $result = $api_key_model->delete($id);
 
         if (!$result) {
             return $this->error_response(
-                'ucp_key_not_found',
-                __('API key not found.', 'ucp-shopping-agent'),
+                'shopping_agent_shopping_agent_ucp_key_not_found',
+                __('API key not found.', 'shopping-agent-with-ucp'),
                 404
             );
         }

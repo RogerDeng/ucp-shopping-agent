@@ -2,14 +2,14 @@
 /**
  * Base REST Controller
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-abstract class WC_UCP_REST_Controller
+abstract class Shopping_Agent_UCP_REST_Controller
 {
 
     /**
@@ -35,7 +35,7 @@ abstract class WC_UCP_REST_Controller
         if (!class_exists('WooCommerce')) {
             return new WP_Error(
                 'woocommerce_not_active',
-                __('WooCommerce is not active.', 'ucp-shopping-agent'),
+                __('WooCommerce is not active.', 'shopping-agent-with-ucp'),
                 array('status' => 500)
             );
         }
@@ -51,7 +51,7 @@ abstract class WC_UCP_REST_Controller
      */
     protected function authenticate($request, $required_permission = 'read')
     {
-        return WC_UCP_Auth::validate_api_key_request($request, $required_permission);
+        return Shopping_Agent_UCP_Auth::validate_api_key_request($request, $required_permission);
     }
 
     /**

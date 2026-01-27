@@ -1,5 +1,5 @@
 /**
- * WooCommerce UCP Agent - Admin Scripts
+ * Shopping Agent with UCP - Admin Scripts
  */
 
 (function ($) {
@@ -12,11 +12,11 @@
             var description = $('#api-key-description').val();
             var permissions = $('#api-key-permissions').val();
 
-            $button.prop('disabled', true).text(wcUcpAdmin.strings.loading || 'Creating...');
+            $button.prop('disabled', true).text(shoppingAgentUcpAdmin.strings.loading || 'Creating...');
 
-            $.post(wcUcpAdmin.ajaxUrl, {
-                action: 'wc_ucp_create_api_key',
-                nonce: wcUcpAdmin.nonce,
+            $.post(shoppingAgentUcpAdmin.ajaxUrl, {
+                action: 'shopping_agent_shopping_agent_ucp_create_api_key',
+                nonce: shoppingAgentUcpAdmin.nonce,
                 description: description,
                 permissions: permissions
             }, function (response) {
@@ -32,11 +32,11 @@
                         location.reload();
                     }, 3000);
                 } else {
-                    alert(response.data || wcUcpAdmin.strings.error);
+                    alert(response.data || shoppingAgentUcpAdmin.strings.error);
                 }
             }).fail(function () {
                 $button.prop('disabled', false).text('Generate API Key');
-                alert(wcUcpAdmin.strings.error);
+                alert(shoppingAgentUcpAdmin.strings.error);
             });
         });
 
@@ -45,15 +45,15 @@
             var $button = $(this);
             var keyId = $button.data('key-id');
 
-            if (!confirm(wcUcpAdmin.strings.confirmDelete)) {
+            if (!confirm(shoppingAgentUcpAdmin.strings.confirmDelete)) {
                 return;
             }
 
             $button.prop('disabled', true);
 
-            $.post(wcUcpAdmin.ajaxUrl, {
-                action: 'wc_ucp_delete_api_key',
-                nonce: wcUcpAdmin.nonce,
+            $.post(shoppingAgentUcpAdmin.ajaxUrl, {
+                action: 'shopping_agent_shopping_agent_ucp_delete_api_key',
+                nonce: shoppingAgentUcpAdmin.nonce,
                 key_id: keyId
             }, function (response) {
                 if (response.success) {
@@ -66,11 +66,11 @@
                     });
                 } else {
                     $button.prop('disabled', false);
-                    alert(response.data || wcUcpAdmin.strings.error);
+                    alert(response.data || shoppingAgentUcpAdmin.strings.error);
                 }
             }).fail(function () {
                 $button.prop('disabled', false);
-                alert(wcUcpAdmin.strings.error);
+                alert(shoppingAgentUcpAdmin.strings.error);
             });
         });
 
@@ -82,7 +82,7 @@
 
             navigator.clipboard.writeText(text).then(function () {
                 var originalText = $button.text();
-                $button.text(wcUcpAdmin.strings.copied);
+                $button.text(shoppingAgentUcpAdmin.strings.copied);
                 setTimeout(function () {
                     $button.text(originalText);
                 }, 2000);
@@ -95,7 +95,7 @@
                 $temp.remove();
 
                 var originalText = $button.text();
-                $button.text(wcUcpAdmin.strings.copied);
+                $button.text(shoppingAgentUcpAdmin.strings.copied);
                 setTimeout(function () {
                     $button.text(originalText);
                 }, 2000);

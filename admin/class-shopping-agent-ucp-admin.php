@@ -2,14 +2,14 @@
 /**
  * Admin Class
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_Admin
+class Shopping_Agent_UCP_Admin
 {
 
     /**
@@ -37,10 +37,10 @@ class WC_UCP_Admin
     {
         add_submenu_page(
             'woocommerce',
-            __('UCP Settings', 'ucp-shopping-agent'),
-            __('UCP', 'ucp-shopping-agent'),
+            __('UCP Settings', 'shopping-agent-with-ucp'),
+            __('UCP', 'shopping-agent-with-ucp'),
             'manage_woocommerce',
-            'wc-ucp-settings',
+            'shopping-agent-ucp-settings', // Slug updated from wc-ucp-settings
             array($this, 'render_settings_page')
         );
     }
@@ -56,15 +56,15 @@ class WC_UCP_Admin
             $this->enqueue_order_styles();
         }
 
-        if (strpos($hook, 'wc-ucp-settings') === false) {
+        if (strpos($hook, 'shopping-agent-ucp-settings') === false) {
             return;
         }
 
         wp_enqueue_style(
-            'wc-ucp-admin',
-            WC_UCP_PLUGIN_URL . 'assets/css/admin.css',
+            'shopping-agent-ucp-admin',
+            SHOPPING_AGENT_UCP_PLUGIN_URL . 'assets/css/admin.css',
             array(),
-            WC_UCP_VERSION
+            SHOPPING_AGENT_UCP_VERSION
         );
     }
 
@@ -122,25 +122,25 @@ class WC_UCP_Admin
      */
     public function enqueue_scripts($hook)
     {
-        if (strpos($hook, 'wc-ucp-settings') === false) {
+        if (strpos($hook, 'shopping-agent-ucp-settings') === false) {
             return;
         }
 
         wp_enqueue_script(
-            'wc-ucp-admin',
-            WC_UCP_PLUGIN_URL . 'assets/js/admin.js',
+            'shopping-agent-ucp-admin',
+            SHOPPING_AGENT_UCP_PLUGIN_URL . 'assets/js/admin.js',
             array('jquery'),
-            WC_UCP_VERSION,
+            SHOPPING_AGENT_UCP_VERSION,
             true
         );
 
-        wp_localize_script('wc-ucp-admin', 'wcUcpAdmin', array(
+        wp_localize_script('shopping-agent-ucp-admin', 'shoppingAgentUcpAdmin', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('wc_ucp_admin'),
+            'nonce' => wp_create_nonce('shopping_agent_shopping_agent_ucp_admin'),
             'strings' => array(
-                'confirmDelete' => __('Are you sure you want to delete this API key?', 'ucp-shopping-agent'),
-                'copied' => __('Copied to clipboard!', 'ucp-shopping-agent'),
-                'error' => __('An error occurred. Please try again.', 'ucp-shopping-agent'),
+                'confirmDelete' => __('Are you sure you want to delete this API key?', 'shopping-agent-with-ucp'),
+                'copied' => __('Copied to clipboard!', 'shopping-agent-with-ucp'),
+                'error' => __('An error occurred. Please try again.', 'shopping-agent-with-ucp'),
             ),
         ));
     }
@@ -150,35 +150,35 @@ class WC_UCP_Admin
      */
     public function register_settings()
     {
-        register_setting('wc_ucp_settings', 'wc_ucp_enabled', array(
+        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_enabled', array(
             'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
             'default' => 'yes',
         ));
-        register_setting('wc_ucp_settings', 'wc_ucp_cart_expiry_hours', array(
+        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_cart_expiry_hours', array(
             'type' => 'integer',
             'sanitize_callback' => 'absint',
             'default' => 24,
         ));
-        register_setting('wc_ucp_settings', 'wc_ucp_checkout_expiry', array(
+        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_checkout_expiry', array(
             'type' => 'integer',
             'sanitize_callback' => 'absint',
             'default' => 30,
         ));
-        register_setting('wc_ucp_settings', 'wc_ucp_rate_limit', array(
+        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_rate_limit', array(
             'type' => 'integer',
             'sanitize_callback' => 'absint',
             'default' => 100,
         ));
-        register_setting('wc_ucp_settings', 'wc_ucp_log_enabled', array(
+        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_log_enabled', array(
             'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
             'default' => 'no',
         ));
 
         // Handle AJAX actions
-        add_action('wp_ajax_wc_ucp_create_api_key', array($this, 'ajax_create_api_key'));
-        add_action('wp_ajax_wc_ucp_delete_api_key', array($this, 'ajax_delete_api_key'));
+        add_action('wp_ajax_shopping_agent_shopping_agent_ucp_create_api_key', array($this, 'ajax_create_api_key'));
+        add_action('wp_ajax_shopping_agent_shopping_agent_ucp_delete_api_key', array($this, 'ajax_delete_api_key'));
     }
 
     /**
@@ -192,7 +192,7 @@ class WC_UCP_Admin
             $new_columns[$key] = $value;
             // Add after order status column
             if ($key === 'order_status') {
-                $new_columns['ucp_source'] = __('Source', 'ucp-shopping-agent');
+                $new_columns['ucp_source'] = __('Source', 'shopping-agent-with-ucp');
             }
         }
 
@@ -208,10 +208,10 @@ class WC_UCP_Admin
             return;
         }
 
-        $is_ucp = get_post_meta($post_id, '_ucp_created', true);
+        $is_ucp = get_post_meta($post_id, '_shopping_agent_ucp_created', true);
 
         if ($is_ucp) {
-            echo $this->get_ucp_badge();
+            echo $this->get_shopping_agent_ucp_badge();
         } else {
             echo '<span style="color:#999;">—</span>';
         }
@@ -226,10 +226,10 @@ class WC_UCP_Admin
             return;
         }
 
-        $is_ucp = $order->get_meta('_ucp_created');
+        $is_ucp = $order->get_meta('_shopping_agent_ucp_created');
 
         if ($is_ucp) {
-            echo $this->get_ucp_badge();
+            echo $this->get_shopping_agent_ucp_badge();
         } else {
             echo '<span style="color:#999;">—</span>';
         }
@@ -238,9 +238,9 @@ class WC_UCP_Admin
     /**
      * Get UCP badge HTML
      */
-    private function get_ucp_badge()
+    private function get_shopping_agent_ucp_badge()
     {
-        $icon_url = WC_UCP_PLUGIN_URL . 'assets/ucp-icon.svg';
+        $icon_url = SHOPPING_AGENT_UCP_PLUGIN_URL . 'assets/ucp-icon.svg';
         $badge_style = 'display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;';
         $img_style = 'width:14px;height:14px;filter:brightness(0) invert(1);';
         return '<span style="' . esc_attr($badge_style) . '"><img src="' . esc_url($icon_url) . '" alt="UCP" style="' . esc_attr($img_style) . '"> UCP</span>';
@@ -261,11 +261,12 @@ class WC_UCP_Admin
 
         ?>
         <select name="ucp_filter">
-            <option value=""><?php esc_html_e('All sources', 'ucp-shopping-agent'); ?></option>
-            <option value="ucp" <?php selected($current, 'ucp'); ?>><?php esc_html_e('UCP Orders', 'ucp-shopping-agent'); ?>
+            <option value=""><?php esc_html_e('All sources', 'shopping-agent-with-ucp'); ?></option>
+            <option value="ucp" <?php selected($current, 'ucp'); ?>>
+                <?php esc_html_e('UCP Orders', 'shopping-agent-with-ucp'); ?>
             </option>
             <option value="non_ucp" <?php selected($current, 'non_ucp'); ?>>
-                <?php esc_html_e('Non-UCP Orders', 'ucp-shopping-agent'); ?>
+                <?php esc_html_e('Non-UCP Orders', 'shopping-agent-with-ucp'); ?>
             </option>
         </select>
         <?php
@@ -280,11 +281,12 @@ class WC_UCP_Admin
 
         ?>
         <select name="ucp_filter">
-            <option value=""><?php esc_html_e('All sources', 'ucp-shopping-agent'); ?></option>
-            <option value="ucp" <?php selected($current, 'ucp'); ?>><?php esc_html_e('UCP Orders', 'ucp-shopping-agent'); ?>
+            <option value=""><?php esc_html_e('All sources', 'shopping-agent-with-ucp'); ?></option>
+            <option value="ucp" <?php selected($current, 'ucp'); ?>>
+                <?php esc_html_e('UCP Orders', 'shopping-agent-with-ucp'); ?>
             </option>
             <option value="non_ucp" <?php selected($current, 'non_ucp'); ?>>
-                <?php esc_html_e('Non-UCP Orders', 'ucp-shopping-agent'); ?>
+                <?php esc_html_e('Non-UCP Orders', 'shopping-agent-with-ucp'); ?>
             </option>
         </select>
         <?php
@@ -305,7 +307,7 @@ class WC_UCP_Admin
 
         if ($filter === 'ucp') {
             $vars['meta_query'][] = array(
-                'key' => '_ucp_created',
+                'key' => '_shopping_agent_ucp_created',
                 'value' => '1',
                 'compare' => '=',
             );
@@ -313,11 +315,11 @@ class WC_UCP_Admin
             $vars['meta_query'][] = array(
                 'relation' => 'OR',
                 array(
-                    'key' => '_ucp_created',
+                    'key' => '_shopping_agent_ucp_created',
                     'compare' => 'NOT EXISTS',
                 ),
                 array(
-                    'key' => '_ucp_created',
+                    'key' => '_shopping_agent_ucp_created',
                     'value' => '',
                     'compare' => '=',
                 ),
@@ -337,8 +339,8 @@ class WC_UCP_Admin
             : 'shop_order';
 
         add_meta_box(
-            'wc_ucp_order_info',
-            __('UCP Order Info', 'ucp-shopping-agent'),
+            'shopping_agent_shopping_agent_ucp_order_info',
+            __('UCP Order Info', 'shopping-agent-with-ucp'),
             array($this, 'render_order_meta_box'),
             $screen,
             'side',
@@ -357,30 +359,30 @@ class WC_UCP_Admin
             return;
         }
 
-        $is_ucp = $order->get_meta('_ucp_created');
+        $is_ucp = $order->get_meta('_shopping_agent_ucp_created');
 
         if (!$is_ucp) {
-            echo '<p style="color:#999;">' . esc_html__('This order was not created via UCP.', 'ucp-shopping-agent') . '</p>';
+            echo '<p style="color:#999;">' . esc_html__('This order was not created via UCP.', 'shopping-agent-with-ucp') . '</p>';
             return;
         }
 
-        $session_id = $order->get_meta('_ucp_checkout_session_id');
-        $payment_handler = $order->get_meta('_ucp_payment_handler_id');
+        $session_id = $order->get_meta('_shopping_agent_ucp_checkout_session_id');
+        $payment_handler = $order->get_meta('_shopping_agent_ucp_payment_handler_id');
 
         ?>
         <div class="ucp-meta-box-content">
             <p>
-                <?php echo $this->get_ucp_badge(); ?>
+                <?php echo $this->get_shopping_agent_ucp_badge(); ?>
             </p>
             <?php if ($session_id): ?>
                 <p>
-                    <strong><?php esc_html_e('Session ID:', 'ucp-shopping-agent'); ?></strong><br>
+                    <strong><?php esc_html_e('Session ID:', 'shopping-agent-with-ucp'); ?></strong><br>
                     <code class="ucp-session-id"><?php echo esc_html($session_id); ?></code>
                 </p>
             <?php endif; ?>
             <?php if ($payment_handler): ?>
                 <p>
-                    <strong><?php esc_html_e('Payment Handler:', 'ucp-shopping-agent'); ?></strong><br>
+                    <strong><?php esc_html_e('Payment Handler:', 'shopping-agent-with-ucp'); ?></strong><br>
                     <?php echo esc_html($payment_handler); ?>
                 </p>
             <?php endif; ?>
@@ -395,7 +397,7 @@ class WC_UCP_Admin
     {
         $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
 
-        include WC_UCP_PLUGIN_DIR . 'admin/views/settings-page.php';
+        include SHOPPING_AGENT_UCP_PLUGIN_DIR . 'admin/views/settings-page.php';
     }
 
     /**
@@ -403,16 +405,16 @@ class WC_UCP_Admin
      */
     public function ajax_create_api_key()
     {
-        check_ajax_referer('wc_ucp_admin', 'nonce');
+        check_ajax_referer('shopping_agent_shopping_agent_ucp_admin', 'nonce');
 
         if (!current_user_can('manage_woocommerce')) {
-            wp_send_json_error(__('Permission denied.', 'ucp-shopping-agent'));
+            wp_send_json_error(__('Permission denied.', 'shopping-agent-with-ucp'));
         }
 
         $description = sanitize_text_field($_POST['description'] ?? '');
         $permissions = sanitize_text_field($_POST['permissions'] ?? 'read');
 
-        $api_key_model = new WC_UCP_API_Key();
+        $api_key_model = new Shopping_Agent_UCP_API_Key();
         $result = $api_key_model->create($description, $permissions, get_current_user_id());
 
         if (is_wp_error($result)) {
@@ -432,23 +434,23 @@ class WC_UCP_Admin
      */
     public function ajax_delete_api_key()
     {
-        check_ajax_referer('wc_ucp_admin', 'nonce');
+        check_ajax_referer('shopping_agent_shopping_agent_ucp_admin', 'nonce');
 
         if (!current_user_can('manage_woocommerce')) {
-            wp_send_json_error(__('Permission denied.', 'ucp-shopping-agent'));
+            wp_send_json_error(__('Permission denied.', 'shopping-agent-with-ucp'));
         }
 
         $key_id = intval($_POST['key_id'] ?? 0);
 
         if (!$key_id) {
-            wp_send_json_error(__('Invalid key ID.', 'ucp-shopping-agent'));
+            wp_send_json_error(__('Invalid key ID.', 'shopping-agent-with-ucp'));
         }
 
-        $api_key_model = new WC_UCP_API_Key();
+        $api_key_model = new Shopping_Agent_UCP_API_Key();
         $result = $api_key_model->delete($key_id);
 
         if (!$result) {
-            wp_send_json_error(__('Failed to delete API key.', 'ucp-shopping-agent'));
+            wp_send_json_error(__('Failed to delete API key.', 'shopping-agent-with-ucp'));
         }
 
         wp_send_json_success();

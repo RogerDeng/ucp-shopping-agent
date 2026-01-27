@@ -139,19 +139,19 @@
 ```
 key_id:secret
 ```
-範例：`ucp_abc123:ucp_secret_xyz789`
+範例：`ucp_abc123:saucp_secret_xyz789`
 
 ### 驗證方式
 
 **Header (推薦)**
 ```bash
-curl -H "X-UCP-API-Key: ucp_abc123:ucp_secret_xyz789" \
+curl -H "X-UCP-API-Key: ucp_abc123:saucp_secret_xyz789" \
   https://your-store.com/wp-json/ucp/v1/products
 ```
 
 **Query Parameter (查詢參數)**
 ```bash
-curl "https://your-store.com/wp-json/ucp/v1/products?ucp_api_key=ucp_abc123:ucp_secret_xyz789"
+curl "https://your-store.com/wp-json/ucp/v1/products?ucp_api_key=ucp_abc123:saucp_secret_xyz789"
 ```
 
 ### 權限級別
@@ -364,10 +364,10 @@ if (hash_equals($expected_hash, $received_hash)) {
 
 | 資料表 | 用途 |
 |-------|------|
-| `wp_ucp_api_keys` | API 金鑰儲存 |
-| `wp_ucp_cart_sessions` | 持久化購物車資料 |
-| `wp_ucp_checkout_sessions` | 結帳工作階段資料 |
-| `wp_ucp_webhooks` | Webhook 設定 |
+| `wp_shopping_agent_ucp_api_keys` | API 金鑰儲存 |
+| `wp_shopping_agent_ucp_cart_sessions` | 持久化購物車資料 |
+| `wp_shopping_agent_ucp_checkout_sessions` | 結帳工作階段資料 |
+| `wp_shopping_agent_ucp_webhooks` | Webhook 設定 |
 
 ---
 
@@ -428,13 +428,13 @@ ucp-shopping-agent/
 ### Actions
 ```php
 // Webhook 傳遞失敗
-do_action('wc_ucp_webhook_delivery_failed', $webhook, $error);
+do_action('shopping_agent_shopping_agent_ucp_webhook_delivery_failed', $webhook, $error);
 ```
 
 ### Filters
 ```php
 // 修改 webhook SSL 驗證
-apply_filters('wc_ucp_webhook_ssl_verify', true);
+apply_filters('shopping_agent_shopping_agent_ucp_webhook_ssl_verify', true);
 ```
 
 ---

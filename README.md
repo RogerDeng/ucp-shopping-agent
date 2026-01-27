@@ -139,19 +139,19 @@ Navigate to **WooCommerce → UCP** in your WordPress admin panel.
 ```
 key_id:secret
 ```
-Example: `ucp_abc123:ucp_secret_xyz789`
+Example: `ucp_abc123:saucp_secret_xyz789`
 
 ### Authentication Methods
 
 **Header (Recommended)**
 ```bash
-curl -H "X-UCP-API-Key: ucp_abc123:ucp_secret_xyz789" \
+curl -H "X-UCP-API-Key: ucp_abc123:saucp_secret_xyz789" \
   https://your-store.com/wp-json/ucp/v1/products
 ```
 
 **Query Parameter**
 ```bash
-curl "https://your-store.com/wp-json/ucp/v1/products?ucp_api_key=ucp_abc123:ucp_secret_xyz789"
+curl "https://your-store.com/wp-json/ucp/v1/products?ucp_api_key=ucp_abc123:saucp_secret_xyz789"
 ```
 
 ### Permission Levels
@@ -364,10 +364,10 @@ The plugin creates the following custom tables:
 
 | Table | Purpose |
 |-------|---------|
-| `wp_ucp_api_keys` | API key storage |
-| `wp_ucp_cart_sessions` | Persistent cart data |
-| `wp_ucp_checkout_sessions` | Checkout session data |
-| `wp_ucp_webhooks` | Webhook configurations |
+| `wp_shopping_agent_ucp_api_keys` | API key storage |
+| `wp_shopping_agent_ucp_cart_sessions` | Persistent cart data |
+| `wp_shopping_agent_ucp_checkout_sessions` | Checkout session data |
+| `wp_shopping_agent_ucp_webhooks` | Webhook configurations |
 
 ---
 
@@ -428,13 +428,13 @@ ucp-shopping-agent/
 ### Actions
 ```php
 // Webhook delivery failed
-do_action('wc_ucp_webhook_delivery_failed', $webhook, $error);
+do_action('shopping_agent_shopping_agent_ucp_webhook_delivery_failed', $webhook, $error);
 ```
 
 ### Filters
 ```php
 // Modify webhook SSL verification
-apply_filters('wc_ucp_webhook_ssl_verify', true);
+apply_filters('shopping_agent_shopping_agent_ucp_webhook_ssl_verify', true);
 ```
 
 ---

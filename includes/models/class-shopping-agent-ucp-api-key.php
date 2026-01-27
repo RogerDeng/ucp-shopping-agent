@@ -2,14 +2,14 @@
 /**
  * API Key Model
  *
- * @package WC_UCP_Agent
+ * @package Shopping_Agent_UCP_Agent
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_UCP_API_Key
+class Shopping_Agent_UCP_API_Key
 {
 
     /**
@@ -23,7 +23,7 @@ class WC_UCP_API_Key
     public function __construct()
     {
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'ucp_api_keys';
+        $this->table_name = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_api_keys';
     }
 
     /**
@@ -34,10 +34,10 @@ class WC_UCP_API_Key
         global $wpdb;
 
         // Generate unique key ID
-        $key_id = 'ucp_' . $this->generate_random_string(16);
+        $key_id = 'shopping_agent_shopping_agent_ucp_' . $this->generate_random_string(16);
 
         // Generate secret
-        $secret = 'ucp_secret_' . $this->generate_random_string(32);
+        $secret = 'shopping_agent_shopping_agent_saucp_secret_' . $this->generate_random_string(32);
 
         // Hash the secret
         $secret_hash = wp_hash_password($secret);
@@ -57,8 +57,8 @@ class WC_UCP_API_Key
 
         if ($result === false) {
             return new WP_Error(
-                'ucp_key_creation_failed',
-                __('Failed to create API key.', 'ucp-shopping-agent'),
+                'shopping_agent_shopping_agent_ucp_key_creation_failed',
+                __('Failed to create API key.', 'shopping-agent-with-ucp'),
                 array('status' => 500)
             );
         }
@@ -81,8 +81,8 @@ class WC_UCP_API_Key
         global $wpdb;
 
         // Check cache first
-        $cache_key = 'ucp_api_key_' . md5($key_id);
-        $key_data = wp_cache_get($cache_key, 'ucp_api_keys');
+        $cache_key = 'shopping_agent_shopping_agent_ucp_api_key_' . md5($key_id);
+        $key_data = wp_cache_get($cache_key, 'shopping_agent_shopping_agent_ucp_api_keys');
 
         if ($key_data !== false) {
             return $key_data === 'not_found' ? null : $key_data;
@@ -96,7 +96,7 @@ class WC_UCP_API_Key
         );
 
         // Cache for 5 minutes (300 seconds)
-        wp_cache_set($cache_key, $key_data ? $key_data : 'not_found', 'ucp_api_keys', 300);
+        wp_cache_set($cache_key, $key_data ? $key_data : 'not_found', 'shopping_agent_shopping_agent_ucp_api_keys', 300);
 
         return $key_data;
     }
