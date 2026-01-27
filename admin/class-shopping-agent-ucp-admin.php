@@ -38,7 +38,7 @@ class Shopping_Agent_UCP_Admin
         add_submenu_page(
             'woocommerce',
             __('UCP Settings', 'shopping-agent-with-ucp'),
-            __('UCP', 'shopping-agent-with-ucp'),
+            __('Shopping Agent', 'shopping-agent-with-ucp'),
             'manage_woocommerce',
             'shopping-agent-ucp-settings', // Slug updated from wc-ucp-settings
             array($this, 'render_settings_page')

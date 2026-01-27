@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Shopping Agent with UCP
  * Plugin URI:  https://wordpress.org/plugins/shopping-agent-with-ucp
- * Description: Google Universal Commerce Protocol (UCP) implementation for WooCommerce. Enables AI agents to discover, browse, and transact with your store.
+ * Description: Shopping Agent with UCP(Universal Commerce Protocol) implementation for WooCommerce. Enables AI agents to discover, browse, and transact with your store.
  * Version:     1.0.3
  * Author:      Roger Deng
  * Author URI:  https://sites.google.com/view/shopping-agent-ucp-agent
@@ -12,13 +12,22 @@
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * WC requires at least: 5.0
- * WC tested up to: 8.0
+ * WC tested up to: 10.5
  */
 
 // Prevent direct access
 if (!defined('ABSPATH')) {
     exit;
 }
+
+/**
+ * Declare High-Performance Order Storage (HPOS) compatibility
+ */
+add_action('before_woocommerce_init', function () {
+    if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+    }
+});
 
 /**
  * Plugin Constants
