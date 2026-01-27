@@ -5,7 +5,7 @@ Tags: shopping, ecommerce, ucp, agent, woocommerce
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,10 +67,26 @@ API keys can be created with three permission levels:
 
 = External Services =
 
-This plugin connects to external services to provide its functionality.
+1. **UCP Schema Registry**
+   * **Service URL:** `https://ucp.dev`
+   * **Purpose:** Referenced as a protocol namespace identifier in JSON schemas and API responses.
+   * **Data Sent:** None. This is a passive reference; the plugin does not connect to or send data to this service.
+   * **Privacy Policy:** N/A (Static documentation site)
+   * **Terms of Service:** N/A
 
-* **UCP Schema Registry** (`https://ucp.dev`): Used to reference standard JSON schemas for API responses. No data is sent to this service.
-* **Agent Documentation** (`https://agent.example`): Used as an example for discovery link relations. No data is sent to this service.
+2. **Documentation Examples**
+   * **Service URLs:** `https://agent.example`, `https://your-store.com`
+   * **Purpose:** Used as placeholder URLs in documentation examples and code comments to demonstrate link relations.
+   * **Data Sent:** None.
+   * **Privacy Policy:** N/A
+   * **Terms of Service:** N/A
+
+3. **User-Configured Webhooks**
+   * **Service URL:** Varies (User configured)
+   * **Purpose:** Sending real-time order event notifications.
+   * **Data Sent:** Order details, customer information, and checkout status as JSON payloads.
+   * **Timing:** Triggered immediately when specific events occur (e.g., order creation) or via WP-Cron for retries.
+   * **Privacy Policy:** Please refer to the privacy policy of the specific service you configure as a webhook receiver.
 
 = Documentation =
 
@@ -85,7 +101,7 @@ For full documentation, please visit our [GitHub repository](https://github.com/
 3. Search for "Shopping Agent with UCP"
 4. Click "Install Now" and then "Activate"
 5. Ensure WooCommerce is installed and activated
-6. Go to WooCommerce > UCP to configure settings
+6. Go to WooCommerce > Shopping Agent to configure settings
 
 = Manual Installation =
 
@@ -95,7 +111,7 @@ For full documentation, please visit our [GitHub repository](https://github.com/
 4. Upload the zip file and click "Install Now"
 5. Activate the plugin
 6. Ensure WooCommerce is installed and activated
-7. Go to WooCommerce > UCP to configure settings
+7. Go to WooCommerce > Shopping Agent to configure settings
 
 == Frequently Asked Questions ==
 
@@ -144,6 +160,12 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 
 == Changelog ==
 
+= 1.0.4 =
+* Fix: Resolved 403 Forbidden error on API key creation (fixed UI selector mismatches).
+* Update: Added detailed "External Services" declaration.
+* Update: Corrected file structure documentation.
+* Update: Renamed menu item to "Shopping Agent".
+
 = 1.0.3 =
 * Renamed plugin to "Shopping Agent with UCP" to avoid trademark issues.
 * Updated prefixes to avoid conflicts.
@@ -176,6 +198,9 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 * Internationalization ready
 
 == Upgrade Notice ==
+
+= 1.0.4 =
+Fixed API key generation issues and updated documentation.
 
 = 1.0.3 =
 Renamed plugin and updated prefixes. Please deactivate and reactivate for changes to take effect.

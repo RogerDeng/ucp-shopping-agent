@@ -95,6 +95,33 @@
 
 ---
 
+## 🌐 External Services
+
+The following external services are referenced or used by this plugin:
+
+### 1. UCP Schema Registry
+- **Service URL:** `https://ucp.dev`
+- **Purpose:** Referenced as a protocol namespace identifier in JSON schemas and API responses.
+- **Data Sent:** None. This is a passive reference; the plugin does not connect to or send data to this service.
+- **Privacy Policy:** N/A (Static documentation site)
+- **Terms of Service:** N/A
+
+### 2. Documentation Examples
+- **Service URLs:** `https://agent.example`, `https://your-store.com`
+- **Purpose:** Used as placeholder URLs in documentation examples and code comments to demonstrate link relations.
+- **Data Sent:** None.
+- **Privacy Policy:** N/A
+- **Terms of Service:** N/A
+
+### 3. User-Configured Webhooks
+- **Service URL:** Varies (User configured)
+- **Purpose:** Sending real-time order event notifications.
+- **Data Sent:** Order details, customer information, and checkout status as JSON payloads.
+- **Timing:** Triggered immediately when specific events occur (e.g., order creation) or via WP-Cron for retries.
+- **Privacy Policy:** Please refer to the privacy policy of the specific service you configure as a webhook receiver.
+
+---
+
 ## 🚀 Installation
 
 1. Download the plugin zip file
@@ -383,37 +410,37 @@ The plugin supports translations. Translation files are located in the `/languag
 ## 📁 File Structure
 
 ```
-ucp-shopping-agent/
-├── ucp-shopping-agent.php       # Main plugin file
+shopping-agent-with-ucp/
+├── shopping-agent-with-ucp.php             # Main plugin file
 ├── admin/
-│   ├── class-ucp-admin.php      # Admin functionality
-│   ├── class-ucp-settings.php   # Settings management
+│   ├── class-shopping-agent-ucp-admin.php    # Admin functionality
+│   ├── class-shopping-agent-ucp-settings.php # Settings management
 │   └── views/
-│       └── settings-page.php    # Admin UI template
+│       └── settings-page.php                 # Admin UI template
 ├── includes/
-│   ├── api/                     # REST API controllers
-│   │   ├── class-ucp-rest-controller.php
-│   │   ├── class-ucp-auth.php
-│   │   ├── class-ucp-discovery.php
-│   │   ├── class-ucp-products.php
-│   │   ├── class-ucp-categories.php
-│   │   ├── class-ucp-cart.php
-│   │   ├── class-ucp-checkout.php
-│   │   ├── class-ucp-orders.php
-│   │   ├── class-ucp-customers.php
-│   │   ├── class-ucp-shipping.php
-│   │   ├── class-ucp-reviews.php
-│   │   └── class-ucp-coupons.php
-│   ├── models/                  # Data models
-│   │   ├── class-ucp-api-key.php
-│   │   └── class-ucp-cart-session.php
-│   ├── webhooks/                # Webhook handling
-│   │   ├── class-ucp-webhook-manager.php
-│   │   └── class-ucp-webhook-sender.php
-│   ├── class-ucp-activator.php
-│   ├── class-ucp-deactivator.php
-│   ├── class-ucp-loader.php
-│   └── class-ucp-i18n.php
+│   ├── api/                                  # REST API controllers
+│   │   ├── class-shopping-agent-ucp-rest-controller.php
+│   │   ├── class-shopping-agent-ucp-auth.php
+│   │   ├── class-shopping-agent-ucp-discovery.php
+│   │   ├── class-shopping-agent-ucp-products.php
+│   │   ├── class-shopping-agent-ucp-categories.php
+│   │   ├── class-shopping-agent-ucp-cart.php
+│   │   ├── class-shopping-agent-ucp-checkout.php
+│   │   ├── class-shopping-agent-ucp-orders.php
+│   │   ├── class-shopping-agent-ucp-customers.php
+│   │   ├── class-shopping-agent-ucp-shipping.php
+│   │   ├── class-shopping-agent-ucp-reviews.php
+│   │   └── class-shopping-agent-ucp-coupons.php
+│   ├── models/                               # Data models
+│   │   ├── class-shopping-agent-ucp-api-key.php
+│   │   └── class-shopping-agent-ucp-cart-session.php
+│   ├── webhooks/                             # Webhook handling
+│   │   ├── class-shopping-agent-ucp-webhook-manager.php
+│   │   └── class-shopping-agent-ucp-webhook-sender.php
+│   ├── class-shopping-agent-ucp-activator.php
+│   ├── class-shopping-agent-ucp-deactivator.php
+│   ├── class-shopping-agent-ucp-loader.php
+│   └── class-shopping-agent-ucp-i18n.php
 ├── assets/
 │   ├── css/admin.css
 │   └── js/admin.js

@@ -95,6 +95,33 @@
 
 ---
 
+## 🌐 外部服務 (External Services)
+
+本外掛引用或使用以下外部服務：
+
+### 1. UCP Schema Registry
+- **服務網址：** `https://ucp.dev`
+- **用途：** 作為 JSON Schema 和 API 回應中的協議命名空間識別符 (Protocol Namespace Identifier)。
+- **傳送資料：** 無。這僅為被動參考；外掛不會連接或傳送資料至此服務。
+- **隱私權政策：** N/A (靜態文件網站)
+- **服務條款：** N/A
+
+### 2. 文件範例 (Documentation Examples)
+- **服務網址：** `https://agent.example`, `https://your-store.com`
+- **用途：** 僅作為文件範例和程式碼註釋中的佔位符 URL，用於演示連結關係。
+- **傳送資料：** 無。
+- **隱私權政策：** N/A
+- **服務條款：** N/A
+
+### 3. 使用者設定的 Webhooks (User-Configured Webhooks)
+- **服務網址：** 因設定而異 (由使用者設定)
+- **用途：** 發送即時訂單事件通知。
+- **傳送資料：** 包含訂單詳情、客戶資訊與結帳狀態的 JSON 負載 (Payload)。
+- **傳送時機：** 當特定事件發生時 (如訂單建立) 立即觸發，或透過 WP-Cron 進行重試。
+- **隱私權政策：** 請參閱您設定作為 Webhook 接收端之特定服務的隱私權政策。
+
+---
+
 ## 🚀 安裝說明
 
 1. 下載外掛 zip 檔案
@@ -383,37 +410,37 @@ if (hash_equals($expected_hash, $received_hash)) {
 ## 📁 檔案結構
 
 ```
-ucp-shopping-agent/
-├── ucp-shopping-agent.php       # 主外掛檔案
+shopping-agent-with-ucp/
+├── shopping-agent-with-ucp.php             # 主外掛檔案
 ├── admin/
-│   ├── class-ucp-admin.php      # 管理員功能
-│   ├── class-ucp-settings.php   # 設定管理
+│   ├── class-shopping-agent-ucp-admin.php    # 管理員功能
+│   ├── class-shopping-agent-ucp-settings.php # 設定管理
 │   └── views/
-│       └── settings-page.php    # 管理員 UI 模板
+│       └── settings-page.php                 # 管理員 UI 模板
 ├── includes/
-│   ├── api/                     # REST API 控制器
-│   │   ├── class-ucp-rest-controller.php
-│   │   ├── class-ucp-auth.php
-│   │   ├── class-ucp-discovery.php
-│   │   ├── class-ucp-products.php
-│   │   ├── class-ucp-categories.php
-│   │   ├── class-ucp-cart.php
-│   │   ├── class-ucp-checkout.php
-│   │   ├── class-ucp-orders.php
-│   │   ├── class-ucp-customers.php
-│   │   ├── class-ucp-shipping.php
-│   │   ├── class-ucp-reviews.php
-│   │   └── class-ucp-coupons.php
-│   ├── models/                  # 資料模型
-│   │   ├── class-ucp-api-key.php
-│   │   └── class-ucp-cart-session.php
-│   ├── webhooks/                # Webhook 處理
-│   │   ├── class-ucp-webhook-manager.php
-│   │   └── class-ucp-webhook-sender.php
-│   ├── class-ucp-activator.php
-│   ├── class-ucp-deactivator.php
-│   ├── class-ucp-loader.php
-│   └── class-ucp-i18n.php
+│   ├── api/                                  # REST API 控制器
+│   │   ├── class-shopping-agent-ucp-rest-controller.php
+│   │   ├── class-shopping-agent-ucp-auth.php
+│   │   ├── class-shopping-agent-ucp-discovery.php
+│   │   ├── class-shopping-agent-ucp-products.php
+│   │   ├── class-shopping-agent-ucp-categories.php
+│   │   ├── class-shopping-agent-ucp-cart.php
+│   │   ├── class-shopping-agent-ucp-checkout.php
+│   │   ├── class-shopping-agent-ucp-orders.php
+│   │   ├── class-shopping-agent-ucp-customers.php
+│   │   ├── class-shopping-agent-ucp-shipping.php
+│   │   ├── class-shopping-agent-ucp-reviews.php
+│   │   └── class-shopping-agent-ucp-coupons.php
+│   ├── models/                               # 資料模型
+│   │   ├── class-shopping-agent-ucp-api-key.php
+│   │   └── class-shopping-agent-ucp-cart-session.php
+│   ├── webhooks/                             # Webhook 處理
+│   │   ├── class-shopping-agent-ucp-webhook-manager.php
+│   │   └── class-shopping-agent-ucp-webhook-sender.php
+│   ├── class-shopping-agent-ucp-activator.php
+│   ├── class-shopping-agent-ucp-deactivator.php
+│   ├── class-shopping-agent-ucp-loader.php
+│   └── class-shopping-agent-ucp-i18n.php
 ├── assets/
 │   ├── css/admin.css
 │   └── js/admin.js

@@ -3,9 +3,9 @@
 # This file is distributed under the GPL2 license.
 msgid ""
 msgstr ""
-"Project-Id-Version: Shopping Agent with UCP 1.0.0\n"
+"Project-Id-Version: Shopping Agent with UCP 1.0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-14 00:00+0000\n"
+"POT-Creation-Date: 2026-01-27 12:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,264 +14,335 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: woocommerce-ucp-agent.php
+#: shopping-agent-with-ucp.php
 msgid "Shopping Agent with UCP requires WooCommerce to be installed and activated."
 msgstr ""
 
-#: includes/api/class-ucp-auth.php
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "API key is required for this request."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "Invalid API key format. Expected format: key_id:secret"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "Invalid API key."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "This API key does not have %s permissions."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "Description for this API key"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "Permission level"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "Save this API key securely. The secret will not be shown again."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "API key not found."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-auth.php
 msgid "Failed to create API key."
 msgstr ""
 
-#: includes/api/class-ucp-discovery.php
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Store discovery and capabilities"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Browse, search, and filter products"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Navigate product categories"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Persistent cart management"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Create and manage checkout sessions"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Retrieve order details and status"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Customer profile management"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Calculate shipping rates"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Product reviews and ratings"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Discover and validate promotional codes"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Real-time order event notifications"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Browse products, categories, reviews"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Create carts, checkout sessions, orders"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-discovery.php
 msgid "Manage API keys, access all endpoints"
 msgstr ""
 
-#: includes/api/class-ucp-products.php
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Filter by category ID"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Filter to only in-stock products"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Filter to only featured products"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Filter to only products on sale"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Search query"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Minimum price filter"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Maximum price filter"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Product not found."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-products.php
 msgid "Product with this SKU not found."
 msgstr ""
 
-#: includes/api/class-ucp-categories.php
+#: includes/api/class-shopping-agent-ucp-categories.php
 msgid "Filter by parent category ID (0 for top-level)"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-categories.php
 msgid "Include child categories in response"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-categories.php
 msgid "Include products from subcategories"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-categories.php
 msgid "Category not found."
 msgstr ""
 
-#: includes/api/class-ucp-cart.php
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Product ID"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Product SKU"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Variation ID for variable products"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Failed to create cart."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Cart not found."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Cart has expired."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Cart is no longer available."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Product ID or SKU is required."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Product is out of stock."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Only %d items available."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Cart item not found."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Cart is empty."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-cart.php
 msgid "Shipping address field \"%s\" is required."
 msgstr ""
 
-#: includes/api/class-ucp-checkout.php
+#: includes/api/class-shopping-agent-ucp-checkout.php
 msgid "Failed to create checkout session."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-checkout.php
 msgid "No valid items provided."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-checkout.php
 msgid "Checkout session not found."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-checkout.php
 msgid "Checkout session has expired."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-checkout.php
 msgid "This checkout session has already been confirmed."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-checkout.php
 msgid "Failed to create order."
 msgstr ""
 
-#: includes/api/class-ucp-orders.php
+#: includes/api/class-shopping-agent-ucp-orders.php
 msgid "Order not found."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-orders.php
 msgid "Order created"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-orders.php
 msgid "Payment received"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-orders.php
 msgid "Order completed"
 msgstr ""
 
-#: includes/api/class-ucp-customers.php
+#: includes/api/class-shopping-agent-ucp-customers.php
 msgid "A customer with this email already exists."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-customers.php
 msgid "Customer not found."
 msgstr ""
 
-#: includes/api/class-ucp-reviews.php
+#: includes/api/class-shopping-agent-ucp-reviews.php
 msgid "Filter by product ID"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-reviews.php
 msgid "Filter by rating"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-reviews.php
 msgid "Review not found."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-reviews.php
 msgid "Failed to create review."
 msgstr ""
 
-#: includes/api/class-ucp-coupons.php
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "Cart total for validation"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "Product IDs in cart for validation"
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "Coupon not found."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "This coupon has expired."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "This coupon has reached its usage limit."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "Minimum order amount of %s is required."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "Maximum order amount of %s is exceeded."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "This coupon is not valid for the products in cart."
 msgstr ""
 
+#: includes/api/class-shopping-agent-ucp-coupons.php
 msgid "This coupon cannot be used with some products in cart."
 msgstr ""
 
-#: admin/class-ucp-admin.php
+#: admin/class-shopping-agent-ucp-admin.php
 msgid "UCP Settings"
 msgstr ""
 
+#: admin/class-shopping-agent-ucp-admin.php
 msgid "UCP"
 msgstr ""
 
+#: admin/class-shopping-agent-ucp-admin.php
 msgid "Are you sure you want to delete this API key?"
 msgstr ""
 
+#: admin/class-shopping-agent-ucp-admin.php
 msgid "Copied to clipboard!"
 msgstr ""
 
+#: admin/class-shopping-agent-ucp-admin.php
 msgid "An error occurred. Please try again."
 msgstr ""
 
+#: admin/class-shopping-agent-ucp-admin.php
 msgid "Permission denied."
 msgstr ""
 
+#: admin/class-shopping-agent-ucp-admin.php
 msgid "Invalid key ID."
 msgstr ""
 
+#: admin/class-shopping-agent-ucp-admin.php
 msgid "Failed to delete API key."
 msgstr ""
 
@@ -279,176 +350,270 @@ msgstr ""
 msgid "Shopping Agent UCP Setting"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "General"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "API Keys"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Discovery"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Enable UCP"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Enable the UCP API endpoints"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Rate Limit"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Maximum requests per minute per API key."
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Cart Expiry"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "hours"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Hours until an inactive cart expires."
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Checkout Expiry"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "minutes"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Minutes until a checkout session expires."
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Enable Logging"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Log API requests and webhook deliveries for debugging"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "API keys allow AI agents to authenticate with your store. Create keys with appropriate permissions."
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Create New API Key"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Description"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "e.g., My AI Assistant"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Permissions"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Read - Browse products, categories, reviews"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Write - Create carts, checkout sessions, orders"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Admin - Full access including API key management"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Generate API Key"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "API Key Generated Successfully!"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Copy this key now. The secret will not be shown again."
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Copy"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Existing API Keys"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Key ID"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Last Used"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Created"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Actions"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "No API keys found. Create one above."
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Delete"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Discovery Endpoint"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "AI agents can discover your store capabilities at the following URL:"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Test"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Quick Start Guide"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Generate an API Key"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Go to the API Keys tab and create a new key with appropriate permissions."
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Verify Discovery"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Authenticate Requests"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Available Endpoints"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Endpoint"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Auth Required"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "No"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Store capabilities and info"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Browse and search products"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Product categories"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Cart management"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Write"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Checkout sessions"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Order details"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Customer management"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Shipping calculation"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Product reviews"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "No/Write"
 msgstr ""
 
+#: admin/views/settings-page.php
 msgid "Coupon validation"
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "Shopping Agent"
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "Source"
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "All sources"
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "UCP Orders"
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "Non-UCP Orders"
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "UCP Order Info"
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "This order was not created via UCP."
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "Session ID:"
+msgstr ""
+
+#: admin/class-shopping-agent-ucp-admin.php
+msgid "Payment Handler:"
 msgstr ""

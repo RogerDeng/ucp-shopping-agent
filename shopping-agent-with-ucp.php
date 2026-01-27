@@ -3,7 +3,7 @@
  * Plugin Name: Shopping Agent with UCP
  * Plugin URI:  https://wordpress.org/plugins/shopping-agent-with-ucp
  * Description: Shopping Agent with UCP(Universal Commerce Protocol) implementation for WooCommerce. Enables AI agents to discover, browse, and transact with your store.
- * Version:     1.0.3
+ * Version:     1.0.4
  * Author:      Roger Deng
  * Author URI:  https://sites.google.com/view/shopping-agent-ucp-agent
  * License:     GPL2
@@ -32,7 +32,7 @@ add_action('before_woocommerce_init', function () {
 /**
  * Plugin Constants
  */
-define('SHOPPING_AGENT_UCP_VERSION', '1.0.3');
+define('SHOPPING_AGENT_UCP_VERSION', '1.0.4');
 define('SHOPPING_AGENT_UCP_PLUGIN_FILE', __FILE__);
 define('SHOPPING_AGENT_UCP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SHOPPING_AGENT_UCP_PLUGIN_URL', plugin_dir_url(__FILE__));
