@@ -165,8 +165,6 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 * Update: Added detailed "External Services" declaration.
 * Update: Corrected file structure documentation.
 * Update: Renamed menu item to "Shopping Agent".
-
-= 1.0.3 =
 * Renamed plugin to "Shopping Agent with UCP" to avoid trademark issues.
 * Updated prefixes to avoid conflicts.
 * Security enhancements (direct file access checks).
