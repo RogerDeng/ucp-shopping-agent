@@ -23,7 +23,7 @@ class Shopping_Agent_UCP_Cart_Session
     public function __construct()
     {
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_cart_sessions';
+        $this->table_name = $wpdb->prefix . 'shopping_agent_ucp_cart_sessions';
     }
 
     /**
@@ -34,7 +34,7 @@ class Shopping_Agent_UCP_Cart_Session
         global $wpdb;
 
         $cart_id = wp_generate_uuid4();
-        $expiry_hours = (int) get_option('shopping_agent_shopping_agent_ucp_cart_expiry_hours', 24);
+        $expiry_hours = (int) get_option('shopping_agent_ucp_cart_expiry_hours', 24);
         $expires_at = date('Y-m-d H:i:s', strtotime("+{$expiry_hours} hours"));
 
         $result = $wpdb->insert(
@@ -52,7 +52,7 @@ class Shopping_Agent_UCP_Cart_Session
 
         if ($result === false) {
             return new WP_Error(
-                'shopping_agent_shopping_agent_ucp_cart_creation_failed',
+                'shopping_agent_ucp_cart_creation_failed',
                 __('Failed to create cart.', 'shopping-agent-with-ucp'),
                 array('status' => 500)
             );

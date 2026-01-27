@@ -30,7 +30,7 @@ class Shopping_Agent_UCP_Admin
         add_action('add_meta_boxes', array($this, 'add_order_meta_box'));
 
         // Ensure database tables exist (Self-repair if activation failed)
-        if (get_option('shopping_agent_shopping_agent_ucp_db_version') !== SHOPPING_AGENT_UCP_VERSION) {
+        if (get_option('shopping_agent_ucp_db_version') !== SHOPPING_AGENT_UCP_VERSION) {
             if (!class_exists('Shopping_Agent_UCP_Activator')) {
                 require_once SHOPPING_AGENT_UCP_PLUGIN_DIR . 'includes/class-shopping-agent-ucp-activator.php';
             }
@@ -144,7 +144,7 @@ class Shopping_Agent_UCP_Admin
 
         wp_localize_script('shopping-agent-ucp-admin', 'shoppingAgentUcpAdmin', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('shopping_agent_shopping_agent_ucp_admin'),
+            'nonce' => wp_create_nonce('shopping_agent_ucp_admin'),
             'strings' => array(
                 'confirmDelete' => __('Are you sure you want to delete this API key?', 'shopping-agent-with-ucp'),
                 'copied' => __('Copied to clipboard!', 'shopping-agent-with-ucp'),
@@ -158,35 +158,35 @@ class Shopping_Agent_UCP_Admin
      */
     public function register_settings()
     {
-        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_enabled', array(
+        register_setting('shopping_agent_ucp_settings', 'shopping_agent_ucp_enabled', array(
             'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
             'default' => 'yes',
         ));
-        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_cart_expiry_hours', array(
+        register_setting('shopping_agent_ucp_settings', 'shopping_agent_ucp_cart_expiry_hours', array(
             'type' => 'integer',
             'sanitize_callback' => 'absint',
             'default' => 24,
         ));
-        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_checkout_expiry', array(
+        register_setting('shopping_agent_ucp_settings', 'shopping_agent_ucp_checkout_expiry', array(
             'type' => 'integer',
             'sanitize_callback' => 'absint',
             'default' => 30,
         ));
-        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_rate_limit', array(
+        register_setting('shopping_agent_ucp_settings', 'shopping_agent_ucp_rate_limit', array(
             'type' => 'integer',
             'sanitize_callback' => 'absint',
             'default' => 100,
         ));
-        register_setting('shopping_agent_shopping_agent_ucp_settings', 'shopping_agent_shopping_agent_ucp_log_enabled', array(
+        register_setting('shopping_agent_ucp_settings', 'shopping_agent_ucp_log_enabled', array(
             'type' => 'string',
             'sanitize_callback' => 'sanitize_text_field',
             'default' => 'no',
         ));
 
         // Handle AJAX actions
-        add_action('wp_ajax_shopping_agent_shopping_agent_ucp_create_api_key', array($this, 'ajax_create_api_key'));
-        add_action('wp_ajax_shopping_agent_shopping_agent_ucp_delete_api_key', array($this, 'ajax_delete_api_key'));
+        add_action('wp_ajax_shopping_agent_ucp_create_api_key', array($this, 'ajax_create_api_key'));
+        add_action('wp_ajax_shopping_agent_ucp_delete_api_key', array($this, 'ajax_delete_api_key'));
     }
 
     /**
@@ -347,7 +347,7 @@ class Shopping_Agent_UCP_Admin
             : 'shop_order';
 
         add_meta_box(
-            'shopping_agent_shopping_agent_ucp_order_info',
+            'shopping_agent_ucp_order_info',
             __('UCP Order Info', 'shopping-agent-with-ucp'),
             array($this, 'render_order_meta_box'),
             $screen,
@@ -413,7 +413,7 @@ class Shopping_Agent_UCP_Admin
      */
     public function ajax_create_api_key()
     {
-        check_ajax_referer('shopping_agent_shopping_agent_ucp_admin', 'nonce');
+        check_ajax_referer('shopping_agent_ucp_admin', 'nonce');
 
         if (!current_user_can('manage_woocommerce')) {
             wp_send_json_error(__('Permission denied.', 'shopping-agent-with-ucp'));
@@ -442,7 +442,7 @@ class Shopping_Agent_UCP_Admin
      */
     public function ajax_delete_api_key()
     {
-        check_ajax_referer('shopping_agent_shopping_agent_ucp_admin', 'nonce');
+        check_ajax_referer('shopping_agent_ucp_admin', 'nonce');
 
         if (!current_user_can('manage_woocommerce')) {
             wp_send_json_error(__('Permission denied.', 'shopping-agent-with-ucp'));

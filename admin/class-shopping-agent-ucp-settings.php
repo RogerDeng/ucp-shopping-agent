@@ -18,11 +18,11 @@ class Shopping_Agent_UCP_Settings
     public static function get_all()
     {
         return array(
-            'shopping_agent_shopping_agent_ucp_enabled' => get_option('shopping_agent_shopping_agent_ucp_enabled', 'yes'),
-            'shopping_agent_shopping_agent_ucp_cart_expiry_hours' => get_option('shopping_agent_shopping_agent_ucp_cart_expiry_hours', 24),
-            'shopping_agent_shopping_agent_ucp_checkout_expiry' => get_option('shopping_agent_shopping_agent_ucp_checkout_expiry', 30),
-            'shopping_agent_shopping_agent_ucp_rate_limit' => get_option('shopping_agent_shopping_agent_ucp_rate_limit', 100),
-            'shopping_agent_shopping_agent_ucp_log_enabled' => get_option('shopping_agent_shopping_agent_ucp_log_enabled', 'no'),
+            'shopping_agent_ucp_enabled' => get_option('shopping_agent_ucp_enabled', 'yes'),
+            'shopping_agent_ucp_cart_expiry_hours' => get_option('shopping_agent_ucp_cart_expiry_hours', 24),
+            'shopping_agent_ucp_checkout_expiry' => get_option('shopping_agent_ucp_checkout_expiry', 30),
+            'shopping_agent_ucp_rate_limit' => get_option('shopping_agent_ucp_rate_limit', 100),
+            'shopping_agent_ucp_log_enabled' => get_option('shopping_agent_ucp_log_enabled', 'no'),
         );
     }
 
@@ -53,14 +53,14 @@ class Shopping_Agent_UCP_Settings
                 'title' => __('General Settings', 'shopping-agent-with-ucp'),
                 'fields' => array(
                     array(
-                        'id' => 'shopping_agent_shopping_agent_ucp_enabled',
+                        'id' => 'shopping_agent_ucp_enabled',
                         'title' => __('Enable UCP', 'shopping-agent-with-ucp'),
                         'type' => 'checkbox',
                         'description' => __('Enable the UCP API endpoints.', 'shopping-agent-with-ucp'),
                         'default' => 'yes',
                     ),
                     array(
-                        'id' => 'shopping_agent_shopping_agent_ucp_rate_limit',
+                        'id' => 'shopping_agent_ucp_rate_limit',
                         'title' => __('Rate Limit', 'shopping-agent-with-ucp'),
                         'type' => 'number',
                         'description' => __('Maximum requests per minute per API key.', 'shopping-agent-with-ucp'),
@@ -74,7 +74,7 @@ class Shopping_Agent_UCP_Settings
                 'title' => __('Cart & Checkout', 'shopping-agent-with-ucp'),
                 'fields' => array(
                     array(
-                        'id' => 'shopping_agent_shopping_agent_ucp_cart_expiry_hours',
+                        'id' => 'shopping_agent_ucp_cart_expiry_hours',
                         'title' => __('Cart Expiry', 'shopping-agent-with-ucp'),
                         'type' => 'number',
                         'description' => __('Hours until an inactive cart expires.', 'shopping-agent-with-ucp'),
@@ -84,7 +84,7 @@ class Shopping_Agent_UCP_Settings
                         'suffix' => __('hours', 'shopping-agent-with-ucp'),
                     ),
                     array(
-                        'id' => 'shopping_agent_shopping_agent_ucp_checkout_expiry',
+                        'id' => 'shopping_agent_ucp_checkout_expiry',
                         'title' => __('Checkout Expiry', 'shopping-agent-with-ucp'),
                         'type' => 'number',
                         'description' => __('Minutes until a checkout session expires.', 'shopping-agent-with-ucp'),
@@ -99,7 +99,7 @@ class Shopping_Agent_UCP_Settings
                 'title' => __('Advanced', 'shopping-agent-with-ucp'),
                 'fields' => array(
                     array(
-                        'id' => 'shopping_agent_shopping_agent_ucp_log_enabled',
+                        'id' => 'shopping_agent_ucp_log_enabled',
                         'title' => __('Enable Logging', 'shopping-agent-with-ucp'),
                         'type' => 'checkbox',
                         'description' => __('Log webhook delivery attempts and errors.', 'shopping-agent-with-ucp'),

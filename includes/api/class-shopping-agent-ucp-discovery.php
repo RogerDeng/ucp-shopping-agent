@@ -243,7 +243,7 @@ class Shopping_Agent_UCP_Discovery extends Shopping_Agent_UCP_REST_Controller
                 ),
                 array(
                     'name' => 'query',
-                    'param_name' => 'shopping_agent_shopping_agent_ucp_api_key',
+                    'param_name' => 'shopping_agent_ucp_api_key',
                     'format' => 'key_id:secret',
                 ),
             ),
@@ -269,7 +269,7 @@ class Shopping_Agent_UCP_Discovery extends Shopping_Agent_UCP_REST_Controller
      */
     private function get_rate_limits()
     {
-        $rate_limit = (int) get_option('shopping_agent_shopping_agent_ucp_rate_limit', 100);
+        $rate_limit = (int) get_option('shopping_agent_ucp_rate_limit', 100);
 
         return array(
             'requests_per_minute' => $rate_limit,

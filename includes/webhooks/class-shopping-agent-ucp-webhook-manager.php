@@ -23,7 +23,7 @@ class Shopping_Agent_UCP_Webhook_Manager
     public function __construct()
     {
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_webhooks';
+        $this->table_name = $wpdb->prefix . 'shopping_agent_ucp_webhooks';
     }
 
     /**

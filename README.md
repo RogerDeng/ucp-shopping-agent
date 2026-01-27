@@ -428,13 +428,13 @@ ucp-shopping-agent/
 ### Actions
 ```php
 // Webhook delivery failed
-do_action('shopping_agent_shopping_agent_ucp_webhook_delivery_failed', $webhook, $error);
+do_action('shopping_agent_ucp_webhook_delivery_failed', $webhook, $error);
 ```
 
 ### Filters
 ```php
 // Modify webhook SSL verification
-apply_filters('shopping_agent_shopping_agent_ucp_webhook_ssl_verify', true);
+apply_filters('shopping_agent_ucp_webhook_ssl_verify', true);
 ```
 
 ---

@@ -98,13 +98,13 @@ class Shopping_Agent_UCP_Coupons extends Shopping_Agent_UCP_REST_Controller
                 array(
                     'relation' => 'OR',
                     array(
-                        'key' => '_shopping_agent_shopping_agent_ucp_public',
+                        'key' => '_shopping_agent_ucp_public',
                         'value' => 'yes',
                         'compare' => '=',
                     ),
                     // Fallback: include coupons without the meta (for backward compatibility)
                     array(
-                        'key' => '_shopping_agent_shopping_agent_ucp_public',
+                        'key' => '_shopping_agent_ucp_public',
                         'compare' => 'NOT EXISTS',
                     ),
                 ),

@@ -21,6 +21,6 @@ class Shopping_Agent_UCP_Deactivator
         flush_rewrite_rules();
 
         // Clear any scheduled events
-        wp_clear_scheduled_hook('shopping_agent_shopping_agent_ucp_cleanup_expired_sessions');
+        wp_clear_scheduled_hook('shopping_agent_ucp_cleanup_expired_sessions');
     }
 }

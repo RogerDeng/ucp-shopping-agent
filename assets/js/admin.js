@@ -7,15 +7,15 @@
 
     $(document).ready(function () {
         // Create API Key
-        $('#create-api-key').on('click', function () {
+        $('#shopping-agent-ucp-create-api-key').on('click', function () {
             var $button = $(this);
-            var description = $('#api-key-description').val();
-            var permissions = $('#api-key-permissions').val();
+            var description = $('#shopping-agent-ucp-api-key-description').val();
+            var permissions = $('#shopping-agent-ucp-api-key-permissions').val();
 
             $button.prop('disabled', true).text(shoppingAgentUcpAdmin.strings.loading || 'Creating...');
 
             $.post(shoppingAgentUcpAdmin.ajaxUrl, {
-                action: 'shopping_agent_shopping_agent_ucp_create_api_key',
+                action: 'shopping_agent_ucp_create_api_key',
                 nonce: shoppingAgentUcpAdmin.nonce,
                 description: description,
                 permissions: permissions
@@ -23,9 +23,9 @@
                 $button.prop('disabled', false).text('Generate API Key');
 
                 if (response.success) {
-                    $('#new-api-key-value').text(response.data.api_key);
-                    $('#new-api-key-display').show();
-                    $('#api-key-description').val('');
+                    $('#shopping-agent-ucp-new-api-key-value').text(response.data.api_key);
+                    $('#shopping-agent-ucp-new-api-key-display').show();
+                    $('#shopping-agent-ucp-api-key-description').val('');
 
                     // Reload page to show new key in list
                     setTimeout(function () {
@@ -52,7 +52,7 @@
             $button.prop('disabled', true);
 
             $.post(shoppingAgentUcpAdmin.ajaxUrl, {
-                action: 'shopping_agent_shopping_agent_ucp_delete_api_key',
+                action: 'shopping_agent_ucp_delete_api_key',
                 nonce: shoppingAgentUcpAdmin.nonce,
                 key_id: keyId
             }, function (response) {

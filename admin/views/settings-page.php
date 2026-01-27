@@ -37,7 +37,7 @@ $api_keys = $api_key_model->get_all();
     <div class="tab-content">
         <?php if ($active_tab === 'general'): ?>
             <form method="post" action="options.php">
-                <?php settings_fields('shopping_agent_shopping_agent_ucp_settings'); ?>
+                <?php settings_fields('shopping_agent_ucp_settings'); ?>
 
                 <table class="form-table">
                     <tr>
@@ -46,7 +46,7 @@ $api_keys = $api_key_model->get_all();
                         </th>
                         <td>
                             <label>
-                                <input type="checkbox" name="shopping_agent_shopping_agent_ucp_enabled" value="yes" <?php checked($settings['shopping_agent_shopping_agent_ucp_enabled'], 'yes'); ?>>
+                                <input type="checkbox" name="shopping_agent_ucp_enabled" value="yes" <?php checked($settings['shopping_agent_ucp_enabled'], 'yes'); ?>>
                                 <?php esc_html_e('Enable the UCP API endpoints', 'shopping-agent-with-ucp'); ?>
                             </label>
                         </td>
@@ -56,8 +56,8 @@ $api_keys = $api_key_model->get_all();
                             <?php esc_html_e('Rate Limit', 'shopping-agent-with-ucp'); ?>
                         </th>
                         <td>
-                            <input type="number" name="shopping_agent_shopping_agent_ucp_rate_limit"
-                                value="<?php echo esc_attr($settings['shopping_agent_shopping_agent_ucp_rate_limit']); ?>"
+                            <input type="number" name="shopping_agent_ucp_rate_limit"
+                                value="<?php echo esc_attr($settings['shopping_agent_ucp_rate_limit']); ?>"
                                 min="10" max="1000">
                             <p class="description">
                                 <?php esc_html_e('Maximum requests per minute per API key.', 'shopping-agent-with-ucp'); ?>
@@ -69,8 +69,8 @@ $api_keys = $api_key_model->get_all();
                             <?php esc_html_e('Cart Expiry', 'shopping-agent-with-ucp'); ?>
                         </th>
                         <td>
-                            <input type="number" name="shopping_agent_shopping_agent_ucp_cart_expiry_hours"
-                                value="<?php echo esc_attr($settings['shopping_agent_shopping_agent_ucp_cart_expiry_hours']); ?>"
+                            <input type="number" name="shopping_agent_ucp_cart_expiry_hours"
+                                value="<?php echo esc_attr($settings['shopping_agent_ucp_cart_expiry_hours']); ?>"
                                 min="1" max="168">
                             <?php esc_html_e('hours', 'shopping-agent-with-ucp'); ?>
                             <p class="description">
@@ -83,8 +83,8 @@ $api_keys = $api_key_model->get_all();
                             <?php esc_html_e('Checkout Expiry', 'shopping-agent-with-ucp'); ?>
                         </th>
                         <td>
-                            <input type="number" name="shopping_agent_shopping_agent_ucp_checkout_expiry"
-                                value="<?php echo esc_attr($settings['shopping_agent_shopping_agent_ucp_checkout_expiry']); ?>"
+                            <input type="number" name="shopping_agent_ucp_checkout_expiry"
+                                value="<?php echo esc_attr($settings['shopping_agent_ucp_checkout_expiry']); ?>"
                                 min="5" max="120">
                             <?php esc_html_e('minutes', 'shopping-agent-with-ucp'); ?>
                             <p class="description">
@@ -98,8 +98,8 @@ $api_keys = $api_key_model->get_all();
                         </th>
                         <td>
                             <label>
-                                <input type="checkbox" name="shopping_agent_shopping_agent_ucp_log_enabled" value="yes"
-                                    <?php checked($settings['shopping_agent_shopping_agent_ucp_log_enabled'], 'yes'); ?>>
+                                <input type="checkbox" name="shopping_agent_ucp_log_enabled" value="yes"
+                                    <?php checked($settings['shopping_agent_ucp_log_enabled'], 'yes'); ?>>
                                 <?php esc_html_e('Log API requests and webhook deliveries for debugging', 'shopping-agent-with-ucp'); ?>
                             </label>
                         </td>
@@ -128,7 +128,7 @@ $api_keys = $api_key_model->get_all();
                                 <?php esc_html_e('Description', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <td>
-                                <input type="text" id="api-key-description"
+                                <input type="text" id="shopping-agent-ucp-api-key-description"
                                     placeholder="<?php esc_attr_e('e.g., My AI Assistant', 'shopping-agent-with-ucp'); ?>"
                                     class="regular-text">
                             </td>
@@ -138,7 +138,7 @@ $api_keys = $api_key_model->get_all();
                                 <?php esc_html_e('Permissions', 'shopping-agent-with-ucp'); ?>
                             </th>
                             <td>
-                                <select id="api-key-permissions">
+                                <select id="shopping-agent-ucp-api-key-permissions">
                                     <option value="read">
                                         <?php esc_html_e('Read - Browse products, categories, reviews', 'shopping-agent-with-ucp'); ?>
                                     </option>
@@ -152,12 +152,12 @@ $api_keys = $api_key_model->get_all();
                             </td>
                         </tr>
                     </table>
-                    <button type="button" id="create-api-key" class="button button-primary">
+                    <button type="button" id="shopping-agent-ucp-create-api-key" class="button button-primary">
                         <?php esc_html_e('Generate API Key', 'shopping-agent-with-ucp'); ?>
                     </button>
                 </div>
 
-                <div id="new-api-key-display" style="display: none;">
+                <div id="shopping-agent-ucp-new-api-key-display" style="display: none;">
                     <div class="notice notice-success">
                         <h4>
                             <?php esc_html_e('API Key Generated Successfully!', 'shopping-agent-with-ucp'); ?>
@@ -167,9 +167,9 @@ $api_keys = $api_key_model->get_all();
                         </p>
                         <div class="api-key-display-wrapper"
                             style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
-                            <code id="new-api-key-value"
+                            <code id="shopping-agent-ucp-new-api-key-value"
                                 style="flex: 1; padding: 10px 15px; background: #f0f0f1; border: 1px solid #c3c4c7; font-size: 14px; word-break: break-all;"></code>
-                            <button type="button" class="button copy-to-clipboard" data-target="#new-api-key-value">
+                            <button type="button" class="button copy-to-clipboard" data-target="#shopping-agent-ucp-new-api-key-value">
                                 <?php esc_html_e('Copy', 'shopping-agent-with-ucp'); ?>
                             </button>
                         </div>
@@ -250,8 +250,8 @@ $api_keys = $api_key_model->get_all();
                 </p>
 
                 <div class="discovery-url-box">
-                    <code id="discovery-url"><?php echo esc_url(home_url('/.well-known/ucp')); ?></code>
-                    <button type="button" class="button copy-to-clipboard" data-target="#discovery-url">
+                    <code id="shopping-agent-ucp-discovery-url"><?php echo esc_url(home_url('/.well-known/ucp')); ?></code>
+                    <button type="button" class="button copy-to-clipboard" data-target="#shopping-agent-ucp-discovery-url">
                         <?php esc_html_e('Copy', 'shopping-agent-with-ucp'); ?>
                     </button>
                     <a href="<?php echo esc_url(home_url('/.well-known/ucp')); ?>" target="_blank" class="button">

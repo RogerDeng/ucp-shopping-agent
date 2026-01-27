@@ -25,7 +25,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
     public function __construct()
     {
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_checkout_sessions';
+        $this->table_name = $wpdb->prefix . 'shopping_agent_ucp_checkout_sessions';
     }
 
     /**
@@ -141,7 +141,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         global $wpdb;
 
         $session_id = wp_generate_uuid4();
-        $expiry_minutes = (int) get_option('shopping_agent_shopping_agent_ucp_checkout_expiry', 30);
+        $expiry_minutes = (int) get_option('shopping_agent_ucp_checkout_expiry', 30);
         $expires_at = date('Y-m-d H:i:s', strtotime("+{$expiry_minutes} minutes"));
 
         $api_key = Shopping_Agent_UCP_Auth::get_current_api_key();
@@ -236,7 +236,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         }
 
         $session_id = wp_generate_uuid4();
-        $expiry_minutes = (int) get_option('shopping_agent_shopping_agent_ucp_checkout_expiry', 30);
+        $expiry_minutes = (int) get_option('shopping_agent_ucp_checkout_expiry', 30);
         $expires_at = date('Y-m-d H:i:s', strtotime("+{$expiry_minutes} minutes"));
 
         $api_key = Shopping_Agent_UCP_Auth::get_current_api_key();
@@ -457,7 +457,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         );
 
         // Trigger webhook
-        do_action('shopping_agent_shopping_agent_ucp_order_created', $order);
+        do_action('shopping_agent_ucp_order_created', $order);
 
         return $this->success_response(array(
             'id' => $session_id,

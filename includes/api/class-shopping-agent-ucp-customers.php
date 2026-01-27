@@ -167,7 +167,7 @@ class Shopping_Agent_UCP_Customers extends Shopping_Agent_UCP_REST_Controller
         }
 
         // Mark as UCP-created
-        update_user_meta($customer_id, '_shopping_agent_shopping_agent_ucp_created', true);
+        update_user_meta($customer_id, '_shopping_agent_ucp_created', true);
 
         return $this->success_response($this->format_customer(new WC_Customer($customer_id)));
     }

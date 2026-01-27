@@ -111,7 +111,7 @@ class Shopping_Agent_UCP_Orders extends Shopping_Agent_UCP_REST_Controller
         // Only show UCP-created orders if using API key
         $api_key = Shopping_Agent_UCP_Auth::get_current_api_key();
         if ($api_key) {
-            $args['meta_key'] = '_shopping_agent_shopping_agent_ucp_created';
+            $args['meta_key'] = '_shopping_agent_ucp_created';
             $args['meta_value'] = true;
         }
 
