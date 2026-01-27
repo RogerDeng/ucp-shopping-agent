@@ -34,10 +34,11 @@ class Shopping_Agent_UCP_API_Key
         global $wpdb;
 
         // Generate unique key ID
-        $key_id = 'shopping_agent_shopping_agent_ucp_' . $this->generate_random_string(16);
+        // Prefix: 7 chars, Random: 24 chars = 31 chars (Max 32)
+        $key_id = 'sa_ucp_' . $this->generate_random_string(24);
 
         // Generate secret
-        $secret = 'shopping_agent_shopping_agent_saucp_secret_' . $this->generate_random_string(32);
+        $secret = 'sa_ucp_secret_' . $this->generate_random_string(32);
 
         // Hash the secret
         $secret_hash = wp_hash_password($secret);

@@ -28,6 +28,14 @@ class Shopping_Agent_UCP_Admin
 
         // Order meta box
         add_action('add_meta_boxes', array($this, 'add_order_meta_box'));
+
+        // Ensure database tables exist (Self-repair if activation failed)
+        if (get_option('shopping_agent_shopping_agent_ucp_db_version') !== SHOPPING_AGENT_UCP_VERSION) {
+            if (!class_exists('Shopping_Agent_UCP_Activator')) {
+                require_once SHOPPING_AGENT_UCP_PLUGIN_DIR . 'includes/class-shopping-agent-ucp-activator.php';
+            }
+            Shopping_Agent_UCP_Activator::activate();
+        }
     }
 
     /**

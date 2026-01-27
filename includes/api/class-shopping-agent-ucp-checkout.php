@@ -426,7 +426,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         // Handle payment data per UCP spec
         $payment_data = $request->get_param('payment_data');
         if ($payment_data && isset($payment_data['handler_id'])) {
-            $order->update_meta_data('_shopping_agent_shopping_agent_ucp_payment_handler_id', sanitize_text_field($payment_data['handler_id']));
+            $order->update_meta_data('_shopping_agent_ucp_payment_handler_id', sanitize_text_field($payment_data['handler_id']));
         }
 
         // Fallback to legacy payment_method param
@@ -436,8 +436,8 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         }
 
         // Add meta for UCP tracking
-        $order->update_meta_data('_shopping_agent_shopping_agent_ucp_checkout_session_id', $session_id);
-        $order->update_meta_data('_shopping_agent_shopping_agent_ucp_created', true);
+        $order->update_meta_data('_shopping_agent_ucp_checkout_session_id', $session_id);
+        $order->update_meta_data('_shopping_agent_ucp_created', true);
 
         // Calculate totals and save
         $order->calculate_totals();
