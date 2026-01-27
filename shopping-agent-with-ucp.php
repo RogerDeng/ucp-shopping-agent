@@ -270,7 +270,7 @@ add_filter('cron_schedules', array('Shopping_Agent_UCP_Activator', 'add_cron_sch
 /**
  * Register webhook retry cron handler
  */
-add_action('shopping_agent_shopping_agent_ucp_retry_failed_webhooks', array('Shopping_Agent_UCP_Activator', 'run_webhook_retry'));
+add_action('shopping_agent_ucp_retry_failed_webhooks', array('Shopping_Agent_UCP_Activator', 'run_webhook_retry'));
 
 /**
  * Initialize plugin

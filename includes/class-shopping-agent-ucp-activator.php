@@ -19,7 +19,7 @@ class Shopping_Agent_UCP_Activator
      *
      * @var string
      */
-    const CRON_HOOK = 'shopping_agent_shopping_agent_ucp_retry_failed_webhooks';
+    const CRON_HOOK = 'shopping_agent_ucp_retry_failed_webhooks';
 
     /**
      * Activate the plugin
@@ -52,7 +52,7 @@ class Shopping_Agent_UCP_Activator
         $charset_collate = $wpdb->get_charset_collate();
 
         // API Keys table
-        $api_keys_table = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_api_keys';
+        $api_keys_table = $wpdb->prefix . 'shopping_agent_ucp_api_keys';
         $sql_api_keys = "CREATE TABLE IF NOT EXISTS $api_keys_table (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             key_id VARCHAR(32) NOT NULL,
@@ -67,7 +67,7 @@ class Shopping_Agent_UCP_Activator
         ) $charset_collate;";
 
         // Cart Sessions table
-        $cart_sessions_table = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_cart_sessions';
+        $cart_sessions_table = $wpdb->prefix . 'shopping_agent_ucp_cart_sessions';
         $sql_cart_sessions = "CREATE TABLE IF NOT EXISTS $cart_sessions_table (
             id VARCHAR(36) PRIMARY KEY,
             api_key_id BIGINT UNSIGNED DEFAULT NULL,
@@ -85,7 +85,7 @@ class Shopping_Agent_UCP_Activator
         ) $charset_collate;";
 
         // Checkout Sessions table
-        $checkout_sessions_table = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_checkout_sessions';
+        $checkout_sessions_table = $wpdb->prefix . 'shopping_agent_ucp_checkout_sessions';
         $sql_checkout_sessions = "CREATE TABLE IF NOT EXISTS $checkout_sessions_table (
             id VARCHAR(36) PRIMARY KEY,
             cart_id VARCHAR(36) DEFAULT NULL,
@@ -109,7 +109,7 @@ class Shopping_Agent_UCP_Activator
         ) $charset_collate;";
 
         // Webhooks table
-        $webhooks_table = $wpdb->prefix . 'shopping_agent_shopping_agent_ucp_webhooks';
+        $webhooks_table = $wpdb->prefix . 'shopping_agent_ucp_webhooks';
         $sql_webhooks = "CREATE TABLE IF NOT EXISTS $webhooks_table (
             id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             api_key_id BIGINT UNSIGNED NOT NULL,
@@ -129,7 +129,7 @@ class Shopping_Agent_UCP_Activator
         dbDelta($sql_webhooks);
 
         // Store database version
-        update_option('shopping_agent_shopping_agent_ucp_db_version', SHOPPING_AGENT_UCP_VERSION);
+        update_option('shopping_agent_ucp_db_version', SHOPPING_AGENT_UCP_VERSION);
     }
 
     /**
@@ -138,11 +138,11 @@ class Shopping_Agent_UCP_Activator
     private static function create_options()
     {
         $default_options = array(
-            'shopping_agent_shopping_agent_ucp_enabled' => 'yes',
-            'shopping_agent_shopping_agent_ucp_cart_expiry_hours' => 24,
-            'shopping_agent_shopping_agent_ucp_checkout_expiry' => 30, // minutes
-            'shopping_agent_shopping_agent_ucp_rate_limit' => 100, // requests per minute
-            'shopping_agent_shopping_agent_ucp_log_enabled' => 'no',
+            'shopping_agent_ucp_enabled' => 'yes',
+            'shopping_agent_ucp_cart_expiry_hours' => 24,
+            'shopping_agent_ucp_checkout_expiry' => 30, // minutes
+            'shopping_agent_ucp_rate_limit' => 100, // requests per minute
+            'shopping_agent_ucp_log_enabled' => 'no',
         );
 
         foreach ($default_options as $key => $value) {
@@ -159,14 +159,14 @@ class Shopping_Agent_UCP_Activator
     private static function generate_signing_key()
     {
         // Only generate if not already set
-        if (get_option('shopping_agent_shopping_agent_ucp_signing_public_key') !== false) {
+        if (get_option('shopping_agent_ucp_signing_public_key') !== false) {
             return;
         }
 
         // Check for libsodium support
         if (!function_exists('sodium_crypto_sign_keypair')) {
             // Fallback: store a flag indicating keys need manual generation
-            add_option('shopping_agent_shopping_agent_ucp_signing_key_error', 'libsodium_not_available');
+            add_option('shopping_agent_ucp_signing_key_error', 'libsodium_not_available');
             return;
         }
 
@@ -179,10 +179,10 @@ class Shopping_Agent_UCP_Activator
         $kid = 'ed25519-' . date('Y-m') . '-' . substr(bin2hex(random_bytes(4)), 0, 8);
 
         // Store keys securely
-        add_option('shopping_agent_shopping_agent_ucp_signing_private_key', base64_encode($secret_key));
-        add_option('shopping_agent_shopping_agent_ucp_signing_public_key', base64_encode($public_key));
-        add_option('shopping_agent_shopping_agent_ucp_signing_key_kid', $kid);
-        add_option('shopping_agent_shopping_agent_ucp_signing_key_created_at', current_time('c'));
+        add_option('shopping_agent_ucp_signing_private_key', base64_encode($secret_key));
+        add_option('shopping_agent_ucp_signing_public_key', base64_encode($public_key));
+        add_option('shopping_agent_ucp_signing_key_kid', $kid);
+        add_option('shopping_agent_ucp_signing_key_created_at', current_time('c'));
 
         // Clean up memory
         sodium_memzero($keypair);
@@ -196,7 +196,7 @@ class Shopping_Agent_UCP_Activator
      */
     public static function get_signing_private_key()
     {
-        $key = get_option('shopping_agent_shopping_agent_ucp_signing_private_key', null);
+        $key = get_option('shopping_agent_ucp_signing_private_key', null);
         return $key ? base64_decode($key) : null;
     }
 
@@ -207,7 +207,7 @@ class Shopping_Agent_UCP_Activator
      */
     public static function get_signing_public_key()
     {
-        $key = get_option('shopping_agent_shopping_agent_ucp_signing_public_key', null);
+        $key = get_option('shopping_agent_ucp_signing_public_key', null);
         return $key ? base64_decode($key) : null;
     }
 
@@ -218,7 +218,7 @@ class Shopping_Agent_UCP_Activator
      */
     public static function get_signing_key_kid()
     {
-        return get_option('shopping_agent_shopping_agent_ucp_signing_key_kid', null);
+        return get_option('shopping_agent_ucp_signing_key_kid', null);
     }
 
     /**
@@ -245,7 +245,7 @@ class Shopping_Agent_UCP_Activator
 
         if (!$public_key || !$kid) {
             // Check for error
-            $error = get_option('shopping_agent_shopping_agent_ucp_signing_key_error');
+            $error = get_option('shopping_agent_ucp_signing_key_error');
             if ($error === 'libsodium_not_available') {
                 return array(
                     array(
@@ -267,7 +267,7 @@ class Shopping_Agent_UCP_Activator
                 'use' => 'sig',              // Signature use
                 'alg' => 'EdDSA',            // Edwards-curve Digital Signature Algorithm
                 'status' => 'active',
-                'created_at' => get_option('shopping_agent_shopping_agent_ucp_signing_key_created_at', current_time('c')),
+                'created_at' => get_option('shopping_agent_ucp_signing_key_created_at', current_time('c')),
             ),
         );
     }
@@ -284,14 +284,14 @@ class Shopping_Agent_UCP_Activator
         }
 
         // Backup current key
-        $old_public = get_option('shopping_agent_shopping_agent_ucp_signing_public_key');
-        $old_kid = get_option('shopping_agent_shopping_agent_ucp_signing_key_kid');
-        $old_created = get_option('shopping_agent_shopping_agent_ucp_signing_key_created_at');
+        $old_public = get_option('shopping_agent_ucp_signing_public_key');
+        $old_kid = get_option('shopping_agent_ucp_signing_key_kid');
+        $old_created = get_option('shopping_agent_ucp_signing_key_created_at');
 
         if ($old_public && $old_kid) {
-            update_option('shopping_agent_shopping_agent_ucp_signing_public_key_previous', $old_public);
-            update_option('shopping_agent_shopping_agent_ucp_signing_key_kid_previous', $old_kid);
-            update_option('shopping_agent_shopping_agent_ucp_signing_key_created_at_previous', $old_created);
+            update_option('shopping_agent_ucp_signing_public_key_previous', $old_public);
+            update_option('shopping_agent_ucp_signing_key_kid_previous', $old_kid);
+            update_option('shopping_agent_ucp_signing_key_created_at_previous', $old_created);
         }
 
         // Generate new keypair
@@ -300,10 +300,10 @@ class Shopping_Agent_UCP_Activator
         $public_key = sodium_crypto_sign_publickey($keypair);
         $kid = 'ed25519-' . date('Y-m') . '-' . substr(bin2hex(random_bytes(4)), 0, 8);
 
-        update_option('shopping_agent_shopping_agent_ucp_signing_private_key', base64_encode($secret_key));
-        update_option('shopping_agent_shopping_agent_ucp_signing_public_key', base64_encode($public_key));
-        update_option('shopping_agent_shopping_agent_ucp_signing_key_kid', $kid);
-        update_option('shopping_agent_shopping_agent_ucp_signing_key_created_at', current_time('c'));
+        update_option('shopping_agent_ucp_signing_private_key', base64_encode($secret_key));
+        update_option('shopping_agent_ucp_signing_public_key', base64_encode($public_key));
+        update_option('shopping_agent_ucp_signing_key_kid', $kid);
+        update_option('shopping_agent_ucp_signing_key_created_at', current_time('c'));
 
         // Clean up memory
         sodium_memzero($keypair);
