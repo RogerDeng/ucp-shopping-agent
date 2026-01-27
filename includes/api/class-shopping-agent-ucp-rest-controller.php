@@ -51,6 +51,16 @@ abstract class Shopping_Agent_UCP_REST_Controller
      */
     protected function authenticate($request, $required_permission = 'read')
     {
+        // Check if UCP is enabled
+        $enabled = get_option('shopping_agent_ucp_enabled', 'yes');
+        if ($enabled !== 'yes') {
+            return new WP_Error(
+                'ucp_disabled',
+                __('UCP API is currently disabled.', 'shopping-agent-with-ucp'),
+                array('status' => 503)
+            );
+        }
+
         return Shopping_Agent_UCP_Auth::validate_api_key_request($request, $required_permission);
     }
 
@@ -59,6 +69,16 @@ abstract class Shopping_Agent_UCP_REST_Controller
      */
     public function public_permissions_check($request)
     {
+        // Check if UCP is enabled
+        $enabled = get_option('shopping_agent_ucp_enabled', 'yes');
+        if ($enabled !== 'yes') {
+            return new WP_Error(
+                'ucp_disabled',
+                __('UCP API is currently disabled.', 'shopping-agent-with-ucp'),
+                array('status' => 503)
+            );
+        }
+
         return true;
     }
 

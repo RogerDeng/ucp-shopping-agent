@@ -402,8 +402,8 @@ The plugin creates the following custom tables:
 
 The plugin supports translations. Translation files are located in the `/languages` directory.
 
-- Text Domain: `wc-ucp-agent`
-- POT file: `languages/wc-ucp-agent.pot`
+- Text Domain: `shopping-agent-with-ucp`
+- POT file: `languages/shopping-agent-with-ucp.pot`
 
 ---
 

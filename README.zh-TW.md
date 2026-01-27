@@ -402,8 +402,8 @@ if (hash_equals($expected_hash, $received_hash)) {
 
 本外掛支援翻譯。翻譯檔案位於 `/languages` 目錄中。
 
-- Text Domain: `wc-ucp-agent`
-- POT 檔案: `languages/wc-ucp-agent.pot`
+- Text Domain: `shopping-agent-with-ucp`
+- POT 檔案: `languages/shopping-agent-with-ucp.pot`
 
 ---
 
