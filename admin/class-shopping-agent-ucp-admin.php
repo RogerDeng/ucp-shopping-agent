@@ -38,6 +38,9 @@ class Shopping_Agent_UCP_Admin
         }
         // Plugin meta links
         add_filter('plugin_row_meta', array($this, 'plugin_row_meta'), 10, 2);
+
+        // Mock plugin information for View Details
+        add_filter('plugins_api', array($this, 'inject_plugin_information'), 10, 3);
     }
 
     /**
@@ -350,6 +353,47 @@ class Shopping_Agent_UCP_Admin
             $links[] = $view_details_link;
         }
         return $links;
+    }
+
+    /**
+     * Inject plugin information for the "View details" modal
+     *
+     * @param false|object|array $result The result object or array. Default false.
+     * @param string             $action The API action being performed.
+     * @param object             $args   Plugin API arguments.
+     * @return false|object|array Modified result or original.
+     */
+    public function inject_plugin_information($result, $action, $args)
+    {
+        if ($action !== 'plugin_information') {
+            return $result;
+        }
+
+        if (!isset($args->slug) || $args->slug !== 'shopping-agent-with-ucp') {
+            return $result;
+        }
+
+        // Return local plugin information
+        $plugin_data = array(
+            'name' => 'Shopping Agent with UCP',
+            'slug' => 'shopping-agent-with-ucp',
+            'version' => SHOPPING_AGENT_UCP_VERSION,
+            'author' => 'Roger Deng',
+            'author_profile' => 'https://sites.google.com/view/shopping-agent-with-ucp', // Using site URL as profile for now
+            'requires' => '5.8',
+            'tested' => '6.9',
+            'requires_php' => '7.4',
+            'last_updated' => date('Y-m-d H:i:s'),
+            'homepage' => 'https://sites.google.com/view/shopping-agent-with-ucp',
+            'sections' => array(
+                'description' => 'Enable AI agents to discover, browse, and transact with your online store through the Google Universal Commerce Protocol (UCP) REST API.<br><br><strong>Features:</strong><ul><li>Store Discovery</li><li>Product Catalog</li><li>Cart & Checkout</li><li>Webhooks</li></ul>',
+                'installation' => '1. Upload the plugin files to the `/wp-content/plugins/shopping-agent-with-ucp` directory, or install the plugin through the WordPress plugins screen directly.<br>2. Activate the plugin through the \'Plugins\' screen in WordPress.<br>3. Use the Settings->Shopping Agent screen to configure the plugin.',
+                'changelog' => '<h4>1.0.4</h4><ul><li>Fix: Resolved 403 Forbidden error on API key creation.</li><li>Update: Renamed to "Shopping Agent with UCP".</li></ul>',
+            ),
+            'download_link' => '', // No download link as it's local
+        );
+
+        return (object) $plugin_data;
     }
 
     /**

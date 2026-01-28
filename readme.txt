@@ -90,7 +90,7 @@ API keys can be created with three permission levels:
 
 = Documentation =
 
-For full documentation, please visit our [GitHub repository](https://github.com/rogerdeng/ucp-shopping-agent).
+For full documentation, please visit our [GitHub repository](https://github.com/rogerdeng/shopping-agent-with-ucp).
 
 == Installation ==
 

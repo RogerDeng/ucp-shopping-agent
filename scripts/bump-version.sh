@@ -34,7 +34,7 @@ NEW_VERSION="$MAJOR.$MINOR.$PATCH"
 
 echo "Bumping to: $NEW_VERSION"
 
-# Update ucp-shopping-agent.php
+# Update shopping-agent-with-ucp.php
 # 1. Update Header Version
 sed -i '' "s/Version:     $CURRENT_VERSION/Version:     $NEW_VERSION/" "$PLUGIN_FILE"
 
