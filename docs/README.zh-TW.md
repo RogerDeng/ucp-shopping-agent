@@ -1,4 +1,4 @@
-[ 🇺🇸 English ](./README.md) | **[ 🇹🇼 繁體中文 ]**
+[ English ](../README.md) | **[ 繁體中文 ]** | [ 简体中文 ](./README.zh-CN.md)
 
 # UCP Shopping Agent (UCP 購物代理)
 
