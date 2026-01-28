@@ -36,6 +36,8 @@ class Shopping_Agent_UCP_Admin
             }
             Shopping_Agent_UCP_Activator::activate();
         }
+        // Plugin meta links
+        add_filter('plugin_row_meta', array($this, 'plugin_row_meta'), 10, 2);
     }
 
     /**
@@ -335,6 +337,19 @@ class Shopping_Agent_UCP_Admin
         }
 
         return $vars;
+    }
+
+    /**
+     * Add custom links to plugin meta row
+     */
+    public function plugin_row_meta($links, $file)
+    {
+        if ($file === SHOPPING_AGENT_UCP_PLUGIN_BASENAME) {
+            $url = admin_url('plugin-install.php?tab=plugin-information&plugin=shopping-agent-with-ucp&TB_iframe=true&width=600&height=550');
+            $view_details_link = '<a href="' . esc_url($url) . '" class="thickbox open-plugin-details-modal" aria-label="' . esc_attr__('More information about Shopping Agent with UCP', 'shopping-agent-with-ucp') . '" data-title="' . esc_attr__('Shopping Agent with UCP', 'shopping-agent-with-ucp') . '">' . esc_html__('View details', 'shopping-agent-with-ucp') . '</a>';
+            $links[] = $view_details_link;
+        }
+        return $links;
     }
 
     /**

@@ -1,7 +1,7 @@
 === Shopping Agent with UCP ===
 Contributors: rogerdeng
-Donate link: https://sites.google.com/view/ucp-shopping-agent
-Tags: shopping, ecommerce, ucp, agent, woocommerce
+Donate link: https://sites.google.com/view/shopping-agent-with-ucp
+Tags: shopping, ecommerce, agent, woocommerce
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
