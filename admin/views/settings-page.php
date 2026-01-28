@@ -210,26 +210,26 @@ if (!defined('ABSPATH')) {
                                 </td>
                             </tr>
                         <?php else: ?>
-                            <?php foreach ($api_keys as $key): ?>
-                                <tr data-key-id="<?php echo esc_attr($key->id); ?>">
-                                    <td><code><?php echo esc_html($key->key_id); ?></code></td>
+                            <?php foreach ($api_keys as $api_key_item): ?>
+                                <tr data-key-id="<?php echo esc_attr($api_key_item->id); ?>">
+                                    <td><code><?php echo esc_html($api_key_item->key_id); ?></code></td>
                                     <td>
-                                        <?php echo esc_html($key->description ?: '—'); ?>
+                                        <?php echo esc_html($api_key_item->description ?: '—'); ?>
                                     </td>
                                     <td>
-                                        <span class="permission-badge permission-<?php echo esc_attr($key->permissions); ?>">
-                                            <?php echo esc_html(ucfirst($key->permissions)); ?>
+                                        <span class="permission-badge permission-<?php echo esc_attr($api_key_item->permissions); ?>">
+                                            <?php echo esc_html(ucfirst($api_key_item->permissions)); ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <?php echo $key->last_access ? esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($key->last_access))) : '—'; ?>
+                                        <?php echo $api_key_item->last_access ? esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($api_key_item->last_access))) : '—'; ?>
                                     </td>
                                     <td>
-                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($key->created_at))); ?>
+                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($api_key_item->created_at))); ?>
                                     </td>
                                     <td>
                                         <button type="button" class="button button-small delete-api-key"
-                                            data-key-id="<?php echo esc_attr($key->id); ?>">
+                                            data-key-id="<?php echo esc_attr($api_key_item->id); ?>">
                                             <?php esc_html_e('Delete', 'shopping-agent-with-ucp'); ?>
                                         </button>
                                     </td>

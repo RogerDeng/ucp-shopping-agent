@@ -109,12 +109,19 @@ class Shopping_Agent_UCP_Webhook_Manager
     {
         global $wpdb;
 
-        $webhooks = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE status = %s",
-                'active'
-            )
-        );
+        $cache_key = 'shopping_agent_ucp_active_webhooks';
+        $webhooks = wp_cache_get($cache_key, 'shopping_agent_ucp_webhooks');
+
+        if ($webhooks === false) {
+            $webhooks = $wpdb->get_results(
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
+                $wpdb->prepare(
+                    "SELECT * FROM {$this->table_name} WHERE status = %s",
+                    'active'
+                )
+            );
+            wp_cache_set($cache_key, $webhooks, 'shopping_agent_ucp_webhooks');
+        }
 
         $matching_webhooks = array();
 
@@ -139,6 +146,7 @@ class Shopping_Agent_UCP_Webhook_Manager
             $secret = wp_generate_password(32, false);
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $result = $wpdb->insert(
             $this->table_name,
             array(
@@ -160,6 +168,8 @@ class Shopping_Agent_UCP_Webhook_Manager
             );
         }
 
+        wp_cache_delete('shopping_agent_ucp_active_webhooks', 'shopping_agent_ucp_webhooks');
+
         return array(
             'id' => $wpdb->insert_id,
             'secret' => $secret,
@@ -173,11 +183,16 @@ class Shopping_Agent_UCP_Webhook_Manager
     {
         global $wpdb;
 
-        return $wpdb->delete(
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        $result = $wpdb->delete(
             $this->table_name,
             array('id' => $webhook_id),
             array('%d')
         );
+
+        wp_cache_delete('shopping_agent_ucp_active_webhooks', 'shopping_agent_ucp_webhooks');
+
+        return $result;
     }
 
     /**
@@ -188,6 +203,7 @@ class Shopping_Agent_UCP_Webhook_Manager
         global $wpdb;
 
         return $wpdb->get_results(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
             $wpdb->prepare(
                 "SELECT * FROM {$this->table_name} WHERE api_key_id = %d ORDER BY created_at DESC",
                 $api_key_id

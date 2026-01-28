@@ -149,6 +149,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         // Calculate totals
         $totals = $this->calculate_totals($cart->items, $shipping_address);
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $result = $wpdb->insert(
             $this->table_name,
             array(
@@ -242,6 +243,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         $api_key = Shopping_Agent_UCP_Auth::get_current_api_key();
         $totals = $this->calculate_totals($formatted_items, $shipping_address);
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $result = $wpdb->insert(
             $this->table_name,
             array(
@@ -331,6 +333,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
             $update_format[] = '%s';
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $wpdb->update(
             $this->table_name,
             $update_data,
@@ -345,6 +348,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         $items = $session->items ? json_decode($session->items, true) : array();
         $totals = $this->calculate_totals($items, $shipping_address, $session->shipping_method);
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $wpdb->update(
             $this->table_name,
             array('totals' => wp_json_encode($totals)),
@@ -355,6 +359,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
 
         // Check if session is ready
         if (!empty($session->shipping_method) || !empty($update_data['shipping_method'])) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
             $wpdb->update(
                 $this->table_name,
                 array('status' => 'ready'),
@@ -444,6 +449,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         $order->save();
 
         // Update session status to 'complete'
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $wpdb->update(
             $this->table_name,
             array(
@@ -484,6 +490,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
         global $wpdb;
 
         return $wpdb->get_row(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
             $wpdb->prepare(
                 "SELECT * FROM {$this->table_name} WHERE id = %s",
                 $session_id

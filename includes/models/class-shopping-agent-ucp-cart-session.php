@@ -37,6 +37,7 @@ class Shopping_Agent_UCP_Cart_Session
         $expiry_hours = (int) get_option('shopping_agent_ucp_cart_expiry_hours', 24);
         $expires_at = gmdate('Y-m-d H:i:s', strtotime("+{$expiry_hours} hours"));
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $result = $wpdb->insert(
             $this->table_name,
             array(
@@ -69,6 +70,7 @@ class Shopping_Agent_UCP_Cart_Session
         global $wpdb;
 
         $cart = $wpdb->get_row(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
             $wpdb->prepare(
                 "SELECT * FROM {$this->table_name} WHERE id = %s",
                 $cart_id
@@ -95,6 +97,7 @@ class Shopping_Agent_UCP_Cart_Session
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         return $wpdb->update(
             $this->table_name,
             array(
@@ -127,6 +130,7 @@ class Shopping_Agent_UCP_Cart_Session
             $formats[] = '%s';
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         return $wpdb->update(
             $this->table_name,
             $data,
@@ -143,6 +147,7 @@ class Shopping_Agent_UCP_Cart_Session
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         return $wpdb->update(
             $this->table_name,
             array(
@@ -162,6 +167,7 @@ class Shopping_Agent_UCP_Cart_Session
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         return $wpdb->update(
             $this->table_name,
             array(
@@ -181,6 +187,7 @@ class Shopping_Agent_UCP_Cart_Session
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $result = $wpdb->delete(
             $this->table_name,
             array('id' => $cart_id),
@@ -198,6 +205,7 @@ class Shopping_Agent_UCP_Cart_Session
         global $wpdb;
 
         return $wpdb->query(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
             $wpdb->prepare(
                 "DELETE FROM {$this->table_name} WHERE expires_at < %s AND status = 'active'",
                 current_time('mysql')

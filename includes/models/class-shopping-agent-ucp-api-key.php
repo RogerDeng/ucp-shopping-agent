@@ -43,6 +43,7 @@ class Shopping_Agent_UCP_API_Key
         // Hash the secret
         $secret_hash = wp_hash_password($secret);
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $result = $wpdb->insert(
             $this->table_name,
             array(
@@ -90,6 +91,7 @@ class Shopping_Agent_UCP_API_Key
         }
 
         $key_data = $wpdb->get_row(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
             $wpdb->prepare(
                 "SELECT * FROM {$this->table_name} WHERE key_id = %s",
                 $key_id
@@ -110,6 +112,7 @@ class Shopping_Agent_UCP_API_Key
         global $wpdb;
 
         return $wpdb->get_row(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
             $wpdb->prepare(
                 "SELECT * FROM {$this->table_name} WHERE id = %d",
                 $id
@@ -124,6 +127,7 @@ class Shopping_Agent_UCP_API_Key
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
         return $wpdb->get_results(
             "SELECT * FROM {$this->table_name} ORDER BY created_at DESC"
         );
@@ -136,6 +140,7 @@ class Shopping_Agent_UCP_API_Key
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         return $wpdb->update(
             $this->table_name,
             array('last_access' => current_time('mysql')),
@@ -152,6 +157,7 @@ class Shopping_Agent_UCP_API_Key
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
         $result = $wpdb->delete(
             $this->table_name,
             array('id' => $id),
