@@ -176,7 +176,7 @@ class Shopping_Agent_UCP_Activator
         $public_key = sodium_crypto_sign_publickey($keypair);
 
         // Generate a unique Key ID with timestamp
-        $kid = 'ed25519-' . date('Y-m') . '-' . substr(bin2hex(random_bytes(4)), 0, 8);
+        $kid = 'ed25519-' . gmdate('Y-m') . '-' . substr(bin2hex(random_bytes(4)), 0, 8);
 
         // Store keys securely
         add_option('shopping_agent_ucp_signing_private_key', base64_encode($secret_key));
@@ -298,7 +298,7 @@ class Shopping_Agent_UCP_Activator
         $keypair = sodium_crypto_sign_keypair();
         $secret_key = sodium_crypto_sign_secretkey($keypair);
         $public_key = sodium_crypto_sign_publickey($keypair);
-        $kid = 'ed25519-' . date('Y-m') . '-' . substr(bin2hex(random_bytes(4)), 0, 8);
+        $kid = 'ed25519-' . gmdate('Y-m') . '-' . substr(bin2hex(random_bytes(4)), 0, 8);
 
         update_option('shopping_agent_ucp_signing_private_key', base64_encode($secret_key));
         update_option('shopping_agent_ucp_signing_public_key', base64_encode($public_key));

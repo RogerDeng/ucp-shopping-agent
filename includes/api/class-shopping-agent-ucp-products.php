@@ -338,8 +338,8 @@ class Shopping_Agent_UCP_Products extends Shopping_Agent_UCP_REST_Controller
             'slug' => $product->get_slug(),
             'url' => $product->get_permalink(),
             'description' => array(
-                'short' => strip_tags($product->get_short_description()),
-                'full' => $detailed ? strip_tags($product->get_description()) : null,
+                'short' => wp_strip_all_tags($product->get_short_description()),
+                'full' => $detailed ? wp_strip_all_tags($product->get_description()) : null,
             ),
             'price' => array(
                 'amount' => $this->format_price($product->get_price()),

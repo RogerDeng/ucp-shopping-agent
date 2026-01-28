@@ -9,9 +9,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-$settings = Shopping_Agent_UCP_Settings::get_all();
-$api_key_model = new Shopping_Agent_UCP_API_Key();
-$api_keys = $api_key_model->get_all();
+
+// Variables passed from Shopping_Agent_UCP_Admin::render_settings_page():
+// $settings, $api_key_model, $api_keys, $active_tab
 ?>
 
 <div class="wrap shopping-agent-ucp-settings">

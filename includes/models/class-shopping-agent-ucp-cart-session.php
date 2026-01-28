@@ -35,7 +35,7 @@ class Shopping_Agent_UCP_Cart_Session
 
         $cart_id = wp_generate_uuid4();
         $expiry_hours = (int) get_option('shopping_agent_ucp_cart_expiry_hours', 24);
-        $expires_at = date('Y-m-d H:i:s', strtotime("+{$expiry_hours} hours"));
+        $expires_at = gmdate('Y-m-d H:i:s', strtotime("+{$expiry_hours} hours"));
 
         $result = $wpdb->insert(
             $this->table_name,

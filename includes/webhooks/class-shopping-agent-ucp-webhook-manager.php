@@ -111,8 +111,8 @@ class Shopping_Agent_UCP_Webhook_Manager
 
         $webhooks = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE status = 'active'",
-                array()
+                "SELECT * FROM {$this->table_name} WHERE status = %s",
+                'active'
             )
         );
 
@@ -155,7 +155,7 @@ class Shopping_Agent_UCP_Webhook_Manager
         if ($result === false) {
             return new WP_Error(
                 'webhook_creation_failed',
-                __('Failed to create webhook.', 'shopping-agent-ucp-agent'),
+                __('Failed to create webhook.', 'shopping-agent-with-ucp'),
                 array('status' => 500)
             );
         }

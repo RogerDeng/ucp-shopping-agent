@@ -224,7 +224,7 @@ class Shopping_Agent_UCP_Admin
         $is_ucp = get_post_meta($post_id, '_shopping_agent_ucp_created', true);
 
         if ($is_ucp) {
-            echo $this->get_shopping_agent_ucp_badge();
+            echo wp_kses_post($this->get_shopping_agent_ucp_badge());
         } else {
             echo '<span style="color:#999;">—</span>';
         }
@@ -242,7 +242,7 @@ class Shopping_Agent_UCP_Admin
         $is_ucp = $order->get_meta('_shopping_agent_ucp_created');
 
         if ($is_ucp) {
-            echo $this->get_shopping_agent_ucp_badge();
+            echo wp_kses_post($this->get_shopping_agent_ucp_badge());
         } else {
             echo '<span style="color:#999;">—</span>';
         }
@@ -270,7 +270,8 @@ class Shopping_Agent_UCP_Admin
             return;
         }
 
-        $current = isset($_GET['ucp_filter']) ? sanitize_text_field($_GET['ucp_filter']) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $current = isset($_GET['ucp_filter']) ? sanitize_text_field(wp_unslash($_GET['ucp_filter'])) : '';
 
         ?>
         <select name="ucp_filter">
@@ -290,7 +291,8 @@ class Shopping_Agent_UCP_Admin
      */
     public function add_order_filter_dropdown_hpos()
     {
-        $current = isset($_GET['ucp_filter']) ? sanitize_text_field($_GET['ucp_filter']) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $current = isset($_GET['ucp_filter']) ? sanitize_text_field(wp_unslash($_GET['ucp_filter'])) : '';
 
         ?>
         <select name="ucp_filter">
@@ -312,11 +314,13 @@ class Shopping_Agent_UCP_Admin
     {
         global $typenow;
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ($typenow !== 'shop_order' || !isset($_GET['ucp_filter']) || empty($_GET['ucp_filter'])) {
             return $vars;
         }
 
-        $filter = sanitize_text_field($_GET['ucp_filter']);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $filter = sanitize_text_field(wp_unslash($_GET['ucp_filter']));
 
         if ($filter === 'ucp') {
             $vars['meta_query'][] = array(
@@ -383,7 +387,7 @@ class Shopping_Agent_UCP_Admin
             'requires' => '5.8',
             'tested' => '6.9',
             'requires_php' => '7.4',
-            'last_updated' => date('Y-m-d H:i:s'),
+            'last_updated' => gmdate('Y-m-d H:i:s'),
             'homepage' => 'https://sites.google.com/view/shopping-agent-with-ucp',
             'sections' => array(
                 'description' => 'Enable AI agents to discover, browse, and transact with your online store through the Google Universal Commerce Protocol (UCP) REST API.<br><br><strong>Features:</strong><ul><li>Store Discovery</li><li>Product Catalog</li><li>Cart & Checkout</li><li>Webhooks</li></ul>',
@@ -439,7 +443,7 @@ class Shopping_Agent_UCP_Admin
         ?>
         <div class="ucp-meta-box-content">
             <p>
-                <?php echo $this->get_shopping_agent_ucp_badge(); ?>
+                <?php echo wp_kses_post($this->get_shopping_agent_ucp_badge()); ?>
             </p>
             <?php if ($session_id): ?>
                 <p>
@@ -462,7 +466,12 @@ class Shopping_Agent_UCP_Admin
      */
     public function render_settings_page()
     {
-        $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'general';
+
+        $settings = Shopping_Agent_UCP_Settings::get_all();
+        $api_key_model = new Shopping_Agent_UCP_API_Key();
+        $api_keys = $api_key_model->get_all();
 
         include SHOPPING_AGENT_UCP_PLUGIN_DIR . 'admin/views/settings-page.php';
     }
@@ -478,8 +487,8 @@ class Shopping_Agent_UCP_Admin
             wp_send_json_error(__('Permission denied.', 'shopping-agent-with-ucp'));
         }
 
-        $description = sanitize_text_field($_POST['description'] ?? '');
-        $permissions = sanitize_text_field($_POST['permissions'] ?? 'read');
+        $description = sanitize_text_field(wp_unslash($_POST['description'] ?? ''));
+        $permissions = sanitize_text_field(wp_unslash($_POST['permissions'] ?? 'read'));
 
         $api_key_model = new Shopping_Agent_UCP_API_Key();
         $result = $api_key_model->create($description, $permissions, get_current_user_id());
