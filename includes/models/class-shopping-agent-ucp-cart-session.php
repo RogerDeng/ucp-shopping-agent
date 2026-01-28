@@ -69,13 +69,14 @@ class Shopping_Agent_UCP_Cart_Session
     {
         global $wpdb;
 
-        $cart = $wpdb->get_row(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
-            $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE id = %s",
-                $cart_id
-            )
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$this->table_name} WHERE id = %s",
+            $cart_id
         );
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        $cart = $wpdb->get_row($query);
 
         if (!$cart) {
             return null;
@@ -204,13 +205,14 @@ class Shopping_Agent_UCP_Cart_Session
     {
         global $wpdb;
 
-        return $wpdb->query(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
-            $wpdb->prepare(
-                "DELETE FROM {$this->table_name} WHERE expires_at < %s AND status = 'active'",
-                current_time('mysql')
-            )
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $query = $wpdb->prepare(
+            "DELETE FROM {$this->table_name} WHERE expires_at < %s AND status = 'active'",
+            current_time('mysql')
         );
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        return $wpdb->query($query);
     }
 
     /**

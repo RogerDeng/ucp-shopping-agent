@@ -113,13 +113,14 @@ class Shopping_Agent_UCP_Webhook_Manager
         $webhooks = wp_cache_get($cache_key, 'shopping_agent_ucp_webhooks');
 
         if ($webhooks === false) {
-            $webhooks = $wpdb->get_results(
-                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
-                $wpdb->prepare(
-                    "SELECT * FROM {$this->table_name} WHERE status = %s",
-                    'active'
-                )
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            $query = $wpdb->prepare(
+                "SELECT * FROM {$this->table_name} WHERE status = %s",
+                'active'
             );
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+            $webhooks = $wpdb->get_results($query);
             wp_cache_set($cache_key, $webhooks, 'shopping_agent_ucp_webhooks');
         }
 
@@ -202,13 +203,14 @@ class Shopping_Agent_UCP_Webhook_Manager
     {
         global $wpdb;
 
-        return $wpdb->get_results(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
-            $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE api_key_id = %d ORDER BY created_at DESC",
-                $api_key_id
-            )
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$this->table_name} WHERE api_key_id = %d ORDER BY created_at DESC",
+            $api_key_id
         );
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        return $wpdb->get_results($query);
     }
 
     /**

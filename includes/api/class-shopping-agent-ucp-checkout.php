@@ -489,13 +489,14 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
     {
         global $wpdb;
 
-        return $wpdb->get_row(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
-            $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE id = %s",
-                $session_id
-            )
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$this->table_name} WHERE id = %s",
+            $session_id
         );
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        return $wpdb->get_row($query);
     }
 
     /**

@@ -210,26 +210,26 @@ if (!defined('ABSPATH')) {
                                 </td>
                             </tr>
                         <?php else: ?>
-                            <?php foreach ($api_keys as $api_key_item): ?>
-                                <tr data-key-id="<?php echo esc_attr($api_key_item->id); ?>">
-                                    <td><code><?php echo esc_html($api_key_item->key_id); ?></code></td>
+                            <?php foreach ($api_keys as $shopping_agent_ucp_api_key_item): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
+                                <tr data-key-id="<?php echo esc_attr($shopping_agent_ucp_api_key_item->id); ?>">
+                                    <td><code><?php echo esc_html($shopping_agent_ucp_api_key_item->key_id); ?></code></td>
                                     <td>
-                                        <?php echo esc_html($api_key_item->description ?: '—'); ?>
+                                        <?php echo esc_html($shopping_agent_ucp_api_key_item->description ?: '—'); ?>
                                     </td>
                                     <td>
-                                        <span class="permission-badge permission-<?php echo esc_attr($api_key_item->permissions); ?>">
-                                            <?php echo esc_html(ucfirst($api_key_item->permissions)); ?>
+                                        <span class="permission-badge permission-<?php echo esc_attr($shopping_agent_ucp_api_key_item->permissions); ?>">
+                                            <?php echo esc_html(ucfirst($shopping_agent_ucp_api_key_item->permissions)); ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <?php echo $api_key_item->last_access ? esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($api_key_item->last_access))) : '—'; ?>
+                                        <?php echo $shopping_agent_ucp_api_key_item->last_access ? esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($shopping_agent_ucp_api_key_item->last_access))) : '—'; ?>
                                     </td>
                                     <td>
-                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($api_key_item->created_at))); ?>
+                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($shopping_agent_ucp_api_key_item->created_at))); ?>
                                     </td>
                                     <td>
                                         <button type="button" class="button button-small delete-api-key"
-                                            data-key-id="<?php echo esc_attr($api_key_item->id); ?>">
+                                            data-key-id="<?php echo esc_attr($shopping_agent_ucp_api_key_item->id); ?>">
                                             <?php esc_html_e('Delete', 'shopping-agent-with-ucp'); ?>
                                         </button>
                                     </td>

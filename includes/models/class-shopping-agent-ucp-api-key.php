@@ -90,13 +90,14 @@ class Shopping_Agent_UCP_API_Key
             return $key_data === 'not_found' ? null : $key_data;
         }
 
-        $key_data = $wpdb->get_row(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
-            $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE key_id = %s",
-                $key_id
-            )
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$this->table_name} WHERE key_id = %s",
+            $key_id
         );
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        $key_data = $wpdb->get_row($query);
 
         // Cache for 5 minutes (300 seconds)
         wp_cache_set($cache_key, $key_data ? $key_data : 'not_found', 'shopping_agent_ucp_api_keys', 300);
@@ -111,13 +112,14 @@ class Shopping_Agent_UCP_API_Key
     {
         global $wpdb;
 
-        return $wpdb->get_row(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
-            $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE id = %d",
-                $id
-            )
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$this->table_name} WHERE id = %d",
+            $id
         );
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        return $wpdb->get_row($query);
     }
 
     /**
@@ -127,10 +129,11 @@ class Shopping_Agent_UCP_API_Key
     {
         global $wpdb;
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
-        return $wpdb->get_results(
-            "SELECT * FROM {$this->table_name} ORDER BY created_at DESC"
-        );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $query = "SELECT * FROM {$this->table_name} ORDER BY created_at DESC";
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
+        return $wpdb->get_results($query);
     }
 
     /**
