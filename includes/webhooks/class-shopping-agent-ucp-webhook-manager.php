@@ -113,8 +113,8 @@ class Shopping_Agent_UCP_Webhook_Manager
         $webhooks = wp_cache_get($cache_key, 'shopping_agent_ucp_webhooks');
 
         if ($webhooks === false) {
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             $query = $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 "SELECT * FROM {$this->table_name} WHERE status = %s",
                 'active'
             );
@@ -203,8 +203,8 @@ class Shopping_Agent_UCP_Webhook_Manager
     {
         global $wpdb;
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             "SELECT * FROM {$this->table_name} WHERE api_key_id = %d ORDER BY created_at DESC",
             $api_key_id
         );

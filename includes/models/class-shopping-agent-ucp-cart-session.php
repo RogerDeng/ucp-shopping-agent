@@ -69,8 +69,8 @@ class Shopping_Agent_UCP_Cart_Session
     {
         global $wpdb;
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             "SELECT * FROM {$this->table_name} WHERE id = %s",
             $cart_id
         );
@@ -205,8 +205,8 @@ class Shopping_Agent_UCP_Cart_Session
     {
         global $wpdb;
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             "DELETE FROM {$this->table_name} WHERE expires_at < %s AND status = 'active'",
             current_time('mysql')
         );

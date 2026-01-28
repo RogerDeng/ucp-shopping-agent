@@ -90,8 +90,8 @@ class Shopping_Agent_UCP_API_Key
             return $key_data === 'not_found' ? null : $key_data;
         }
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             "SELECT * FROM {$this->table_name} WHERE key_id = %s",
             $key_id
         );
@@ -112,8 +112,8 @@ class Shopping_Agent_UCP_API_Key
     {
         global $wpdb;
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $query = $wpdb->prepare(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             "SELECT * FROM {$this->table_name} WHERE id = %d",
             $id
         );
