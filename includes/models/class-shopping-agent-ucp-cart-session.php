@@ -75,7 +75,7 @@ class Shopping_Agent_UCP_Cart_Session
             $cart_id
         );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
         $cart = $wpdb->get_row($query);
 
         if (!$cart) {
@@ -211,7 +211,7 @@ class Shopping_Agent_UCP_Cart_Session
             current_time('mysql')
         );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
         return $wpdb->query($query);
     }
 

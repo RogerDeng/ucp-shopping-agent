@@ -495,7 +495,7 @@ class Shopping_Agent_UCP_Checkout extends Shopping_Agent_UCP_REST_Controller
             $session_id
         );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
         return $wpdb->get_row($query);
     }
 

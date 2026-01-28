@@ -119,7 +119,7 @@ class Shopping_Agent_UCP_Webhook_Manager
                 'active'
             );
 
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
             $webhooks = $wpdb->get_results($query);
             wp_cache_set($cache_key, $webhooks, 'shopping_agent_ucp_webhooks');
         }
@@ -209,7 +209,7 @@ class Shopping_Agent_UCP_Webhook_Manager
             $api_key_id
         );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
         return $wpdb->get_results($query);
     }
 

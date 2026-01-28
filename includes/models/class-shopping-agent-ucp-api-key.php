@@ -96,7 +96,7 @@ class Shopping_Agent_UCP_API_Key
             $key_id
         );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
         $key_data = $wpdb->get_row($query);
 
         // Cache for 5 minutes (300 seconds)
@@ -118,7 +118,7 @@ class Shopping_Agent_UCP_API_Key
             $id
         );
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
         return $wpdb->get_row($query);
     }
 
