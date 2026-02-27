@@ -5,7 +5,7 @@ Tags: shopping, ecommerce, agent, woocommerce
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.10
+Stable tag: 1.0.11
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,10 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 
 == Changelog ==
 
+= 1.0.11 =
+* Removed custom update checker (`plugins_api` filter and `plugin_row_meta` injection) to comply with WordPress.org guidelines.
+* Plugin now relies entirely on WordPress.org's built-in update system.
+
 = 1.0.4 =
 * Fix: Resolved 403 Forbidden error on API key creation (fixed UI selector mismatches).
 * Update: Added detailed "External Services" declaration.
@@ -196,6 +200,9 @@ Carts and checkout sessions have configurable expiration times (default: 24 hour
 * Internationalization ready
 
 == Upgrade Notice ==
+
+= 1.0.11 =
+Removed custom update checker to comply with WordPress.org guidelines. No functionality change.
 
 = 1.0.4 =
 Fixed API key generation issues and updated documentation.
